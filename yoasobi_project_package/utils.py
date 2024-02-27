@@ -1,8 +1,8 @@
 from sqlalchemy import Engine
 from loguru import  logger
 
-from codes import sql_query as sqlquery
-from codes import sqlite_db as sqldb
+from yoasobi_project_package import sql_query as sqlquery
+from yoasobi_project_package import sqlite_db as sqldb
 
 
 def insert_lyrics() -> str:
@@ -36,7 +36,7 @@ def choose_table_options() -> str | None:
     4: Skip: Skips performing any action on the table. \n
     :return: If there is a SQL query corresponding to the chosen option, return String, else return None.
     """
-    logger.info('Prompting the user to choose from various table options related to the database')
+    logger.info('Prompting the user to choose from various table options related to the database...')
     while True:
         print(f'Drop table: press 1 \n'
               f'Create table: press 2 \n'
@@ -60,7 +60,6 @@ def choose_table_options() -> str | None:
                     not_cancel = False
                     logger.debug(f'{not_cancel = }')
                 elif user_answer == '2':
-                    logger.info('Drop table')
                     return sqlquery.drop_table()
                 else:
                     logger.warning('Invalid input')
@@ -84,7 +83,6 @@ def choose_table_options() -> str | None:
                     not_cancel = False
                     logger.debug(f'{not_cancel = }')
                 elif user_answer == '2':
-                    logger.info('Delte all rows from table')
                     return sqlquery.delete_all_rows()
                 else:
                     logger.warning('Invalid Input')
@@ -100,18 +98,16 @@ def choose_table_options() -> str | None:
 
 def check_table_sql_query(option_result: str | None, sqlite_db: Engine) -> bool | None:
     """
-    Check if there is any sql query chosen by the user.
+    Check if there is any SQL query chosen by the user.
     :param option_result: Result of the user whether they want to Drop or Create the table.
                         If they chose to deal with the table, then the param is String,
                         if not, then the param is None.
     :param sqlite_db: sqlalchemy Engine Object
     :return: If param option_result is String then return True, else return None.
     """
-    logger.info(f'Check if {option_result = } is string')
+    logger.info(f'Check if {option_result = } is string...')
     if isinstance(option_result, str):
         sql_query: str = option_result
-        logger.debug(f'{sql_query = }')
-        logger.info(f'Execute {sql_query = }')
         sqldb.execute_sql_query(sqlite_db, sql_query)
         sql_query_exist = True
         logger.debug(f'{sql_query_exist = }')

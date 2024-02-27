@@ -28,6 +28,7 @@ def extract_words_from_lyrics(lyrics: str) -> list[str]:
     :param lyrics: String
     :return: List[String]
     """
+    logger.info('Extract words from lyrics...')
     excluded_jp_pos_tags = insert_excluded_pos()
     logger.debug(f'{excluded_jp_pos_tags = }')
 
@@ -59,6 +60,7 @@ def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
     :param word_list: Japanese word list as List of String.
     :return: List[String]
     """
+    logger.info('Extract part of speech from words list...')
     jp_pos_tags = {
         '代名詞': 'Pronoun',
         '副詞': 'Adverb',
@@ -97,6 +99,7 @@ def extract_romanji_from_words(words: list[str]) -> list[str]:
     :param words: List of Japanese words String
     :return: List[String]
     """
+    logger.info('Extract romanjis from words list...')
     return [extract_romanji(word) for word in words]
 
 

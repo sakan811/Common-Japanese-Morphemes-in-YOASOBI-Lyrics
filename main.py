@@ -1,10 +1,10 @@
 from sqlalchemy import Engine
 from loguru import logger
 
-from codes import extract as ext
-from codes import sqlite_db as sqldb
-from codes import utils as ut
-from codes import web_scrap as ws
+from yoasobi_project_package import extract as ext
+from yoasobi_project_package import sqlite_db as sqldb
+from yoasobi_project_package import utils as ut
+from yoasobi_project_package import web_scrap as ws
 
 # Prevent Loguru to show log message in terminal.
 logger.remove()
@@ -18,7 +18,6 @@ def main() -> None:
     db_dir = 'yoasobi.db'
     logger.debug(f'{db_dir = }')
 
-    logger.info('Creating Engine')
     sqlite_db: Engine = sqldb.connect_sqlite_db(db_dir)
     logger.debug(f'{sqlite_db = }')
 
@@ -42,8 +41,8 @@ def main() -> None:
 
     urls: list[str] = ws.return_url_list()
     for url in urls:
-        logger.info('Web scraping...')
         lyrics_list: list[str] = ws.scrap(url)
+        logger.debug(f'{lyrics_list = }')
 
         song_name: str = ws.extract_song_name_from_lyrics_list(lyrics_list)
         logger.debug(f'{song_name = }')
@@ -51,16 +50,15 @@ def main() -> None:
         lyrics: str = ws.extract_lyrics_from_lyrics_list(lyrics_list)
         logger.debug(f'{lyrics = }')
 
-        logger.info('Extract words from lyrics')
         words: list[str] = ext.extract_words_from_lyrics(lyrics)
+        logger.debug(f'{words = }')
 
-        logger.info('Extract romanjis from words list')
         romanized_words: list[str] = ext.extract_romanji_from_words(words)
+        logger.debug(f'{romanized_words = }')
 
-        logger.info('Extract part of speech from words list')
         part_of_speech_list: list[str] = ext.extract_part_of_speech_from_words(words)
+        logger.debug(f'{part_of_speech_list = }')
 
-        logger.info('Insert data into table')
         sqldb.insert_data(words, romanized_words, part_of_speech_list, song_name, db_dir)
 
         print(f'{len(words) = }')

@@ -4,8 +4,8 @@ from sqlalchemy import create_engine, Engine, text, Sequence
 from sqlalchemy.cyextension.util import Mapping
 from loguru import logger
 
-from codes import extract as ext
-from codes import sql_query as sqlquery
+from yoasobi_project_package import extract as ext
+from yoasobi_project_package import sql_query as sqlquery
 
 
 def connect_sqlite_db(db_dir: str) -> Engine:
@@ -15,7 +15,7 @@ def connect_sqlite_db(db_dir: str) -> Engine:
     :param db_dir: Database directory String
     :return: sqlalchemy Engine object
     """
-    logger.info('Create an engine that connects to the database')
+    logger.info('Creating Engine...')
     engine: Engine = create_engine(f'sqlite:///{db_dir}', echo=True)
     return engine
 
@@ -31,6 +31,7 @@ def execute_sql_query(
     :param params: Dictionary[String, String] or None. None is default.
     :return: None
     """
+    logger.info(f'Execute {sql_query = }...')
     try:
         logger.info('Get a connection to the database')
         with engine.connect() as connection:
@@ -89,10 +90,10 @@ def insert_data(
     :param song_name: Song name String
     :return: None
     """
+    logger.info('Insert data into table...')
     song_name_romanji: str = ext.extract_romanji(song_name)
     logger.debug(f'{song_name_romanji = }')
 
-    logger.info('Creating SQL Alchemy Engine')
     engine: Engine = connect_sqlite_db(db_dir)
 
     sql_query = sqlquery.insert_data_query()
@@ -118,7 +119,6 @@ def insert_data(
             }
             logger.debug(f'{data = }')
 
-            logger.info(f'Execute {sql_query = }')
             execute_sql_query(engine, sql_query, data)
     else:
         logger.info(f'Table \'{table_name}\' does not exist.')

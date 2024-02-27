@@ -6,6 +6,7 @@ from selenium import webdriver
 
 
 def return_url_list() -> list[str]:
+    logger.info('Return URL list...')
     return [
         'https://genius.com/Yoasobi-yuusha-lyrics',
         'https://genius.com/Yoasobi-the-blessing-lyrics',
@@ -87,11 +88,9 @@ def scrap(url: str) -> list[str]:
     :param url: URL to be scraped.
     :return: List of extracted lyrics.
     """
+    logger.info('Web scraping...')
     logger.info('Open browser')
     driver = webdriver.Chrome()
-
-    urls = return_url_list()
-    logger.debug(f'{urls = }')
 
     logger.debug(f'{url = }')
     logger.info('Open web page')

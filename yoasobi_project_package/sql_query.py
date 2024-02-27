@@ -1,15 +1,18 @@
 """
 For storing and returning SQL queries.
 """
+from loguru import logger
 
 
 def drop_table() -> str:
+    logger.info('Return drop table SQL query...')
     return '''
         DROP TABLE IF EXISTS Words;
     '''
 
 
 def insert_data_query() -> str:
+    logger.debug('Insert data SQL query...')
     return '''
     INSERT INTO Words (Kanji, Romanji, Part_of_Speech, Song, Song_Romanji, Timestamp) 
     VALUES (:Kanji, :Romanji, :Part_of_Speech, :Song, :Song_Romanji, :Timestamp)
@@ -17,24 +20,14 @@ def insert_data_query() -> str:
 
 
 def delete_all_rows() -> str:
+    logger.info('Return delete all rows from table SQL query...')
     return '''
     DELETE FROM Words
-    '''
-
-
-def delete_duplicates() -> str:
-    return '''
-    DELETE FROM Words
-    WHERE ID NOT IN
-        (
-          SELECT MIN(ID) 
-          FROM Words
-          GROUP BY Song, Timestamp
-        )
     '''
 
 
 def create_table_query() -> str:
+    logger.info('Return create table SQL query...')
     return '''
             CREATE TABLE IF NOT EXISTS Words (
                 ID INTEGER PRIMARY KEY,
@@ -45,21 +38,6 @@ def create_table_query() -> str:
                 Song_Romanji TEXT,
                 Timestamp TIMESTAMP
             );
-    '''
-
-
-def update_part_of_speech_column() -> str:
-    return '''
-    UPDATE Words
-    SET Part_of_Speech = 'Particle'
-    WHERE Kanji = 'に';
-    '''
-
-
-def create_test_table() -> str:
-    return '''
-    CREATE TABLE Words_backup AS
-    SELECT * FROM Words;
     '''
 
 

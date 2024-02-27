@@ -18,7 +18,7 @@ https://www.facebook.com/permalink.php?story_fbid=pfbid0tUMSFW8r6i9xk4S46miEaert
   - Prompt user whether they want to execute SQL query related to manipulating the table.
     - If the user does not want to execute any of the provided SQL queries, web scraping starts.
 
-## Package ```codes```
+## Package ```yoasobi_project_package```
 ```extract.py```
 - Extract words from the lyrics.
 
