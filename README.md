@@ -3,6 +3,8 @@ Lyrics were based on [genius.com](https://genius.com/artists/Yoasobi)
 
 Japanese words were extracted using **SudachiPy** and romanized using **Cutlet**.
 
+Based on 25 YOASOBI songs
+
 ## Scripts
 ```main.py```
 - Main script to start all processes.

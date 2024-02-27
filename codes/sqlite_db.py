@@ -78,8 +78,7 @@ def insert_data(
         romanized_words: list[str],
         part_of_speech_list: list[str],
         song_name: str,
-        db_dir: str
-) -> None:
+        db_dir: str) -> None:
     """
     Insert data into the table. If the table does not exist, return.
     :param db_dir: Database directory String

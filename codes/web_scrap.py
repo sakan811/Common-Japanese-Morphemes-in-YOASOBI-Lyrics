@@ -68,16 +68,16 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     logger.debug(f'{lyrics_list = }')
 
     logger.info('Join elements in \'lyrics_list\'')
-    lyrics = ''.join(lyrics_list)
+    lyrics: str = ''.join(lyrics_list)
 
     logger.info('Split lyrics and exclude 0th element')
-    lyrics_list = lyrics.split()[1:]
+    lyrics_list: list[str] = lyrics.split()[1:]
 
     logger.info('Join elements in \'lyrics_list\'')
-    lyrics = ''.join(lyrics_list)
+    lyrics: str = ''.join(lyrics_list)
 
     logger.info('Use regular expression to remove characters within square brackets and the brackets themselves')
-    lyrics = re.sub(r'\[.*?]', '', lyrics)
+    lyrics: str = re.sub(r'\[.*?]', '', lyrics)
     return lyrics
 
 
