@@ -5,6 +5,13 @@ Japanese words were extracted using **SudachiPy** and romanized using **Cutlet**
 
 Based on 25 YOASOBI songs
 
+Might not be 100% accurate
+
+This repo only shows codes and raw data
+
+For visualizations, please check out my Facebook page's post:
+https://www.facebook.com/permalink.php?story_fbid=pfbid0tUMSFW8r6i9xk4S46miEaertmGk4jexSEMMRiWdbvAwQAKodqMPC2GHb2R38uT8cl&id=61553626169836
+
 ## Scripts
 ```main.py```
 - Main script to start all processes.
