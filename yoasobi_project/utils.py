@@ -1,8 +1,8 @@
 from sqlalchemy import Engine
 from loguru import  logger
 
-from yoasobi_project_package import sql_query as sqlquery
-from yoasobi_project_package import sqlite_db as sqldb
+from yoasobi_project import sql_query as sqlquery
+from yoasobi_project import sqlite_db as sqldb
 
 
 def insert_lyrics() -> str:

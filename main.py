@@ -1,10 +1,10 @@
 from sqlalchemy import Engine
 from loguru import logger
 
-from yoasobi_project_package import extract as ext
-from yoasobi_project_package import sqlite_db as sqldb
-from yoasobi_project_package import utils as ut
-from yoasobi_project_package import web_scrap as ws
+from yoasobi_project import extract as ext
+from yoasobi_project import sqlite_db as sqldb
+from yoasobi_project import utils as ut
+from yoasobi_project import web_scrap as ws
 
 # Prevent Loguru to show log message in terminal.
 logger.remove()

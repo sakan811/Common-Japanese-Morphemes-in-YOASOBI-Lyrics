@@ -4,8 +4,8 @@ from sqlalchemy import create_engine, Engine, text, Sequence
 from sqlalchemy.cyextension.util import Mapping
 from loguru import logger
 
-from yoasobi_project_package import extract as ext
-from yoasobi_project_package import sql_query as sqlquery
+from yoasobi_project import extract as ext
+from yoasobi_project import sql_query as sqlquery
 
 
 def connect_sqlite_db(db_dir: str) -> Engine:

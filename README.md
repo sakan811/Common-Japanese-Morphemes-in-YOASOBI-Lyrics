@@ -21,7 +21,7 @@ For visualizations, please check out posts below:
   - Prompt user whether they want to execute SQL query related to manipulating the table.
     - If the user does not want to execute any of the provided SQL queries, web scraping starts.
 
-## Package ```yoasobi_project_package```
+## Package ```yoasobi_project```
 ```extract.py```
 - Extract words from the lyrics.
 
