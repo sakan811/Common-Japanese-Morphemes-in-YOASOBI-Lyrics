@@ -11,15 +11,14 @@ Might not be 100% accurate
 
 This repo only shows codes and raw data
 
-For visualizations, please check out posts below:  
+## Visualizations
 [Instagram](https://www.instagram.com/p/C4f1EjFLNLk/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)  
 [Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid0yhK1isqssLeCe2TUS8AY9wqtgCEndqK8nzgDfo76MZ67uDa79na7SCKr8f8FHpRRl&id=61553626169836)
 
-## Scripts
-```main.py```
-- Main script to start all processes.
-  - Prompt user whether they want to execute SQL query related to manipulating the table.
-    - If the user does not want to execute any of the provided SQL queries, web scraping starts.
+## To Start Web-scraping Process
+- Go to ```main.py```
+- Run the script.
+- SQLite database 'yoasobi.db' will be initialized.
 
 ## Package ```yoasobi_project```
 ```extract.py```
@@ -30,6 +29,7 @@ For visualizations, please check out posts below:
 
 ```sqlite_db.py```
 - Contain functions that deal with the database itself.
+- Migrate the scraped data to SQLite database.
 
 ```utils.py```
 - Contain utility functions.

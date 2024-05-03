@@ -3,6 +3,7 @@ from typing import Any
 from sqlalchemy import create_engine, Engine, text, Sequence
 from sqlalchemy.cyextension.util import Mapping
 from loguru import logger
+from sqlalchemy.exc import SQLAlchemyError
 
 from yoasobi_project import extract as ext
 from yoasobi_project import sql_query as sqlquery
@@ -10,14 +11,22 @@ from yoasobi_project import sql_query as sqlquery
 
 def connect_sqlite_db(db_dir: str) -> Engine:
     """
-    Create the SQLite database if not exists.
-    Connect to the SQLite database.
+    Create the SQLite database if not exists, then
+    connect to the SQLite database.
     :param db_dir: Database directory String
     :return: sqlalchemy Engine object
     """
     logger.info('Creating Engine...')
-    engine: Engine = create_engine(f'sqlite:///{db_dir}', echo=True)
-    return engine
+    try:
+        engine: Engine = create_engine(f'sqlite:///{db_dir}', echo=True)
+    except SQLAlchemyError as e:
+        logger.error(e)
+        logger.error('Failed to connect to database')
+    except Exception as e:
+        logger.error(e)
+        logger.error('Unexpected error occurred.')
+    else:
+        return engine
 
 
 def execute_sql_query(
