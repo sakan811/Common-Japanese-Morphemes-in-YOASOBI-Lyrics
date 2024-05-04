@@ -39,7 +39,7 @@ def extract_words_from_lyrics(lyrics: str) -> list[str]:
     mode = tokenizer.Tokenizer.SplitMode.C
 
     logger.info('Create words list by adding words into \'words\' list if word is not in \'excluded_jp_pos_tags\'')
-    words = [m.surface() for m in tokenizer_obj.tokenize(lyrics, mode) if
+    words = [m.dictionary_form() for m in tokenizer_obj.tokenize(lyrics, mode) if
              m.part_of_speech()[0] not in excluded_jp_pos_tags]
 
     logger.info('Remove newline characters and whitespace')

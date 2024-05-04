@@ -1,4 +1,3 @@
-from sqlalchemy import Engine
 from loguru import logger
 
 import yoasobi_project
@@ -23,9 +22,18 @@ class Main:
         try:
             yoasobi_project.connect_sqlite_db(self.db_dir)
 
+            query = yoasobi_project.create_table_query()
+            yoasobi_project.execute_sql_query(self.engine, query)
+
+            query = yoasobi_project.delete_all_rows()
+            yoasobi_project.execute_sql_query(self.engine, query)
+
             urls: list[str] = yoasobi_project.return_url_list()
-            for url in urls:
-                lyrics_list: list[str] = yoasobi_project.scrap(url)
+
+            page_source_list = yoasobi_project.thread_fetch_page_source(urls)
+
+            for page_source in page_source_list:
+                lyrics_list: list[str] = yoasobi_project.scrap(page_source)
                 logger.debug(f'{lyrics_list = }')
 
                 song_name: str = yoasobi_project.extract_song_name_from_lyrics_list(lyrics_list)
@@ -42,12 +50,6 @@ class Main:
 
                 part_of_speech_list: list[str] = yoasobi_project.extract_part_of_speech_from_words(words)
                 logger.debug(f'{part_of_speech_list = }')
-
-                query = yoasobi_project.create_table_query()
-                yoasobi_project.execute_sql_query(self.engine, query)
-
-                query = yoasobi_project.delete_all_rows()
-                yoasobi_project.execute_sql_query(self.engine, query)
 
                 yoasobi_project.insert_data(words, romanized_words, part_of_speech_list, song_name, self.db_dir)
 

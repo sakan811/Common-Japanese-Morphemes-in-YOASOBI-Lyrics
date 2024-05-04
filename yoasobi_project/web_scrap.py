@@ -1,8 +1,11 @@
 import re
+import threading
 
 from loguru import logger
 from bs4 import BeautifulSoup, ResultSet
 from selenium import webdriver
+from selenium.common import WebDriverException, TimeoutException
+from selenium.webdriver.chrome.options import Options
 
 
 def return_url_list() -> list[str]:
@@ -82,6 +85,52 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     return lyrics
 
 
+def fetch_page_source(url: str) -> str:
+    logger.info('Set --disable-images and --headless option for Chrome')
+    chrome_options = Options()
+    chrome_options.add_argument('--disable-images')  # Disable loading images for faster page loading
+    chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
+
+    logger.info('Open browser')
+    driver = webdriver.Chrome(options=chrome_options)
+
+    logger.info(f'Open web page: {url}')
+    try:
+        driver.get(url)
+        webpage_html = driver.page_source
+        logger.info(f'Retrieved page source for: {url}')
+    except TimeoutException as e:
+        logger.error(e)
+        logger.error('TimeoutException')
+    except WebDriverException as e:
+        logger.error(e)
+        logger.error('WebDriverException')
+    except Exception as e:
+        logger.error(e)
+        logger.error('Unexpected error')
+    else:
+        logger.info('Retrieved page source successfully')
+        return webpage_html
+    finally:
+        logger.info('Close the driver')
+        driver.quit()
+
+
+def thread_fetch_page_source(urls: list[str]) -> list[str]:
+    page_source_list = []
+    threads = []
+    for url in urls:
+        thread = threading.Thread(target=lambda u: page_source_list.append(fetch_page_source(u)), args=(url,))
+        threads.append(thread)
+        thread.start()
+
+    # Wait for all threads to complete
+    for thread in threads:
+        thread.join()
+
+    return page_source_list
+
+
 def scrap(url: str) -> list[str]:
     """
     Scrape element of the URL.
@@ -89,21 +138,9 @@ def scrap(url: str) -> list[str]:
     :return: List of extracted lyrics.
     """
     logger.info('Web scraping...')
-    logger.info('Open browser')
-    driver = webdriver.Chrome()
-
-    logger.debug(f'{url = }')
-    logger.info('Open web page')
-    driver.get(url)
-
-    logger.info('Assign html content to variable \'webpage_html\'')
-    webpage_html = driver.page_source
-
-    logger.info('Close browser')
-    driver.close()
 
     logger.info('Parser html content to BeautifulSoup Object')
-    soup = BeautifulSoup(webpage_html, 'html.parser')
+    soup = BeautifulSoup(url, 'html.parser')
 
     logger.info('Find all desired elements by tag and class')
     lyrics_div: ResultSet = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
