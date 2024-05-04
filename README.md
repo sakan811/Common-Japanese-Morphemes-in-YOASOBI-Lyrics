@@ -1,5 +1,5 @@
 ## Common Japanese Words in YOASOBI Lyrics
-Update Mar 14th, 2024
+Update May 4th, 2024
 
 Lyrics were based on [genius.com](https://genius.com/artists/Yoasobi)
 
@@ -12,8 +12,8 @@ Might not be 100% accurate
 This repo only shows codes and raw data
 
 ## Visualizations
-[Instagram](https://www.instagram.com/p/C4f1EjFLNLk/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)  
-[Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid0yhK1isqssLeCe2TUS8AY9wqtgCEndqK8nzgDfo76MZ67uDa79na7SCKr8f8FHpRRl&id=61553626169836)
+[Instagram](https://www.instagram.com/p/C6i6BEoLKJO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)  
+[Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid0xonwCJKm8aDZEM3BAQonTGVLfU6SEoKhKWFvBuGRAwLdCSnGbJsBmrq55p22fDcYl&id=61553626169836)
 
 ## To Start Web-scraping Process
 - Go to ```main.py```
