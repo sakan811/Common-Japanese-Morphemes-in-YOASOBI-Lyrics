@@ -85,9 +85,10 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     return lyrics
 
 
-def fetch_page_source(url: str, page_source_list) -> str:
+def fetch_page_source(url: str, page_source_list) -> None:
     """
     Fetch a page source from the URL.
+    :param page_source_list: Page source list.
     :param url: Page's URL.
     :return: Page source as String.
     """
@@ -114,13 +115,7 @@ def fetch_page_source(url: str, page_source_list) -> str:
 
     driver.get(url)
 
-    webpage_html = None
-    if "challenge-form" in driver.page_source:
-        logger.warning('Detected CAPTCHA or human verification challenge. Refreshing...')
-        driver.refresh()
-    else:
-        webpage_html = driver.page_source
-        logger.info(f'Retrieved page source for: {url}')
+    webpage_html = driver.page_source
 
     logger.info('Close the driver')
     driver.quit()
