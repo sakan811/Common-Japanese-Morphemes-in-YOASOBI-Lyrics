@@ -95,7 +95,7 @@ def fetch_page_source(url: str) -> str:
 
     # Initialize a flag to track if the page is successfully fetched
     page_fetched = False
-
+    webpage_html = None
     while not page_fetched:
         logger.info('Set disable image loading and headless option for Chrome')
         chrome_options = Options()
