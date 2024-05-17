@@ -137,6 +137,7 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
 
         logger.info('Collect results from futures')
         page_source_list = [future.result() for future in futures]
+        logger.debug(f'{page_source_list = }')
 
         if page_source_list:
             logger.info('Appended page source to the list successfully')
