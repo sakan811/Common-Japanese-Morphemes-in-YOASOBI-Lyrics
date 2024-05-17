@@ -1,11 +1,9 @@
 import re
-import threading
 from concurrent.futures import ThreadPoolExecutor
 
-from loguru import logger
 from bs4 import BeautifulSoup, ResultSet
+from loguru import logger
 from selenium import webdriver
-from selenium.common import WebDriverException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 
 
@@ -42,9 +40,9 @@ def return_url_list() -> list[str]:
 
 def extract_song_name_from_lyrics_list(lyrics_list: list[str]) -> str:
     """
-    Extract song name from the 'lyrics_list'
-    :param lyrics_list: List of lyrics of the song
-    :return: Song\'s name
+    Extract song name from the 'lyrics_list'.
+    :param lyrics_list: List of lyrics of the song.
+    :return: Song\'s name.
     """
     logger.info('Extract song name...')
     logger.info('Access 0th element in \'lyrics_list\' ')
@@ -130,7 +128,11 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     :return: List of page sources as String.
     """
     with ThreadPoolExecutor(max_workers=5) as executor:
-        page_source_list = list(executor.map(fetch_page_source, urls))
+        # Submit all tasks to the executor
+        futures = [executor.submit(fetch_page_source, url) for url in urls]
+
+        # Collect results from futures
+        page_source_list = [future.result() for future in futures]
 
         if page_source_list:
             logger.info('Fetched page source successfully')
