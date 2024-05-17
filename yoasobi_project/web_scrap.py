@@ -1,5 +1,6 @@
 import re
 import threading
+from concurrent.futures import ThreadPoolExecutor
 
 from loguru import logger
 from bs4 import BeautifulSoup, ResultSet
@@ -86,10 +87,16 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
 
 
 def fetch_page_source(url: str) -> str:
-    logger.info('Set --disable-images and --headless option for Chrome')
+    """
+    Fetch a page source from the URL.
+    :param url: Page's URL.
+    :return: Page source as String.
+    """
+    logger.info('Set --headless option for Chrome')
     chrome_options = Options()
-    chrome_options.add_argument('--disable-images')  # Disable loading images for faster page loading
-    chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
+
+    # Run Chrome in headless mode (without GUI) for better performance
+    chrome_options.add_argument('--headless')
 
     logger.info('Open browser')
     driver = webdriver.Chrome(options=chrome_options)
@@ -117,23 +124,19 @@ def fetch_page_source(url: str) -> str:
 
 
 def thread_fetch_page_source(urls: list[str]) -> list[str]:
-    page_source_list = []
-    threads = []
-    for url in urls:
-        thread = threading.Thread(target=lambda u: page_source_list.append(fetch_page_source(u)), args=(url,))
-        threads.append(thread)
-        thread.start()
-
-    # Wait for all threads to complete
-    for thread in threads:
-        thread.join()
-
+    """
+    Fetch a page source from a URL list using ThreadPoolExecutor.
+    :param urls: List of URLs.
+    :return: List of page sources as String.
+    """
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        page_source_list = list(executor.map(fetch_page_source, urls))
     return page_source_list
 
 
 def scrap(url: str) -> list[str]:
     """
-    Scrape element of the URL.
+    Scrape an element of the URL.
     :param url: URL to be scraped.
     :return: List of extracted lyrics.
     """
