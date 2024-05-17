@@ -102,7 +102,7 @@ def fetch_page_source(url: str) -> str:
     chrome_options.add_experimental_option("prefs", chrome_prefs)
 
     # Run Chrome in headless mode (without GUI) for better performance
-    chrome_options.add_argument('--headless')
+    # chrome_options.add_argument('--headless')
 
     logger.info('Open browser')
     driver = webdriver.Chrome(options=chrome_options)
