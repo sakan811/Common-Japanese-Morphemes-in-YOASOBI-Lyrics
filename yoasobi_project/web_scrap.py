@@ -85,7 +85,7 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     return lyrics
 
 
-def fetch_page_source(url: str) -> str:
+def fetch_page_source(url: str, page_source_list) -> str:
     """
     Fetch a page source from the URL.
     :param url: Page's URL.
@@ -93,49 +93,41 @@ def fetch_page_source(url: str) -> str:
     """
     logger.info('Fetching page source...')
 
-    # Initialize a flag to track if the page is successfully fetched
-    page_fetched = False
+    logger.info('Set disable image loading and headless option for Chrome')
+    chrome_options = Options()
+
+    # Disable image loading
+    chrome_prefs = {
+        "profile.managed_default_content_settings.images": 2  # 2 means block, 1 means allow
+    }
+    chrome_options.add_experimental_option("prefs", chrome_prefs)
+
+    # Run Chrome in headless mode (without GUI) for better performance
+    chrome_options.add_argument('--headless')
+
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+
+    logger.info('Open browser')
+    driver = webdriver.Chrome(options=chrome_options)
+
+    logger.info(f'Open web page: {url}')
+
+    driver.get(url)
+
     webpage_html = None
-    while not page_fetched:
-        logger.info('Set disable image loading and headless option for Chrome')
-        chrome_options = Options()
+    if "challenge-form" in driver.page_source:
+        logger.warning('Detected CAPTCHA or human verification challenge. Refreshing...')
+        driver.refresh()
+    else:
+        webpage_html = driver.page_source
+        logger.info(f'Retrieved page source for: {url}')
 
-        # Disable image loading
-        chrome_prefs = {
-            "profile.managed_default_content_settings.images": 2  # 2 means block, 1 means allow
-        }
-        chrome_options.add_experimental_option("prefs", chrome_prefs)
-
-        # Run Chrome in headless mode (without GUI) for better performance
-        chrome_options.add_argument('--headless')
-
-        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
-
-        logger.info('Open browser')
-        driver = webdriver.Chrome(options=chrome_options)
-
-        logger.info(f'Open web page: {url}')
-
-        driver.get(url)
-
-        # Wait for a short period to mimic human behavior
-        time.sleep(2)  # Adjust this delay as needed
-
-        # Check if a CAPTCHA or human verification challenge appears
-        if "challenge-form" in driver.page_source:
-            logger.warning('Detected CAPTCHA or human verification challenge. Refreshing...')
-            driver.refresh()
-        else:
-            webpage_html = driver.page_source
-            logger.info(f'Retrieved page source for: {url}')
-            page_fetched = True
-
-        logger.info('Close the driver')
-        driver.quit()
+    logger.info('Close the driver')
+    driver.quit()
 
     if webpage_html:
         logger.info('Retrieved page source successfully')
-        return webpage_html
+        page_source_list.append(webpage_html)
     else:
         logger.error('Retrieved page source failed')
 
@@ -147,13 +139,14 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     :return: List of page sources as String.
     """
     logger.info('Fetching page source from URL list using ThreadPoolExecutor...')
+    page_source_list = []
     with ThreadPoolExecutor(max_workers=10) as executor:
         logger.info('Submit all tasks to the executor')
-        futures = [executor.submit(fetch_page_source, url) for url in urls]
+        futures = [executor.submit(fetch_page_source, url, page_source_list) for url in urls]
 
-        logger.info('Collect results from futures')
-        page_source_list = [future.result() for future in futures]
-        logger.debug(f'{page_source_list = }')
+        logger.info('Wait for all tasks to complete')
+        for future in futures:
+            future.result()
 
         if page_source_list:
             logger.info('Appended page source to the list successfully')
