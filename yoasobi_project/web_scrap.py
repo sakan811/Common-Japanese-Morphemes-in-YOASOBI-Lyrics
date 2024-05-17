@@ -90,6 +90,8 @@ def fetch_page_source(url: str) -> str:
     :param url: Page's URL.
     :return: Page source as String.
     """
+    logger.info('Fetching page source...')
+
     logger.info('Set disable image loading and headless option for Chrome')
     chrome_options = Options()
 
@@ -127,11 +129,12 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     :param urls: List of URLs.
     :return: List of page sources as String.
     """
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        # Submit all tasks to the executor
+    logger.info('Fetching page source from URL list using ThreadPoolExecutor...')
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        logger.info('Submit all tasks to the executor')
         futures = [executor.submit(fetch_page_source, url) for url in urls]
 
-        # Collect results from futures
+        logger.info('Collect results from futures')
         page_source_list = [future.result() for future in futures]
 
         if page_source_list:
@@ -153,8 +156,13 @@ def scrap(url: str) -> list[str]:
     soup = BeautifulSoup(url, 'html.parser')
 
     logger.info('Find all desired elements by tag and class')
-    lyrics_div: ResultSet = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
-    logger.debug(f'{lyrics_div = }')
+    class_name = 'Lyrics__Container-sc-1ynbvzw-1 kUgSbL'
+    lyrics_div: ResultSet = soup.find_all('div', class_=class_name)
+
+    if lyrics_div:
+        logger.info(f'Found \'lyrics_div\' by {class_name = } successfully')
+    else:
+        logger.error(f'No \'lyrics_div\' found by {class_name = }')
 
     logger.info('Add lyrics to \'lyrics_list\' with \\n seperator.')
     lyrics_list = [lyrics.get_text(separator='\n') for lyrics in lyrics_div]

@@ -20,17 +20,20 @@ class Main:
         :return: None
         """
         try:
-            yoasobi_project.connect_sqlite_db(self.db_dir)
-
-            query = yoasobi_project.create_table_query()
-            yoasobi_project.execute_sql_query(self.engine, query)
-
-            query = yoasobi_project.delete_all_rows()
-            yoasobi_project.execute_sql_query(self.engine, query)
-
             urls: list[str] = yoasobi_project.return_url_list()
 
             page_source_list = yoasobi_project.thread_fetch_page_source(urls)
+
+            if page_source_list:
+                yoasobi_project.connect_sqlite_db(self.db_dir)
+
+                query = yoasobi_project.create_table_query()
+                yoasobi_project.execute_sql_query(self.engine, query)
+
+                query = yoasobi_project.delete_all_rows()
+                yoasobi_project.execute_sql_query(self.engine, query)
+            else:
+                logger.error('No page sources were found.')
 
             for page_source in page_source_list:
                 lyrics_list: list[str] = yoasobi_project.scrap(page_source)
