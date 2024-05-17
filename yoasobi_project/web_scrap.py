@@ -108,25 +108,19 @@ def fetch_page_source(url: str) -> str:
     driver = webdriver.Chrome(options=chrome_options)
 
     logger.info(f'Open web page: {url}')
-    try:
-        driver.get(url)
-        webpage_html = driver.page_source
-        logger.info(f'Retrieved page source for: {url}')
-    except TimeoutException as e:
-        logger.error(e)
-        logger.error('TimeoutException')
-    except WebDriverException as e:
-        logger.error(e)
-        logger.error('WebDriverException')
-    except Exception as e:
-        logger.error(e)
-        logger.error('Unexpected error')
-    else:
+
+    driver.get(url)
+    webpage_html = driver.page_source
+    logger.info(f'Retrieved page source for: {url}')
+
+    logger.info('Close the driver')
+    driver.quit()
+
+    if webpage_html:
         logger.info('Retrieved page source successfully')
         return webpage_html
-    finally:
-        logger.info('Close the driver')
-        driver.quit()
+    else:
+        logger.error('Retrieved page source failed')
 
 
 def thread_fetch_page_source(urls: list[str]) -> list[str]:
