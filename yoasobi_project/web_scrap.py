@@ -105,6 +105,8 @@ def fetch_page_source(url: str) -> str:
     # Run Chrome in headless mode (without GUI) for better performance
     chrome_options.add_argument('--headless')
 
+    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+
     logger.info('Open browser')
     driver = webdriver.Chrome(options=chrome_options)
 
@@ -156,8 +158,6 @@ def scrap(url: str) -> list[str]:
 
     logger.info('Parser html content to BeautifulSoup Object')
     soup = BeautifulSoup(url, 'html.parser')
-
-    time.sleep(2)
 
     logger.info('Find all desired elements by tag and class')
     class_name = 'Lyrics__Container-sc-1ynbvzw-1 kUgSbL'
