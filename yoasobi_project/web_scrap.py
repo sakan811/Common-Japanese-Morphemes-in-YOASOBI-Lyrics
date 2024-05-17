@@ -152,6 +152,7 @@ def scrap(url: str) -> list[str]:
 
     logger.info('Find all desired elements by tag and class')
     lyrics_div: ResultSet = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
+    logger.debug(f'{lyrics_div = }')
 
     logger.info('Add lyrics to \'lyrics_list\' with \\n seperator.')
     lyrics_list = [lyrics.get_text(separator='\n') for lyrics in lyrics_div]

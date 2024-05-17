@@ -3,7 +3,7 @@ from loguru import logger
 import yoasobi_project
 
 logger.add('yoasobi.log',
-           format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name} | {module} | {function} | {line} | {message}",
+           format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {thread} | {name} | {module} | {function} | {line} | {message}",
            mode='w')
 
 
