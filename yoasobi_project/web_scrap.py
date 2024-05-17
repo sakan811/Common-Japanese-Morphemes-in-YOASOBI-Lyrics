@@ -93,37 +93,45 @@ def fetch_page_source(url: str) -> str:
     """
     logger.info('Fetching page source...')
 
-    logger.info('Set disable image loading and headless option for Chrome')
-    chrome_options = Options()
+    # Initialize a flag to track if the page is successfully fetched
+    page_fetched = False
 
-    # Disable image loading
-    chrome_prefs = {
-        "profile.managed_default_content_settings.images": 2  # 2 means block, 1 means allow
-    }
-    chrome_options.add_experimental_option("prefs", chrome_prefs)
+    while not page_fetched:
+        logger.info('Set disable image loading and headless option for Chrome')
+        chrome_options = Options()
 
-    # Run Chrome in headless mode (without GUI) for better performance
-    chrome_options.add_argument('--headless')
+        # Disable image loading
+        chrome_prefs = {
+            "profile.managed_default_content_settings.images": 2  # 2 means block, 1 means allow
+        }
+        chrome_options.add_experimental_option("prefs", chrome_prefs)
 
-    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+        # Run Chrome in headless mode (without GUI) for better performance
+        chrome_options.add_argument('--headless')
 
-    logger.info('Open browser')
-    driver = webdriver.Chrome(options=chrome_options)
+        chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 
-    logger.info(f'Open web page: {url}')
+        logger.info('Open browser')
+        driver = webdriver.Chrome(options=chrome_options)
 
-    driver.get(url)
+        logger.info(f'Open web page: {url}')
 
-    webpage_html = None
-    if "challenge-form" in driver.page_source:
-        logger.warning('Detected CAPTCHA or human verification challenge. Refreshing...')
-        driver.refresh()
-    else:
-        webpage_html = driver.page_source
-        logger.info(f'Retrieved page source for: {url}')
+        driver.get(url)
 
-    logger.info('Close the driver')
-    driver.quit()
+        # Wait for a short period to mimic human behavior
+        time.sleep(2)  # Adjust this delay as needed
+
+        # Check if a CAPTCHA or human verification challenge appears
+        if "challenge-form" in driver.page_source:
+            logger.warning('Detected CAPTCHA or human verification challenge. Refreshing...')
+            driver.refresh()
+        else:
+            webpage_html = driver.page_source
+            logger.info(f'Retrieved page source for: {url}')
+            page_fetched = True
+
+        logger.info('Close the driver')
+        driver.quit()
 
     if webpage_html:
         logger.info('Retrieved page source successfully')
