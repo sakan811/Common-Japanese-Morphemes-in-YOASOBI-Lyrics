@@ -160,9 +160,9 @@ def scrap(url: str) -> list[str]:
     lyrics_div: ResultSet = soup.find_all('div', class_=class_name)
 
     if lyrics_div:
-        logger.info(f'Found \'lyrics_div\' by {class_name = } successfully')
+        logger.info(f'Found lyrics elements by {class_name = } successfully')
     else:
-        logger.error(f'No \'lyrics_div\' found by {class_name = }')
+        logger.error(f'No lyrics elements found by {class_name = }')
 
     logger.info('Add lyrics to \'lyrics_list\' with \\n seperator.')
     lyrics_list = [lyrics.get_text(separator='\n') for lyrics in lyrics_div]
