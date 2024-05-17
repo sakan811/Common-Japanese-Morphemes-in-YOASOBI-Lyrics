@@ -105,10 +105,6 @@ def fetch_page_source(url: str) -> str:
     # Run Chrome in headless mode (without GUI) for better performance
     chrome_options.add_argument('--headless')
 
-    chrome_options.add_argument(
-        "user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) "
-        "Chrome/94.0.4606.81 Safari/537.36")
-
     chrome_options.add_argument("--disable-blink-features=AutomationControlled")
 
     logger.info('Open browser')
@@ -117,8 +113,14 @@ def fetch_page_source(url: str) -> str:
     logger.info(f'Open web page: {url}')
 
     driver.get(url)
-    webpage_html = driver.page_source
-    logger.info(f'Retrieved page source for: {url}')
+
+    webpage_html = None
+    if "challenge-form" in driver.page_source:
+        logger.warning('Detected CAPTCHA or human verification challenge. Refreshing...')
+        driver.refresh()
+    else:
+        webpage_html = driver.page_source
+        logger.info(f'Retrieved page source for: {url}')
 
     logger.info('Close the driver')
     driver.quit()
