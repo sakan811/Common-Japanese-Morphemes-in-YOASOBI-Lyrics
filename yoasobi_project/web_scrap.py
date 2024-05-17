@@ -139,10 +139,10 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
         page_source_list = [future.result() for future in futures]
 
         if page_source_list:
-            logger.info('Fetched page source successfully')
+            logger.info('Appended page source to the list successfully')
             return page_source_list
         else:
-            logger.error('Failed to fetch page source')
+            logger.error('Page source list is empty')
 
 
 def scrap(url: str) -> list[str]:
