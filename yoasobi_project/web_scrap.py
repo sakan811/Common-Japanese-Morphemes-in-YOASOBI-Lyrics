@@ -137,7 +137,12 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     """
     with ThreadPoolExecutor(max_workers=5) as executor:
         page_source_list = list(executor.map(fetch_page_source, urls))
-    return page_source_list
+
+        if page_source_list:
+            logger.info('Fetched page source successfully')
+            return page_source_list
+        else:
+            logger.error('Failed to fetch page source')
 
 
 def scrap(url: str) -> list[str]:
