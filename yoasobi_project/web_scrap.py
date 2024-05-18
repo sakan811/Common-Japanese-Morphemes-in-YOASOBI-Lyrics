@@ -1,5 +1,5 @@
 import re
-import undetected_chromedriver as uc
+from selenium_stealth import stealth
 from concurrent.futures import ThreadPoolExecutor
 
 from bs4 import BeautifulSoup, ResultSet
@@ -94,16 +94,24 @@ def fetch_page_source(url: str, page_source_list) -> None:
     """
     logger.info('Fetching page source...')
 
-    logger.info('Set disable image loading and headless option for Chrome')
-    chrome_options = Options()
-
-    chrome_options.headless = True
-    chrome_options.add_argument("start-maximized")
-    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    chrome_options.add_experimental_option('useAutomationExtension', False)
+    logger.info('Set Chrome options')
+    options = webdriver.ChromeOptions()
+    options.add_argument("start-maximized")
+    options.add_argument("--headless")
+    options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    options.add_experimental_option('useAutomationExtension', False)
 
     logger.info('Open browser')
-    driver = uc.Chrome(options=chrome_options)
+    driver = webdriver.Chrome(options=options)
+
+    stealth(driver,
+            languages=["en-US", "en"],
+            vendor="Google Inc.",
+            platform="Win32",
+            webgl_vendor="Intel Inc.",
+            renderer="Intel Iris OpenGL Engine",
+            fix_hairline=True,
+            )
 
     logger.info(f'Open web page: {url}')
 

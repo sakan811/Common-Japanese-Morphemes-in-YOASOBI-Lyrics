@@ -5,5 +5,4 @@ SudachiPy~=0.6.8
 SQLAlchemy~=2.0.29
 beautifulsoup4~=4.12.3
 selenium~=4.15.2
-undetected-chromedriver~=3.5.5
-setuptools~=69.5.1
+selenium-stealth~=1.0.6
