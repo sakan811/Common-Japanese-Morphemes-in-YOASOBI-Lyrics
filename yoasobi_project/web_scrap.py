@@ -95,8 +95,6 @@ def fetch_page_source(url: str) -> str:
     logger.info('Set options for Chrome')
     chrome_options = Options()
     chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
-    ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
-    chrome_options.add_argument(f'--user-agent={ua}')
 
     logger.info('Open browser')
     driver = webdriver.Chrome(options=chrome_options)
@@ -125,7 +123,7 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     """
     logger.info('Fetching page source using ThreadPoolExecutor...')
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
+    with ThreadPoolExecutor(max_workers=1) as executor:
         results = executor.map(fetch_page_source, urls)
 
     return list(results)
