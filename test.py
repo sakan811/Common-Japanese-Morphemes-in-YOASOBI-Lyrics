@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 import pytest
 from bs4 import BeautifulSoup, ResultSet
@@ -20,6 +21,8 @@ def test_full_process():
     driver = webdriver.Chrome(options=chrome_options)
 
     driver.get(url)
+
+    time.sleep(20)
 
     webpage_html = driver.page_source
 
