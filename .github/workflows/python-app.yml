@@ -6,13 +6,10 @@ on:
   pull_request:
     branches: [ "master" ]
 
-permissions:
-  contents: read
-
 jobs:
   build:
 
-    runs-on: self-hosted
+    runs-on: LAPTOP-11GRRIEP
     strategy:
       matrix:
         python-version: ["3.12"]
