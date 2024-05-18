@@ -45,5 +45,7 @@ jobs:
         python -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Test with pytest
+      env:
+        RATE_LIMIT: 5
       run: |
         python -m pytest test.py
