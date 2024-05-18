@@ -5,4 +5,4 @@ SudachiPy~=0.6.8
 SQLAlchemy~=2.0.29
 beautifulsoup4~=4.12.3
 selenium~=4.15.2
-
+pytest-html~=4.1.1

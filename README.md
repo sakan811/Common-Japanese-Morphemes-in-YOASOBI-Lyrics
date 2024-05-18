@@ -38,3 +38,9 @@ This repo only shows codes and raw data
 - Scrap lyrics from the given urls.
 - Extract song name from the scraped lyrics.
 - Return song's lyrics.
+
+## Test result
+[test_result.html](test_result.html)
+- This HTML stores the test result of this code base that I ran locally.
+  - I can't use GitHub Action pipeline to test as Genius.com seems to block GitHub Action's IP address,
+  making the script failed to fetch the desired HTML content.
