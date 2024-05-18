@@ -92,7 +92,7 @@ def fetch_page_source(url: str) -> str:
     :param url: Page URL.
     :return: Page source.
     """
-    logger.info('Set --disable-images and --headless option for Chrome')
+    logger.info('Set options for Chrome')
     chrome_options = Options()
     chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
     chrome_options.add_argument("--disable-gpu")
