@@ -1,15 +1,17 @@
 name: Python application
 
 on:
-  push:
-    branches: [ "master" ]
-  pull_request:
-    branches: [ "master" ]
+#  push:
+#    branches: [ "master" ]
+#  pull_request:
+#    branches: [ "master" ]
+    workflow_dispatch:
+
 
 jobs:
   build:
 
-    runs-on: LAPTOP-11GRRIEP
+    runs-on: self-hosted
     strategy:
       matrix:
         python-version: ["3.12"]
