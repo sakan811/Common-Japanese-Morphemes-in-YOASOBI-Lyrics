@@ -1,10 +1,10 @@
 import re
-from selenium_stealth import stealth
-from concurrent.futures import ThreadPoolExecutor
+import threading
 
-from bs4 import BeautifulSoup, ResultSet
 from loguru import logger
+from bs4 import BeautifulSoup, ResultSet
 from selenium import webdriver
+from selenium.common import WebDriverException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 
 
@@ -41,9 +41,9 @@ def return_url_list() -> list[str]:
 
 def extract_song_name_from_lyrics_list(lyrics_list: list[str]) -> str:
     """
-    Extract song name from the 'lyrics_list'.
-    :param lyrics_list: List of lyrics of the song.
-    :return: Song\'s name.
+    Extract song name from the 'lyrics_list'
+    :param lyrics_list: List of lyrics of the song
+    :return: Song\'s name
     """
     logger.info('Extract song name...')
     logger.info('Access 0th element in \'lyrics_list\' ')
@@ -85,76 +85,55 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     return lyrics
 
 
-def fetch_page_source(url: str, page_source_list) -> None:
-    """
-    Fetch a page source from the URL.
-    :param page_source_list: Page source list.
-    :param url: Page's URL.
-    :return: Page source as String.
-    """
-    logger.info('Fetching page source...')
-
-    logger.info('Set Chrome options')
-    options = webdriver.ChromeOptions()
-    options.add_argument("start-maximized")
-    options.add_argument("--headless")
-    options.add_experimental_option("excludeSwitches", ["enable-automation"])
-    options.add_experimental_option('useAutomationExtension', False)
+def fetch_page_source(url: str) -> str:
+    logger.info('Set --disable-images and --headless option for Chrome')
+    chrome_options = Options()
+    chrome_options.add_argument('--disable-images')  # Disable loading images for faster page loading
+    chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
 
     logger.info('Open browser')
-    driver = webdriver.Chrome(options=options)
-
-    stealth(driver,
-            languages=["en-US", "en"],
-            vendor="Google Inc.",
-            platform="Win32",
-            webgl_vendor="Intel Inc.",
-            renderer="Intel Iris OpenGL Engine",
-            fix_hairline=True,
-            )
+    driver = webdriver.Chrome(options=chrome_options)
 
     logger.info(f'Open web page: {url}')
-
-    driver.get(url)
-
-    webpage_html = driver.page_source
-
-    logger.info('Close the driver')
-    driver.quit()
-
-    if webpage_html:
-        logger.info('Retrieved page source successfully')
-        page_source_list.append(webpage_html)
+    try:
+        driver.get(url)
+        webpage_html = driver.page_source
+        logger.info(f'Retrieved page source for: {url}')
+    except TimeoutException as e:
+        logger.error(e)
+        logger.error('TimeoutException')
+    except WebDriverException as e:
+        logger.error(e)
+        logger.error('WebDriverException')
+    except Exception as e:
+        logger.error(e)
+        logger.error('Unexpected error')
     else:
-        logger.error('Retrieved page source failed')
+        logger.info('Retrieved page source successfully')
+        return webpage_html
+    finally:
+        logger.info('Close the driver')
+        driver.quit()
 
 
 def thread_fetch_page_source(urls: list[str]) -> list[str]:
-    """
-    Fetch a page source from a URL list using ThreadPoolExecutor.
-    :param urls: List of URLs.
-    :return: List of page sources as String.
-    """
-    logger.info('Fetching page source from URL list using ThreadPoolExecutor...')
     page_source_list = []
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        logger.info('Submit all tasks to the executor')
-        futures = [executor.submit(fetch_page_source, url, page_source_list) for url in urls]
+    threads = []
+    for url in urls:
+        thread = threading.Thread(target=lambda u: page_source_list.append(fetch_page_source(u)), args=(url,))
+        threads.append(thread)
+        thread.start()
 
-        logger.info('Wait for all tasks to complete')
-        for future in futures:
-            future.result()
+    # Wait for all threads to complete
+    for thread in threads:
+        thread.join()
 
-        if page_source_list:
-            logger.info('Appended page source to the list successfully')
-            return page_source_list
-        else:
-            logger.error('Page source list is empty')
+    return page_source_list
 
 
 def scrap(url: str) -> list[str]:
     """
-    Scrape an element of the URL.
+    Scrape element of the URL.
     :param url: URL to be scraped.
     :return: List of extracted lyrics.
     """
@@ -164,13 +143,7 @@ def scrap(url: str) -> list[str]:
     soup = BeautifulSoup(url, 'html.parser')
 
     logger.info('Find all desired elements by tag and class')
-    class_name = 'Lyrics__Container-sc-1ynbvzw-1 kUgSbL'
-    lyrics_div: ResultSet = soup.find_all('div', class_=class_name)
-
-    if lyrics_div:
-        logger.info(f'Found lyrics elements by {class_name = } successfully')
-    else:
-        logger.error(f'No lyrics elements found by {class_name = }')
+    lyrics_div: ResultSet = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
 
     logger.info('Add lyrics to \'lyrics_list\' with \\n seperator.')
     lyrics_list = [lyrics.get_text(separator='\n') for lyrics in lyrics_div]
