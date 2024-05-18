@@ -1,11 +1,9 @@
 import re
-import threading
 from concurrent.futures import ThreadPoolExecutor
 
-from loguru import logger
 from bs4 import BeautifulSoup, ResultSet
+from loguru import logger
 from selenium import webdriver
-from selenium.common import WebDriverException, TimeoutException
 from selenium.webdriver.chrome.options import Options
 
 
@@ -123,7 +121,7 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     """
     logger.info('Fetching page source using ThreadPoolExecutor...')
 
-    with ThreadPoolExecutor(max_workers=1) as executor:
+    with ThreadPoolExecutor(max_workers=10) as executor:
         results = executor.map(fetch_page_source, urls)
 
     return list(results)
