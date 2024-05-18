@@ -24,12 +24,15 @@ class Main:
 
             page_source_list = yoasobi_project.thread_fetch_page_source(urls)
 
+            yoasobi_project.connect_sqlite_db(self.db_dir)
+
+            query = yoasobi_project.create_table_query()
+            yoasobi_project.execute_sql_query(self.engine, query)
+
             if page_source_list:
-                yoasobi_project.connect_sqlite_db(self.db_dir)
+                logger.info(f'Appended page sources to list successfully')
 
-                query = yoasobi_project.create_table_query()
-                yoasobi_project.execute_sql_query(self.engine, query)
-
+                logger.info(f'Delete all rows from the table \'Words\'')
                 query = yoasobi_project.delete_all_rows()
                 yoasobi_project.execute_sql_query(self.engine, query)
             else:
