@@ -1,5 +1,5 @@
 import re
-import time
+import undetected_chromedriver as uc
 from concurrent.futures import ThreadPoolExecutor
 
 from bs4 import BeautifulSoup, ResultSet
@@ -97,19 +97,13 @@ def fetch_page_source(url: str, page_source_list) -> None:
     logger.info('Set disable image loading and headless option for Chrome')
     chrome_options = Options()
 
-    # Disable image loading
-    chrome_prefs = {
-        "profile.managed_default_content_settings.images": 2  # 2 means block, 1 means allow
-    }
-    chrome_options.add_experimental_option("prefs", chrome_prefs)
-
-    # Run Chrome in headless mode (without GUI) for better performance
-    chrome_options.add_argument('--headless')
-
-    chrome_options.add_argument("--disable-blink-features=AutomationControlled")
+    chrome_options.headless = True
+    chrome_options.add_argument("start-maximized")
+    chrome_options.add_experimental_option("excludeSwitches", ["enable-automation"])
+    chrome_options.add_experimental_option('useAutomationExtension', False)
 
     logger.info('Open browser')
-    driver = webdriver.Chrome(options=chrome_options)
+    driver = uc.Chrome(options=chrome_options)
 
     logger.info(f'Open web page: {url}')
 
