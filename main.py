@@ -59,9 +59,9 @@ class Main:
 
                 yoasobi_project.insert_data(words, romanized_words, part_of_speech_list, song_name, self.db_dir)
 
-                print(f'{len(words) = }')
-                print(f'{len(romanized_words) = }')
-                print(f'{len(part_of_speech_list) = }')
+                logger.debug(f'{len(words) = }')
+                logger.debug(f'{len(romanized_words) = }')
+                logger.debug(f'{len(part_of_speech_list) = }')
         except Exception as e:
             logger.error(f'Error: {e}')
 
