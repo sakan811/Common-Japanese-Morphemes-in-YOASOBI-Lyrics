@@ -61,9 +61,9 @@ def extract_song_name_from_lyrics_list(lyrics_list: list[str]) -> str:
 
 def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     """
-    Extract lyrics from the 'lyrics_list'
-    :param lyrics_list: List containing lyrics of the song
-    :return: Song's lyrics
+    Extract lyrics from the 'lyrics_list'.
+    :param lyrics_list: List containing lyrics of the song.
+    :return: Song's lyrics.
     """
     logger.info('Extract lyrics...')
     logger.info('Strip lyrics from \'lyrics_list\' and turn them into list')
