@@ -37,6 +37,10 @@ jobs:
         python -m pip install flake8 pytest
         if (Test-Path requirements.txt) { python -m pip install -r requirements.txt }
 
+    - name: Install Google Chrome
+      run: |
+        choco install googlechrome
+
     - name: Lint with flake8
       run: |
         # stop the build if there are Python syntax errors or undefined names

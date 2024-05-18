@@ -1,5 +1,6 @@
 import re
 import threading
+from concurrent.futures import ThreadPoolExecutor
 
 from loguru import logger
 from bs4 import BeautifulSoup, ResultSet
@@ -86,54 +87,54 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
 
 
 def fetch_page_source(url: str) -> str:
+    """
+    Fetch a page source from URL.
+    :param url: Page URL.
+    :return: Page source.
+    """
     logger.info('Set --disable-images and --headless option for Chrome')
     chrome_options = Options()
-    chrome_options.add_argument('--disable-images')  # Disable loading images for faster page loading
     chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
+    chrome_options.add_argument("--disable-gpu")
+    chrome_options.add_argument("--no-sandbox")
+    chrome_options.add_argument("--disable-dev-shm-usage")
 
     logger.info('Open browser')
     driver = webdriver.Chrome(options=chrome_options)
 
     logger.info(f'Open web page: {url}')
-    try:
-        driver.get(url)
-        webpage_html = driver.page_source
-        logger.info(f'Retrieved page source for: {url}')
-    except TimeoutException as e:
-        logger.error(e)
-        logger.error('TimeoutException')
-    except WebDriverException as e:
-        logger.error(e)
-        logger.error('WebDriverException')
-    except Exception as e:
-        logger.error(e)
-        logger.error('Unexpected error')
-    else:
-        logger.info('Retrieved page source successfully')
+
+    driver.get(url)
+    webpage_html = driver.page_source
+    logger.info(f'Retrieved page source for: {url}')
+
+    logger.info('Close the driver')
+    driver.quit()
+
+    if webpage_html:
+        logger.info(f'Retrieved page source successfully from {url}')
         return webpage_html
-    finally:
-        logger.info('Close the driver')
-        driver.quit()
+    else:
+        logger.error(f'Failed to fetch page source from {url}')
 
 
 def thread_fetch_page_source(urls: list[str]) -> list[str]:
-    page_source_list = []
-    threads = []
-    for url in urls:
-        thread = threading.Thread(target=lambda u: page_source_list.append(fetch_page_source(u)), args=(url,))
-        threads.append(thread)
-        thread.start()
+    """
+    Thread fetch page source using ThreadPoolExecutor.
+    :param urls: URL list.
+    :return: List of page sources.
+    """
+    logger.info('Fetching page source using ThreadPoolExecutor...')
 
-    # Wait for all threads to complete
-    for thread in threads:
-        thread.join()
+    with ThreadPoolExecutor(max_workers=10) as executor:
+        results = executor.map(fetch_page_source, urls)
 
-    return page_source_list
+    return list(results)
 
 
 def scrap(url: str) -> list[str]:
     """
-    Scrape element of the URL.
+    Scrape an element of the URL.
     :param url: URL to be scraped.
     :return: List of extracted lyrics.
     """

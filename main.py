@@ -36,7 +36,7 @@ class Main:
                 query = yoasobi_project.delete_all_rows()
                 yoasobi_project.execute_sql_query(self.engine, query)
             else:
-                logger.error('No page sources were found.')
+                logger.error('No page sources were found. Not delete all rows from the \'Words\' table.')
 
             for page_source in page_source_list:
                 lyrics_list: list[str] = yoasobi_project.scrap(page_source)
