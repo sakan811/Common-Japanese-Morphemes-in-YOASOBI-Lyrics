@@ -95,9 +95,8 @@ def fetch_page_source(url: str) -> str:
     logger.info('Set options for Chrome')
     chrome_options = Options()
     chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
-    chrome_options.add_argument("--disable-gpu")
-    chrome_options.add_argument("--no-sandbox")
-    chrome_options.add_argument("--disable-dev-shm-usage")
+    ua = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/117.0.0.0 Safari/537.36'
+    chrome_options.add_argument(f'--user-agent={ua}')
 
     logger.info('Open browser')
     driver = webdriver.Chrome(options=chrome_options)
