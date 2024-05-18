@@ -8,7 +8,6 @@ from selenium.webdriver.chrome.options import Options
 
 from main import Main
 
-
 def test_fetch():
     url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
 
@@ -34,7 +33,7 @@ def test_fetch():
     lyrics_list = [lyrics.get_text(separator='\n') for lyrics in lyrics_div]
     logger.debug(f'{lyrics_list = }')
 
-    assert lyrics_list is not None
+    assert lyrics_list != []
 
 # def test_main():
 #     db_dir = 'yoasobi.db'
