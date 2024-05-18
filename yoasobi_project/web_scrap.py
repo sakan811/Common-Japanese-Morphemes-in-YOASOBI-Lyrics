@@ -127,16 +127,16 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     return list(results)
 
 
-def scrap(url: str) -> list[str]:
+def scrap(page_source: str) -> list[str]:
     """
     Scrape an element of the URL.
-    :param url: URL to be scraped.
+    :param page_source: Page source to be scraped.
     :return: List of extracted lyrics.
     """
     logger.info('Web scraping...')
 
     logger.info('Parser html content to BeautifulSoup Object')
-    soup = BeautifulSoup(url, 'html.parser')
+    soup = BeautifulSoup(page_source, 'html.parser')
 
     logger.info('Find all desired elements by tag and class')
     lyrics_div: ResultSet = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
