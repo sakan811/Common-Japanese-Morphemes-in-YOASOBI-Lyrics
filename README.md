@@ -1,6 +1,9 @@
 ## Common Japanese Words in YOASOBI Lyrics
 Update May 4th, 2024
 
+Showcase visualizations about the common Japanese words in YOASOBI's songs' lyrics.
+
+## Project Details
 Lyrics were based on [genius.com](https://genius.com/artists/Yoasobi)
 
 Japanese words were extracted using **SudachiPy** and romanized using **Cutlet**.
@@ -9,18 +12,17 @@ Based on 25 YOASOBI songs
 
 Might not be 100% accurate
 
-This repo only shows codes and raw data
-
 ## Visualizations
 [Instagram](https://www.instagram.com/p/C6i6BEoLKJO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)  
 [Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid0xonwCJKm8aDZEM3BAQonTGVLfU6SEoKhKWFvBuGRAwLdCSnGbJsBmrq55p22fDcYl&id=61553626169836)
 
-## To Start Web-scraping Process
+## Code Base Details
+### To Start Web-scraping Process
 - Go to ```main.py```
 - Run the script.
 - SQLite database 'yoasobi.db' will be initialized.
 
-## Package ```yoasobi_project```
+### Package ```yoasobi_project```
 ```extract.py```
 - Extract words from the lyrics.
 
@@ -39,7 +41,7 @@ This repo only shows codes and raw data
 - Extract song name from the scraped lyrics.
 - Return song's lyrics.
 
-## Test result
+### Test result
 [test_result.html](test_result.html)
 - This HTML stores the test result of this code base that I ran locally.
   - I can't use GitHub Action pipeline to test as Genius.com seems to block GitHub Action's IP address,
