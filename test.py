@@ -15,10 +15,13 @@ def test_full_process():
     response = requests.get(url)
     if response.status_code != 200:
         logger.error(f'Failed to fetch the page: {response.status_code}')
-        return
+    else:
+        logger.info(f'Successfully fetched the page: {url}')
+
+    html_content = response.content
 
     logger.info('Parsing HTML content to BeautifulSoup Object')
-    soup = BeautifulSoup(response.content, 'html.parser')
+    soup = BeautifulSoup(html_content, 'html.parser')
 
     logger.info('Finding all desired elements by tag and class')
     lyrics_div = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
@@ -71,4 +74,4 @@ def test_full_process():
 
 
 if __name__ == '__main__':
-    pytest.main(args=['--html=pytest_report.html', '--self-contained-html'])
+    pytest.main()

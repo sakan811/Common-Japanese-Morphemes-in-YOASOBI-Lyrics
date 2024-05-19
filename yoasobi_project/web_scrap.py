@@ -1,6 +1,7 @@
 import re
 from concurrent.futures import ThreadPoolExecutor
 
+import requests
 from bs4 import BeautifulSoup, ResultSet
 from loguru import logger
 from selenium import webdriver
@@ -84,36 +85,25 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     return lyrics
 
 
-def fetch_page_source(url: str) -> str:
+def fetch_page_source(url: str) -> bytes:
     """
     Fetch a page source from URL.
     :param url: Page URL.
     :return: Page source.
     """
-    logger.info('Set options for Chrome')
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')  # Run Chrome in headless mode (without GUI) for better performance
-
-    logger.info('Open browser')
-    driver = webdriver.Chrome(options=chrome_options)
-
-    logger.info(f'Open web page: {url}')
-
-    driver.get(url)
-    webpage_html = driver.page_source
-    logger.info(f'Retrieved page source for: {url}')
-
-    logger.info('Close the driver')
-    driver.quit()
-
-    if webpage_html:
-        logger.info(f'Retrieved page source successfully from {url}')
-        return webpage_html
+    logger.info(f'Fetching the page content from {url}')
+    response = requests.get(url)
+    if response.status_code != 200:
+        logger.error(f'Failed to fetch the page: {response.status_code}')
     else:
-        logger.error(f'Failed to fetch page source from {url}')
+        logger.info(f'Successfully fetched the page: {url}')
+
+    html_content = response.content
+
+    return html_content
 
 
-def thread_fetch_page_source(urls: list[str]) -> list[str]:
+def thread_fetch_page_source(urls: list[str]) -> list[bytes]:
     """
     Thread fetch page source using ThreadPoolExecutor.
     :param urls: URL list.
@@ -127,7 +117,7 @@ def thread_fetch_page_source(urls: list[str]) -> list[str]:
     return list(results)
 
 
-def scrap(page_source: str) -> list[str]:
+def scrap(page_source: bytes) -> list[str]:
     """
     Scrape an element of the URL.
     :param page_source: Page source to be scraped.
