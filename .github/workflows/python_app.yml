@@ -9,6 +9,12 @@ on:
 permissions:
   contents: read
 
+env:
+  RATE_LIMIT: 5
+  http_proxy: http://172.67.231.3:80
+  https_proxy: http://172.67.231.3:80
+  no_proxy: localhost,127.0.0.1
+
 jobs:
   build:
 
@@ -45,11 +51,5 @@ jobs:
         python -m flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
 
     - name: Test with pytest
-      env:
-        RATE_LIMIT: 5
-        http_proxy: http://172.67.231.3:80
-        https_proxy: http://172.67.231.3:80
-        no_proxy: localhost,127.0.0.1
-
       run: |
         python -m pytest test.py
