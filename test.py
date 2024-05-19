@@ -74,4 +74,4 @@ def test_full_process():
 
 
 if __name__ == '__main__':
-    pytest.main()
+    pytest.main(args=['--html=pytest_report.html', '--self-contained-html'])
