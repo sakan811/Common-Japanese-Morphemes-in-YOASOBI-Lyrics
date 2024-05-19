@@ -1,13 +1,9 @@
 import sqlite3
-import time
 
 import pytest
 import requests
-from bs4 import BeautifulSoup, ResultSet
+from bs4 import BeautifulSoup
 from loguru import logger
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from requests_html import HTMLSession
 
 import yoasobi_project
 
