@@ -2,10 +2,12 @@ import sqlite3
 import time
 
 import pytest
+import requests
 from bs4 import BeautifulSoup, ResultSet
 from loguru import logger
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
+from requests_html import HTMLSession
 
 import yoasobi_project
 
@@ -13,33 +15,22 @@ import yoasobi_project
 def test_full_process():
     url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
 
-    logger.info('Set options for Chrome')
-    chrome_options = Options()
-    chrome_options.add_argument('--headless')
+    logger.info(f'Fetching the page content from {url}')
+    response = requests.get(url)
+    if response.status_code != 200:
+        logger.error(f'Failed to fetch the page: {response.status_code}')
+        return
 
-    logger.info('Open browser')
-    driver = webdriver.Chrome(options=chrome_options)
+    logger.info('Parsing HTML content to BeautifulSoup Object')
+    soup = BeautifulSoup(response.content, 'html.parser')
 
-    driver.get(url)
+    logger.info('Finding all desired elements by tag and class')
+    lyrics_div = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
+    logger.debug(f'Number of lyrics divs found: {len(lyrics_div)}')
 
-    time.sleep(20)
-
-    webpage_html = driver.page_source
-    logger.debug(f'{webpage_html = }')
-
-    logger.info('Web scraping...')
-
-    logger.info('Parser html content to BeautifulSoup Object')
-    soup = BeautifulSoup(webpage_html, 'html.parser')
-
-    logger.info('Find all desired elements by tag and class')
-    lyrics_div: ResultSet = soup.find_all('div', class_='Lyrics__Container-sc-1ynbvzw-1 kUgSbL')
-    logger.debug(f'{lyrics_div = }')
-
-    logger.info('Add lyrics to \'lyrics_list\' with \\n seperator.')
+    logger.info("Adding lyrics to 'lyrics_list' with \\n separator.")
     lyrics_list = [lyrics.get_text(separator='\n') for lyrics in lyrics_div]
-    logger.debug(f'{lyrics_list = }')
-
+    logger.debug(f'lyrics_list length = {len(lyrics_list)}')
     assert lyrics_list != []
 
     song_name: str = yoasobi_project.extract_song_name_from_lyrics_list(lyrics_list)
