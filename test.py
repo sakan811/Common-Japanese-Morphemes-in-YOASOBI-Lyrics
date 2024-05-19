@@ -1,4 +1,3 @@
-import os
 import sqlite3
 
 import pytest
@@ -10,40 +9,16 @@ import yoasobi_project
 
 
 def test_full_process():
-    # Define the login URL
-    login_url = 'https://genius.com/login'
+    url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
 
-    # Define your credentials
-    genius_username = os.environ.get('GENIUS_USERNAME')
-    genius_password = os.environ.get('GENIUS_PASSWORD')
-
-    # Create a session
-    session = requests.Session()
-
-    # Send a POST request with credentials to the login endpoint
-    login_data = {
-        'username': genius_username,
-        'password': genius_password
-    }
-    response = session.post(login_url, data=login_data)
-    page_response = None
-    # Check if login was successful
-    if response.status_code == 200:
-        logger.info("Login successful!")
-        # Navigate to the desired page after successful login
-        page_url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
-        page_response = session.get(page_url)
-        # Check if page retrieval was successful
-        if page_response.status_code == 200:
-            logger.info(f"Successfully fetched the page: {page_url}")
-            # Now you can work with the page content
-            logger.info(page_response.text)
-        else:
-            logger.info(f"Failed to fetch the page: {page_response.status_code}")
+    logger.info(f'Fetching the page content from {url}')
+    response = requests.get(url)
+    if response.status_code != 200:
+        logger.error(f'Failed to fetch the page: {response.status_code}')
     else:
-        logger.info(f"Failed to login: {response.status_code}")
+        logger.info(f'Successfully fetched the page: {url}')
 
-    html_content = page_response.content
+    html_content = response.content
 
     logger.info('Parsing HTML content to BeautifulSoup Object')
     soup = BeautifulSoup(html_content, 'html.parser')
