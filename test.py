@@ -17,9 +17,6 @@ def test_full_process():
     chrome_options = Options()
     chrome_options.add_argument('--headless')
 
-    proxy = "http://172.67.231.3:80"
-    chrome_options.add_argument(f'--proxy-server={proxy}')
-
     logger.info('Open browser')
     driver = webdriver.Chrome(options=chrome_options)
 
