@@ -25,6 +25,7 @@ def test_full_process():
     time.sleep(20)
 
     webpage_html = driver.page_source
+    logger.debug(f'{webpage_html = }')
 
     logger.info('Web scraping...')
 
