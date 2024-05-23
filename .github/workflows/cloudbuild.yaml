@@ -17,8 +17,8 @@ steps:
       - '-m'
       - pip
       - install
-      - '-r'
       - requirements.txt
+      - '--user'
     entrypoint: python
   - name: python
     args:
