@@ -8,3 +8,4 @@ selenium~=4.15.2
 sudachidict_core>=20240409
 requests~=2.31.0
 bs4~=0.0.2
+mecab-python3~=1.0.9

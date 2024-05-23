@@ -68,9 +68,6 @@ class Main:
 
 
 if __name__ == '__main__':
-    # db_dir = 'yoasobi.db'
-    # Main(db_dir).main()
+    db_dir = 'yoasobi.db'
+    Main(db_dir).main()
 
-    url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
-    response = requests.get(url)
-    print(response.text)

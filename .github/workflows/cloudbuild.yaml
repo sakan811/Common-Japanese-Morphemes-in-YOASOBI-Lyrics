@@ -17,19 +17,8 @@ steps:
       - '-m'
       - pip
       - install
-      - loguru~=0.7.2
-      - pytest~=8.2.0
-      - cutlet~=0.4.0
-      - SudachiPy~=0.6.8
-      - SQLAlchemy~=2.0.29
-      - beautifulsoup4~=4.12.3
-      - selenium~=4.15.2
-      - requests~=2.31.0
-      - bs4~=0.0.2
-      - build
-      - Flask
-      - sudachidict_core>=20240409
-      - '--user'
+      - '-r'
+      - requirements.txt
     entrypoint: python
   - name: python
     args:
