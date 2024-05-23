@@ -34,12 +34,3 @@ steps:
     pip install pytest pytest-azurepipelines
     pytest
   displayName: 'pytest'
-
-- task: GitHubRelease@1
-  inputs:
-    repositoryName: '$(Build.Repository.Name)'
-    action: 'edit'
-    target: '$(Build.SourceVersion)'
-    tag: 'v2.0.0'
-    changeLogCompareToRelease: 'lastFullRelease'
-    changeLogType: 'commitBased'
