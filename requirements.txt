@@ -5,6 +5,6 @@ SudachiPy~=0.6.8
 SQLAlchemy~=2.0.29
 beautifulsoup4~=4.12.3
 selenium~=4.15.2
-
+sudachidict-core~=20240409
 requests~=2.31.0
 bs4~=0.0.2
