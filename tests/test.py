@@ -10,27 +10,8 @@ import yoasobi_project
 
 
 def test_full_process():
-
-    url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
-
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
-    response = None
-    retries = 5
-    for i in range(retries):
-        logger.info(f'Fetching the page content from {url}')
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            return response
-        elif response.status_code == 429:  # Too Many Requests
-            print(f"Rate limit hit. Sleeping for {5} seconds...")
-            time.sleep(5)
-            retries *= 2  # Exponential backoff
-        else:
-            response.raise_for_status()
-
-    html_content = response.content
+    with open('html_test.html', 'r', encoding='utf-8') as file:
+        html_content = file.read()
 
     logger.info('Parsing HTML content to BeautifulSoup Object')
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -59,7 +40,7 @@ def test_full_process():
     part_of_speech_list: list[str] = yoasobi_project.extract_part_of_speech_from_words(words)
     logger.debug(f'{part_of_speech_list = }')
 
-    db_dir = 'yoasobi_test.db'
+    db_dir = '../yoasobi_test.db'
 
     yoasobi_project.connect_sqlite_db(db_dir)
 
