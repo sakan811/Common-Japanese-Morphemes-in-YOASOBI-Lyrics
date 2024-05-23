@@ -1,4 +1,5 @@
 import sqlite3
+import time
 
 import pytest
 import requests
@@ -9,14 +10,25 @@ import yoasobi_project
 
 
 def test_full_process():
+
     url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
 
-    logger.info(f'Fetching the page content from {url}')
-    response = requests.get(url)
-    if response.status_code != 200:
-        logger.error(f'Failed to fetch the page: {response.status_code}')
-    else:
-        logger.info(f'Successfully fetched the page: {url}')
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
+    }
+    response = None
+    retries = 5
+    for i in range(retries):
+        logger.info(f'Fetching the page content from {url}')
+        response = requests.get(url, headers=headers)
+        if response.status_code == 200:
+            return response
+        elif response.status_code == 429:  # Too Many Requests
+            print(f"Rate limit hit. Sleeping for {5} seconds...")
+            time.sleep(5)
+            retries *= 2  # Exponential backoff
+        else:
+            response.raise_for_status()
 
     html_content = response.content
 
