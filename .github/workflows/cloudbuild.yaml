@@ -28,7 +28,7 @@ steps:
       - bs4~=0.0.2
       - build
       - Flask
-      - sudachidict_core~=20240409
+      - sudachidict_core>=20240409
       - '--user'
     entrypoint: python
   - name: python
