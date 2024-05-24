@@ -1,8 +1,6 @@
 import sqlite3
-import time
-
-import pytest
 import requests
+import pytest
 from bs4 import BeautifulSoup
 from loguru import logger
 
@@ -10,8 +8,18 @@ import yoasobi_project
 
 
 def test_full_process():
-    with open('tests/html_test.html', 'r', encoding='utf-8') as file:
-        html_content = file.read()
+    # with open('tests/html_test.html', 'r', encoding='utf-8') as file:
+    #     html_content = file.read()
+
+    url = 'https://genius.com/Yoasobi-heart-beat-lyrics'
+
+    headers = {
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36"
+    }
+    response = requests.get(url, headers=headers)
+    response.raise_for_status()
+
+    html_content = response.text
 
     logger.info('Parsing HTML content to BeautifulSoup Object')
     soup = BeautifulSoup(html_content, 'html.parser')
@@ -67,4 +75,4 @@ def test_full_process():
 
 
 if __name__ == '__main__':
-    pytest.main(args=['--html=pytest_report.html', '--self-contained-html'])
+    pytest.main()
