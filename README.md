@@ -20,7 +20,7 @@ Might not be 100% accurate
 
 ## Code Base Details
 ### To Start Web-scraping Process
-- Go to ```main.py```
+- Go to ```yoasobiscraper.py```
 - Run the script.
 - SQLite database 'yoasobi.db' will be initialized.
 
