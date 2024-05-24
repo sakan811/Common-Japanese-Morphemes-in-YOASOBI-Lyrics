@@ -3,6 +3,7 @@ Update May 4th, 2024
 
 Showcase visualizations about the common Japanese words in YOASOBI's songs' lyrics.
 
+## Status
 [![CodeQL](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml)
 
 ## Project Details
