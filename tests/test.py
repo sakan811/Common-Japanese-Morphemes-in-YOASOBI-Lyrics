@@ -1,5 +1,4 @@
 import sqlite3
-import requests
 import pytest
 from bs4 import BeautifulSoup
 from loguru import logger

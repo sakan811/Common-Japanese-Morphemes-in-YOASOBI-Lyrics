@@ -4,8 +4,6 @@ from concurrent.futures import ThreadPoolExecutor
 import requests
 from bs4 import BeautifulSoup, ResultSet
 from loguru import logger
-from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 
 
 def return_url_list() -> list[str]:
