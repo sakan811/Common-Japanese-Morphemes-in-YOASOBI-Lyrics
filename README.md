@@ -1,5 +1,5 @@
 ## Common Japanese Words in YOASOBI Lyrics
-Update May 4th, 2024
+Update May 25th, 2024
 
 Showcase visualizations about the common Japanese words in YOASOBI's songs' lyrics.
 
@@ -13,11 +13,9 @@ Japanese words were extracted using **SudachiPy** and romanized using **Cutlet**
 
 Based on 25 YOASOBI songs
 
-Might not be 100% accurate
-
 ## Visualizations
-[Instagram](https://www.instagram.com/p/C6i6BEoLKJO/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)  
-[Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid0xonwCJKm8aDZEM3BAQonTGVLfU6SEoKhKWFvBuGRAwLdCSnGbJsBmrq55p22fDcYl&id=61553626169836)
+[Instagram](https://www.instagram.com/p/C7ZeZaath92/?img_index=1)  
+[Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid022KbDh4a2yewBPKe6hySvzpSSWUvaB9ZWDsnXnWctASUqucLxiFFtN1PrjU5snSn3l&id=61553626169836)
 
 ## Code Base Details
 ### To Start Web-scraping Process
