@@ -16,7 +16,9 @@ def is_english(word: str) -> bool:
 
 def insert_excluded_pos() -> dict[str, str]:
     return {
-        '補助記号': 'Auxiliary Symbols'
+        "空白": "Whitespace",
+        "補助記号": "Supplementary Symbol",
+        "連体詞": "Adnominal"
     }
 
 
@@ -62,18 +64,18 @@ def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
     """
     logger.info('Extract part of speech from words list...')
     jp_pos_tags = {
-        '代名詞': 'Pronoun',
-        '副詞': 'Adverb',
-        '助動詞': 'Auxiliary verb',
-        '助詞': 'Particle',
-        '動詞': 'Verb',
-        '名詞': 'Noun',
-        '形容詞': 'Adjective',
-        '形状詞': 'Adjectival noun',
-        '感動詞': 'Interjection',
-        '接尾辞': 'Suffix',
-        '接続詞': 'Conjunction',
-        '連体詞': 'Pre-noun adjectival'
+        "代名詞": "Pronoun",
+        "副詞": "Adverb",
+        "助動詞": "Auxiliary Verb",
+        "助詞": "Particle",
+        "動詞": "Verb",
+        "名詞": "Noun",
+        "形容詞": "Adjective",
+        "形状詞": "Adjectival Noun",
+        "感動詞": "Interjection",
+        "接尾辞": "Suffix",
+        "接続詞": "Conjunction",
+        "接頭辞": "Prefix",
     }
 
     logger.info('Create tokenizer')
@@ -83,8 +85,17 @@ def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
     mode = tokenizer.Tokenizer.SplitMode.C
 
     logger.info('Create part of speech list by extracting part of speech from word list')
-    part_of_speech_list: list[str] = [tokenizer_obj.tokenize(word, mode)[0].part_of_speech()[0] for word in
-                                      word_list]
+    part_of_speech_list = []
+    for word in word_list:
+        tokenized_word = tokenizer_obj.tokenize(word, mode)
+        if tokenized_word:  # Check if the list is not empty
+            part_of_speech = tokenized_word[0].part_of_speech()
+            if part_of_speech:  # Check if part_of_speech is not empty
+                part_of_speech_list.append(part_of_speech[0])
+            else:
+                part_of_speech_list.append(None)  # Handle case where part_of_speech is empty
+        else:
+            part_of_speech_list.append(None)  # Handle case where tokenized_word is empty
 
     logger.info('Translate part of speech from Japanese to English and assign to list')
     part_of_speech_list = [jp_pos_tags[part_of_speech] for part_of_speech in part_of_speech_list if
