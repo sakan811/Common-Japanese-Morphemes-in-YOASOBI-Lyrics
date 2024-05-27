@@ -7,7 +7,7 @@ import yoasobi_project
 
 
 def test_full_process():
-    with open('tests/html_test.html', 'r', encoding='utf-8') as file:
+    with open('html_test.html', 'r', encoding='utf-8') as file:
         html_content = file.read()
 
     logger.info('Parsing HTML content to BeautifulSoup Object')
@@ -37,7 +37,7 @@ def test_full_process():
     part_of_speech_list: list[str] = yoasobi_project.extract_part_of_speech_from_words(words)
     logger.debug(f'{part_of_speech_list = }')
 
-    db_dir = '../yoasobi_test.db'
+    db_dir = 'yoasobi_test.db'
 
     yoasobi_project.connect_sqlite_db(db_dir)
 
