@@ -95,24 +95,20 @@ def insert_data(
     :param part_of_speech_list: List of Japanese Part of Speech String.
                                 Exclude English words and Japanese Auxiliary Symbols.
     :param words: List of Japanese words String
-    :param romanized_words: List of Romanjis String
+    :param romanized_words: List of Romanji String
     :param song_name: Song name String
     :return: None
     """
     logger.info('Insert data into table...')
     song_name_romanji: str = ext.extract_romanji(song_name)
-    logger.debug(f'{song_name_romanji = }')
 
     engine: Engine = connect_sqlite_db(db_dir)
 
     sql_query = sqlquery.insert_data_query()
-    logger.info(f'{sql_query = }')
 
     timestamp = datetime.now()
-    logger.debug(f'{timestamp = }')
 
     table_name = 'Words'
-    logger.debug(f'{table_name = }')
 
     if table_exists(table_name, db_dir):
         logger.info('Zip \'words\', \'romanized_words\', \'part_of_speech_list\' together'
@@ -126,8 +122,6 @@ def insert_data(
                 'Song_Romanji': song_name_romanji,
                 'Timestamp': timestamp
             }
-            logger.debug(f'{data = }')
-
             execute_sql_query(engine, sql_query, data)
     else:
         logger.info(f'Table \'{table_name}\' does not exist.')

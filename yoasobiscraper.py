@@ -1,5 +1,3 @@
-from typing import Tuple, List
-
 from loguru import logger
 
 import yoasobi_project
@@ -43,12 +41,11 @@ class YoasobiScraper:
             query = yoasobi_project.delete_all_rows()
             yoasobi_project.execute_sql_query(self.engine, query)
         else:
-            logger.error('No page sources were found. Not delete all rows from the \'Words\' table.')
+            logger.warning('No page sources were found. Not delete all rows from the \'Words\' table.')
 
-        self._scrape_each_page_source(page_source_list)
-        yoasobi_project.insert_data(words, romanized_words, part_of_speech_list, song_name, self.db_dir)
+        self.scrape_each_page_source(page_source_list)
 
-    def _scrape_each_page_source(self, page_source_list) -> tuple[list[str], list[str], str, list[str]]:
+    def scrape_each_page_source(self, page_source_list) -> None:
         """
         Scrape each page source.
         :param page_source_list: List of page sources.
@@ -57,16 +54,17 @@ class YoasobiScraper:
         logger.info('Scraping each page source...')
         for page_source in page_source_list:
             lyrics_list: list[str] = yoasobi_project.scrap(page_source)
-            logger.debug(f'{lyrics_list = }')
 
-            return extract_data(lyrics_list)
+            words, romanized_words, part_of_speech_list, song_name = extract_data(lyrics_list)
+
+            yoasobi_project.insert_data(words, romanized_words, part_of_speech_list, song_name, self.db_dir)
 
 
-def extract_data(lyrics_list: list[str]) -> tuple[list[str], list[str], str, list[str]]:
+def extract_data(lyrics_list: list[str]) -> tuple:
     """
     Extract data from the page sources.
     :param lyrics_list: Lyrics list.
-    :return: Tuple of Lists that contain extracted data from the page sources.
+    :return: Tuple of extracted data from the page sources.
     """
     logger.info('Extracting data from the page sources...')
     song_name: str = yoasobi_project.extract_song_name_from_lyrics_list(lyrics_list)
@@ -87,7 +85,7 @@ def extract_data(lyrics_list: list[str]) -> tuple[list[str], list[str], str, lis
     if words_len != romanized_words_len or words_len != part_of_speech_list_len:
         raise Exception('The length of words, romanized_words, and part_of_speech_list are not equal.')
 
-    return part_of_speech_list, romanized_words, song_name, words
+    return words, romanized_words, part_of_speech_list, song_name
 
 
 def check_list_len(*args) -> tuple:
@@ -104,4 +102,3 @@ def check_list_len(*args) -> tuple:
 if __name__ == '__main__':
     db_dir = 'yoasobi.db'
     YoasobiScraper(db_dir).main()
-
