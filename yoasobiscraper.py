@@ -5,7 +5,7 @@ from loguru import logger
 import yoasobi_project
 
 logger.add('yoasobi.log',
-           format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {thread} | {name} | {module} | {function} | {line} | {message}",
+           format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name} | {module} | {function} | {line} | {message}",
            mode='w')
 
 
@@ -46,50 +46,59 @@ class YoasobiScraper:
             logger.error('No page sources were found. Not delete all rows from the \'Words\' table.')
 
         self._scrape_each_page_source(page_source_list)
+        yoasobi_project.insert_data(words, romanized_words, part_of_speech_list, song_name, self.db_dir)
 
-    def _scrape_each_page_source(self, page_source_list) -> None:
+    def _scrape_each_page_source(self, page_source_list) -> tuple[list[str], list[str], str, list[str]]:
         """
         Scrape each page source.
         :param page_source_list: List of page sources.
-        :return: None
+        :return: Tuple of scraped data.
         """
         logger.info('Scraping each page source...')
         for page_source in page_source_list:
             lyrics_list: list[str] = yoasobi_project.scrap(page_source)
             logger.debug(f'{lyrics_list = }')
 
-            part_of_speech_list, romanized_words, song_name, words = self._extract_data(lyrics_list)
+            return extract_data(lyrics_list)
 
-            yoasobi_project.insert_data(words, romanized_words, part_of_speech_list, song_name, self.db_dir)
 
-            logger.debug(f'{len(words) = }')
-            logger.debug(f'{len(romanized_words) = }')
-            logger.debug(f'{len(part_of_speech_list) = }')
+def extract_data(lyrics_list: list[str]) -> tuple[list[str], list[str], str, list[str]]:
+    """
+    Extract data from the page sources.
+    :param lyrics_list: Lyrics list.
+    :return: Tuple of Lists that contain extracted data from the page sources.
+    """
+    logger.info('Extracting data from the page sources...')
+    song_name: str = yoasobi_project.extract_song_name_from_lyrics_list(lyrics_list)
 
-    @staticmethod
-    def _extract_data(lyrics_list: list[str]) -> tuple[list[str], list[str], str, list[str]]:
-        """
-        Extract data from the page sources.
-        :param lyrics_list: Lyrics list.
-        :return: Tuple of Lists that contain extracted data from the page sources.
-        """
-        logger.info('Extracting data from the page sources...')
-        song_name: str = yoasobi_project.extract_song_name_from_lyrics_list(lyrics_list)
-        logger.debug(f'{song_name = }')
+    lyrics: str = yoasobi_project.extract_lyrics_from_lyrics_list(lyrics_list)
 
-        lyrics: str = yoasobi_project.extract_lyrics_from_lyrics_list(lyrics_list)
-        logger.debug(f'{lyrics = }')
+    words: list[str] = yoasobi_project.extract_words_from_lyrics(lyrics)
 
-        words: list[str] = yoasobi_project.extract_words_from_lyrics(lyrics)
-        logger.debug(f'{words = }')
+    romanized_words: list[str] = yoasobi_project.extract_romanji_from_words(words)
 
-        romanized_words: list[str] = yoasobi_project.extract_romanji_from_words(words)
-        logger.debug(f'{romanized_words = }')
+    part_of_speech_list: list[str] = yoasobi_project.extract_part_of_speech_from_words(words)
 
-        part_of_speech_list: list[str] = yoasobi_project.extract_part_of_speech_from_words(words)
-        logger.debug(f'{part_of_speech_list = }')
+    list_len = check_list_len(words, romanized_words, part_of_speech_list)
+    words_len = list_len[0]
+    romanized_words_len = list_len[1]
+    part_of_speech_list_len = list_len[2]
 
-        return part_of_speech_list, romanized_words, song_name, words
+    if words_len != romanized_words_len or words_len != part_of_speech_list_len:
+        raise Exception('The length of words, romanized_words, and part_of_speech_list are not equal.')
+
+    return part_of_speech_list, romanized_words, song_name, words
+
+
+def check_list_len(*args) -> tuple:
+    """
+    Calculate the length of the target list and return it as an integer.
+    :param args: Target lists.
+    :return: Length of the target list as Tuple.
+    """
+    logger.info(f"Checking length of target lists...")
+    lengths = [len(arg) for arg in args]
+    return tuple(lengths)
 
 
 if __name__ == '__main__':

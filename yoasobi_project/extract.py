@@ -88,14 +88,8 @@ def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
     part_of_speech_list = []
     for word in word_list:
         tokenized_word = tokenizer_obj.tokenize(word, mode)
-        if tokenized_word:  # Check if the list is not empty
-            part_of_speech = tokenized_word[0].part_of_speech()
-            if part_of_speech:  # Check if part_of_speech is not empty
-                part_of_speech_list.append(part_of_speech[0])
-            else:
-                part_of_speech_list.append(None)  # Handle case where part_of_speech is empty
-        else:
-            part_of_speech_list.append(None)  # Handle case where tokenized_word is empty
+        part_of_speech = tokenized_word[0].part_of_speech()
+        part_of_speech_list.append(part_of_speech[0])
 
     logger.info('Translate part of speech from Japanese to English and assign to list')
     part_of_speech_list = [jp_pos_tags[part_of_speech] for part_of_speech in part_of_speech_list if
