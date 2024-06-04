@@ -19,8 +19,8 @@ def test_full_process():
     assert len(page_source_list) > 0
     for html_content in page_source_list:
         soup = BeautifulSoup(html_content, 'html.parser')
-        search_word = "Cloudflare"
-        found = soup.find_all(string=lambda text: search_word in text)
+        # search for elements with class 'cloudflare_content'
+        found = soup.find_all(class_='cloudflare_content')
         if found:
             logger.warning("Test script was blocked by Cloudflare. Make the test passed.")
             assert True
