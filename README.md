@@ -24,9 +24,13 @@ Based on 25 YOASOBI songs
 - Run the script.
 - SQLite database 'yoasobi.db' will be initialized.
 
-### Package ```yoasobi_project```
-```extract.py```
-- Extract words from the lyrics.
+### [yoasobi_pipeline](yoasobi_pipeline) Package 
+```pipeline.py```
+- Contain functions of the web-scraping pipeline.
+
+### [yoasobi_scraper](yoasobi_pipeline%2Fyoasobi_scraper) Package
+```data_extractor.py```
+- Contain functions related to extracting the desired data.
 
 ```sql_query.py```
 - Return a specific SQL query.
@@ -38,9 +42,7 @@ Based on 25 YOASOBI songs
 ```utils.py```
 - Contain utility functions.
 
-```web_scrap.py```
-- Scrap lyrics from the given urls.
-- Extract song name from the scraped lyrics.
-- Return song's lyrics.
+```web_scraper.py```
+- Contain functions related to fetching content from the webpage.
 
 

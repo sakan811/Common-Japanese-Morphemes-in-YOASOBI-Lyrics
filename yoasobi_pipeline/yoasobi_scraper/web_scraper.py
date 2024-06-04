@@ -37,52 +37,6 @@ def return_url_list() -> list[str]:
     ]
 
 
-def extract_song_name_from_lyrics_list(lyrics_list: list[str]) -> str:
-    """
-    Extract song name from the 'lyrics_list'
-    :param lyrics_list: List of lyrics of the song
-    :return: Song\'s name
-    """
-    logger.info('Extract song name...')
-    logger.info('Access 0th element in \'lyrics_list\' ')
-    first_element_lyrics_list: str = lyrics_list[0]
-    logger.debug(f'{first_element_lyrics_list = }')
-
-    first_element_split: list[str] = first_element_lyrics_list.split()
-    logger.debug(f'{first_element_split = }')
-
-    logger.info('Extracting the song name from the \'first_element_split\'. '
-                'Accessing the text between the Japanese quotation marks.')
-    song_name = first_element_split[0].split('「')[1:][0].split('」')[0]
-
-    return song_name
-
-
-def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
-    """
-    Extract lyrics from the 'lyrics_list'.
-    :param lyrics_list: List containing lyrics of the song.
-    :return: Song's lyrics.
-    """
-    logger.info('Extract lyrics...')
-    logger.info('Strip lyrics from \'lyrics_list\' and turn them into list')
-    lyrics_list: list[str] = [lyrics.strip() for lyrics in lyrics_list]
-    logger.debug(f'{lyrics_list = }')
-
-    logger.info('Join elements in \'lyrics_list\'')
-    lyrics: str = ''.join(lyrics_list)
-
-    logger.info('Split lyrics and exclude 0th element')
-    lyrics_list: list[str] = lyrics.split()[1:]
-
-    logger.info('Join elements in \'lyrics_list\'')
-    lyrics: str = ''.join(lyrics_list)
-
-    logger.info('Use regular expression to remove characters within square brackets and the brackets themselves')
-    lyrics: str = re.sub(r'\[.*?]', '', lyrics)
-    return lyrics
-
-
 def fetch_page_source(url: str) -> bytes:
     """
     Fetch a page source from URL.
