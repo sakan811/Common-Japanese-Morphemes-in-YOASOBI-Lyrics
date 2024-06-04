@@ -2,6 +2,10 @@ from cutlet import cutlet
 from sudachipy import Tokenizer, dictionary, tokenizer
 from loguru import logger
 
+from yoasobi_pipeline.yoasobi_scraper.utils import check_list_len
+from yoasobi_pipeline.yoasobi_scraper.web_scraper import extract_lyrics_from_lyrics_list, \
+    extract_song_name_from_lyrics_list
+
 
 def is_english(word: str) -> bool:
     """
@@ -14,7 +18,12 @@ def is_english(word: str) -> bool:
     return any(char.isalpha() and ord(char) < 128 for char in word)
 
 
-def insert_excluded_pos() -> dict[str, str]:
+def get_excluded_pos_dict() -> dict[str, str]:
+    """
+    Get Excluded Part of Speech Dictionary.
+    :return: Excluded Part of Speech Dictionary.
+    """
+    logger.info("Get excluded Part of Speech dictionary...")
     return {
         "空白": "Whitespace",
         "補助記号": "Supplementary Symbol",
@@ -31,13 +40,12 @@ def extract_words_from_lyrics(lyrics: str) -> list[str]:
     :return: List[String]
     """
     logger.info('Extract words from lyrics...')
-    excluded_jp_pos_tags = insert_excluded_pos()
-    logger.debug(f'{excluded_jp_pos_tags = }')
+    excluded_jp_pos_tags = get_excluded_pos_dict()
 
     logger.info('Create tokenizer')
     tokenizer_obj: Tokenizer = dictionary.Dictionary().create()
 
-    logger.info('Mode C')
+    logger.info('Use Tokenizer Mode C')
     mode = tokenizer.Tokenizer.SplitMode.C
 
     logger.info('Create words list by adding words into \'words\' list if word is not in \'excluded_jp_pos_tags\'')
@@ -55,15 +63,13 @@ def extract_words_from_lyrics(lyrics: str) -> list[str]:
     return words
 
 
-def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
+def get_jp_pos_dict() -> dict[str, str]:
     """
-    Extract Part of Speech from the word list.
-    Exclude English words and Japanese Auxiliary Symbols.
-    :param word_list: Japanese word list as List of String.
-    :return: List[String]
+    Get the Japanese Part of Speech dictionary.
+    :return: Japanese Part of Speech dictionary.
     """
-    logger.info('Extract part of speech from words list...')
-    jp_pos_tags = {
+    logger.info("Get the Japanese Part of Speech dictionary...")
+    return {
         "代名詞": "Pronoun",
         "副詞": "Adverb",
         "助動詞": "Auxiliary Verb",
@@ -77,6 +83,17 @@ def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
         "接続詞": "Conjunction",
         "接頭辞": "Prefix",
     }
+
+
+def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
+    """
+    Extract Part of Speech from the word list.
+    Exclude English words and Japanese Auxiliary Symbols.
+    :param word_list: Japanese word list as List of String.
+    :return: List[String]
+    """
+    logger.info('Extract part of speech from words list...')
+    jp_pos_tags = get_jp_pos_dict()
 
     logger.info('Create tokenizer')
     tokenizer_obj: Tokenizer = dictionary.Dictionary().create()
@@ -115,6 +132,35 @@ def extract_romanji(word: str) -> str:
     :return: Romanji String
     """
     return cutlet.Cutlet().romaji(word)
+
+
+def extract_data(lyrics_list: list[str]) -> tuple:
+    """
+    Extract data from the page sources.
+    :param lyrics_list: Lyrics list.
+    :return: Tuple of extracted data from the page sources.
+    """
+    logger.info('Extracting data from the page sources...')
+    song_name: str = extract_song_name_from_lyrics_list(lyrics_list)
+
+    lyrics: str = extract_lyrics_from_lyrics_list(lyrics_list)
+
+    words: list[str] = extract_words_from_lyrics(lyrics)
+
+    romanized_words: list[str] = extract_romanji_from_words(words)
+
+    part_of_speech_list: list[str] = extract_part_of_speech_from_words(words)
+
+    list_len = check_list_len(words, romanized_words, part_of_speech_list)
+    words_len = list_len[0]
+    romanized_words_len = list_len[1]
+    part_of_speech_list_len = list_len[2]
+
+    if words_len == romanized_words_len == part_of_speech_list_len:
+        logger.info("The length of words, romanized_words, and part_of_speech_list are equal.")
+        return words, romanized_words, part_of_speech_list, song_name
+    else:
+        raise Exception('The length of words, romanized_words, and part_of_speech_list are not equal.')
 
 
 if __name__ == '__main__':

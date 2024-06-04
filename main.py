@@ -1,16 +1,21 @@
-import sqlite3
-
-import pytest
-from bs4 import BeautifulSoup
 from loguru import logger
 
-from yoasobi_pipeline.pipeline import create_table_if_not_exist, delete_all_row, scrape_each_page_source, \
-    get_all_page_source
+from yoasobi_pipeline.pipeline import get_all_page_source, create_table_if_not_exist, delete_all_row, \
+    scrape_each_page_source
+
+logger.add('yoasobi.log',
+           format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name} | {module} | {function} | {line} | {message}",
+           mode='w')
 
 
-def test_full_process():
+def start_pipeline(db_dir: str) -> None:
+    """
+    Start a pipeline that web-scraping YOASOBI's songs' lyrics from Genius.com
+    :param db_dir: Database directory.
+    :return: None
+    """
     logger.info('Start the scraping process...')
-    db_dir = 'yoasobi_test.db'
+
     page_source_list = get_all_page_source()
 
     create_table_if_not_exist(db_dir)
@@ -25,12 +30,7 @@ def test_full_process():
 
     scrape_each_page_source(db_dir, page_source_list)
 
-    with sqlite3.connect(db_dir) as conn:
-        c = conn.cursor()
-        c.execute('SELECT * FROM Words')
-        words = c.fetchall()
-        assert len(words) > 0
-
 
 if __name__ == '__main__':
-    pytest.main()
+    db_dir = 'yoasobi.db'
+    start_pipeline(db_dir)

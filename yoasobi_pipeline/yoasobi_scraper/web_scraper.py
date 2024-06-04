@@ -115,7 +115,7 @@ def thread_fetch_page_source(urls: list[str]) -> list[bytes]:
     return list(results)
 
 
-def scrap(page_source: bytes) -> list[str]:
+def scrape(page_source: bytes) -> list[str]:
     """
     Scrape an element of the URL.
     :param page_source: Page source to be scraped.

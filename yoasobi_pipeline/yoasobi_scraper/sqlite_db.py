@@ -5,8 +5,7 @@ from sqlalchemy.cyextension.util import Mapping
 from loguru import logger
 from sqlalchemy.exc import SQLAlchemyError
 
-from yoasobi_project import extract as ext
-from yoasobi_project import sql_query as sqlquery
+from yoasobi_pipeline.yoasobi_scraper import data_extractor as ext, sql_query as sqlquery
 
 
 def connect_sqlite_db(db_dir: str) -> Engine:
