@@ -21,9 +21,9 @@ Based on 25 YOASOBI songs
 
 ## Code Base Details
 ### To Start Web-scraping Process
-- Go to ```yoasobiscraper.py```
+- Go to ```main.py```
 - Run the script.
-- SQLite database 'yoasobi.db' will be initialized.
+- Data is saved to a SQLite database 'yoasobi.db'.
 
 ### [yoasobi_pipeline](yoasobi_pipeline) Package 
 ```pipeline.py```
