@@ -18,8 +18,8 @@ Based on 25 YOASOBI songs
 
 ## Visualizations
 [Power BI](https://app.powerbi.com/view?r=eyJrIjoiMTljZjdmN2MtMTk2NC00N2M5LTkxNGMtN2NhZDhlNmU4YmUzIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)    
-[Instagram](https://www.instagram.com/p/C7y-gtDvp4J/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)  
-[Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid0Bcsp77fccLUMsjLxg34B8UyGCh8zgHHSmRaqzed1tKyrjPwVFCxxYXddieF8Z9q5l&id=61553626169836)
+[Instagram](https://www.instagram.com/p/C79n7lEhY-O/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)  
+[Facebook](https://www.facebook.com/photo/?fbid=122156667290120872&set=pcb.122156667518120872)
 
 ## Code Base Details
 ### To Start Web-scraping Process
