@@ -1,7 +1,9 @@
-## Common Japanese Words in YOASOBI Lyrics
+## Common Japanese Morphemes in YOASOBI Lyrics
 Update June 4th, 2024
 
-Showcase visualizations about the common Japanese words in YOASOBI's songs' lyrics.
+Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' lyrics.
+
+Morphemes are the smallest units of meaning in a language.
 
 ## Status
 [![CodeQL](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml/badge.svg?branch=master)](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml)    
