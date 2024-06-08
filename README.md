@@ -1,5 +1,5 @@
 ## Common Japanese Morphemes in YOASOBI Lyrics
-Update June 4th, 2024
+Update June 9th, 2024
 
 Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' lyrics.
 
