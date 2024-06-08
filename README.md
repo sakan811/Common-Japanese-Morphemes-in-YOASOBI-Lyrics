@@ -12,7 +12,7 @@ Morphemes are the smallest units of meaning in a language.
 ## Project Details
 Lyrics were based on [genius.com](https://genius.com/artists/Yoasobi)
 
-Japanese words were extracted using **SudachiPy** and romanized using **Cutlet**.
+Japanese morphemes were extracted using **SudachiPy** and romanized using **Cutlet**.
 
 Based on 25 YOASOBI songs
 
