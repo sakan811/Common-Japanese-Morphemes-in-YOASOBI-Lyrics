@@ -33,7 +33,8 @@ def return_url_list() -> list[str]:
         'https://genius.com/Yoasobi-gunjou-lyrics',
         'https://genius.com/Yoasobi-haruka-lyrics',
         'https://genius.com/Yoasobi-yoru-ni-kakeru-lyrics',
-        'https://genius.com/Yoasobi-heart-beat-lyrics'
+        'https://genius.com/Yoasobi-heart-beat-lyrics',
+        'https://genius.com/Yoasobi-undead-lyrics'
     ]
 
 
@@ -44,6 +45,11 @@ def fetch_page_source(url: str) -> bytes:
     :return: Page source.
     """
     logger.info(f'Fetching the page content from {url}')
+
+    headers = {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+    }
+
     response = requests.get(url)
     if response.status_code != 200:
         logger.error(f'Failed to fetch the page: {response.status_code}')

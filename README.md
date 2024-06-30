@@ -1,5 +1,5 @@
 ## Common Japanese Morphemes in YOASOBI Lyrics
-Update June 9th, 2024
+Latest Update: 30 June 2024
 
 Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' lyrics.
 
@@ -14,7 +14,7 @@ Lyrics were based on [genius.com](https://genius.com/artists/Yoasobi)
 
 Japanese morphemes were extracted using **SudachiPy** and romanized using **Cutlet**.
 
-Based on 25 YOASOBI songs
+Based on 26 YOASOBI songs
 
 ## Visualizations
 [Power BI](https://app.powerbi.com/view?r=eyJrIjoiMTljZjdmN2MtMTk2NC00N2M5LTkxNGMtN2NhZDhlNmU4YmUzIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)    
@@ -26,6 +26,7 @@ Based on 25 YOASOBI songs
 - Go to ```main.py```
 - Run the script.
 - Data is saved to a SQLite database 'yoasobi.db'.
+  - The database will be created automatically if not exist. 
 
 ### [yoasobi_pipeline](yoasobi_pipeline) Package 
 ```pipeline.py```
