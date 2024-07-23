@@ -1,7 +1,6 @@
-import re
-from concurrent.futures import ThreadPoolExecutor
+import asyncio
+import aiohttp
 
-import requests
 from bs4 import BeautifulSoup, ResultSet
 from loguru import logger
 
@@ -38,41 +37,49 @@ def return_url_list() -> list[str]:
     ]
 
 
-def fetch_page_source(url: str) -> bytes:
+async def async_fetch_page_source(url: str) -> bytes:
     """
-    Fetch a page source from URL.
+    Asynchronously fetch a page source from URL.
     :param url: Page URL.
     :return: Page source.
     """
     logger.info(f'Fetching the page content from {url}')
 
-    headers = {
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
-    }
-
-    response = requests.get(url)
-    if response.status_code != 200:
-        logger.error(f'Failed to fetch the page: {response.status_code}')
-    else:
-        logger.info(f'Successfully fetched the page: {url}')
-
-    html_content = response.content
-
-    return html_content
+    async with aiohttp.ClientSession() as session:
+        async with session.get(url) as response:
+            if response.status != 200:
+                logger.error(f'Failed to fetch the page: {response.status}')
+            else:
+                logger.info(f'Successfully fetched the page: {url}')
+                html_content = await response.read()
+                return html_content
 
 
-def thread_fetch_page_source(urls: list[str]) -> list[bytes]:
+async def async_fetch_page_sources(urls: list[str]) -> list[bytes]:
     """
-    Thread fetch page source using ThreadPoolExecutor.
+    Asynchronously fetch page sources using aiohttp.
     :param urls: URL list.
     :return: List of page sources.
     """
-    logger.info('Fetching page source using ThreadPoolExecutor...')
+    logger.info('Fetching page sources asynchronously...')
 
-    with ThreadPoolExecutor(max_workers=10) as executor:
-        results = executor.map(fetch_page_source, urls)
+    tasks = [async_fetch_page_source(url) for url in urls]
+    page_sources = await asyncio.gather(*tasks)
 
-    return list(results)
+    return list(page_sources)
+
+
+def get_lyrics_list(page_source_list: list[bytes]) -> list[list[str]]:
+    """
+    Scrape each page source.
+    :param page_source_list: List of page sources.
+    :return: Tuple of scraped data.
+    """
+    logger.info('Getting a lyrics list from \'page_source_list\'...')
+    lyrics_list = []
+    for page_source in page_source_list:
+        lyrics_list.append(scrape(page_source))
+    return lyrics_list
 
 
 def scrape(page_source: bytes) -> list[str]:

@@ -1,11 +1,15 @@
-from loguru import logger
+import sys
 
-from yoasobi_pipeline.pipeline import get_all_page_source, create_table_if_not_exist, delete_all_row, \
+from loguru import logger
+import asyncio
+
+from yoasobi_pipeline.pipeline import get_all_page_source, create_morpheme_table, delete_all_row, \
     scrape_each_page_source
 
+logger.configure(handlers=[{'sink': sys.stdout, 'level': 'INFO'}])
 logger.add('yoasobi.log',
            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name} | {module} | {function} | {line} | {message}",
-           mode='w')
+           mode='w', level="INFO")
 
 
 def start_pipeline(db_dir: str) -> None:
@@ -16,13 +20,12 @@ def start_pipeline(db_dir: str) -> None:
     """
     logger.info('Start the scraping process...')
 
-    page_source_list = get_all_page_source()
+    page_source_list = asyncio.run(get_all_page_source())
 
-    create_table_if_not_exist(db_dir)
+    create_morpheme_table(db_dir)
 
     if page_source_list:
         logger.info(f'Appended page sources to list successfully')
-
         logger.info(f'Delete all rows from the table \'Words\'')
         delete_all_row(db_dir)
     else:

@@ -1,4 +1,5 @@
 import re
+from typing import Tuple, List
 
 from cutlet import cutlet
 from sudachipy import Tokenizer, dictionary, tokenizer
@@ -31,9 +32,9 @@ def get_excluded_pos_dict() -> dict[str, str]:
     }
 
 
-def extract_words_from_lyrics(lyrics: str) -> list[str]:
+def extract_morphemes_from_lyrics(lyrics: str) -> list[str]:
     """
-    Extract words from the lyrics.
+    Extract morphemes from the lyrics.
     Remove white space.
     Exclude English words, Integer, and Japanese Auxiliary Symbols.
     :param lyrics: String
@@ -85,14 +86,14 @@ def get_jp_pos_dict() -> dict[str, str]:
     }
 
 
-def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
+def extract_part_of_speech_from_morphemes(morpheme_list: list[str]) -> list[str]:
     """
-    Extract Part of Speech from the word list.
+    Extract Part of Speech from the morpheme list.
     Exclude English words and Japanese Auxiliary Symbols.
-    :param word_list: Japanese word list as List of String.
+    :param morpheme_list: Japanese morpheme list as List of String.
     :return: List[String]
     """
-    logger.info('Extract part of speech from words list...')
+    logger.info('Extract part of speech from morpheme list...')
     jp_pos_tags = get_jp_pos_dict()
 
     logger.info('Create tokenizer')
@@ -101,9 +102,9 @@ def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
     logger.info('Mode C')
     mode = tokenizer.Tokenizer.SplitMode.C
 
-    logger.info('Create part of speech list by extracting part of speech from word list')
+    logger.info('Create part of speech list by extracting part of speech from morpheme list')
     part_of_speech_list = []
-    for word in word_list:
+    for word in morpheme_list:
         tokenized_word = tokenizer_obj.tokenize(word, mode)
         part_of_speech = tokenized_word[0].part_of_speech()
         part_of_speech_list.append(part_of_speech[0])
@@ -115,26 +116,26 @@ def extract_part_of_speech_from_words(word_list: list[str]) -> list[str]:
     return part_of_speech_list
 
 
-def extract_romanji_from_words(words: list[str]) -> list[str]:
+def extract_romanji_from_jp_characters(jp_characters: list[str]) -> list[str]:
     """
-    Extract Romanji from a Japanese word within the list.
-    :param words: List of Japanese words String
+    Extract Romanji from a Japanese characters within the list.
+    :param jp_characters: List of Japanese characters.
     :return: List[String]
     """
-    logger.info('Extract romanjis from words list...')
-    return [extract_romanji(word) for word in words]
+    logger.info('Extract romanjis from characters list...')
+    return [extract_romanji(jp_char) for jp_char in jp_characters]
 
 
-def extract_romanji(word: str) -> str:
+def extract_romanji(jp_char: str) -> str:
     """
     Extract Romanji from Japanese words.
-    :param word: Japanese word String
-    :return: Romanji String
+    :param jp_char: Japanese character.
+    :return: Romanji.
     """
-    return cutlet.Cutlet().romaji(word)
+    return cutlet.Cutlet().romaji(jp_char)
 
 
-def extract_data(lyrics_list: list[str]) -> tuple:
+def extract_data(lyrics_list: list[str]) -> tuple[list[str], list[str], list[str], str]:
     """
     Extract data from the page sources.
     :param lyrics_list: Lyrics list.
@@ -145,20 +146,20 @@ def extract_data(lyrics_list: list[str]) -> tuple:
 
     lyrics: str = extract_lyrics_from_lyrics_list(lyrics_list)
 
-    words: list[str] = extract_words_from_lyrics(lyrics)
+    morphemes: list[str] = extract_morphemes_from_lyrics(lyrics)
 
-    romanized_words: list[str] = extract_romanji_from_words(words)
+    romanized_words: list[str] = extract_romanji_from_jp_characters(morphemes)
 
-    part_of_speech_list: list[str] = extract_part_of_speech_from_words(words)
+    part_of_speech_list: list[str] = extract_part_of_speech_from_morphemes(morphemes)
 
-    list_len = check_list_len(words, romanized_words, part_of_speech_list)
+    list_len = check_list_len(morphemes, romanized_words, part_of_speech_list)
     words_len = list_len[0]
     romanized_words_len = list_len[1]
     part_of_speech_list_len = list_len[2]
 
     if words_len == romanized_words_len == part_of_speech_list_len:
         logger.info("The length of words, romanized_words, and part_of_speech_list are equal.")
-        return words, romanized_words, part_of_speech_list, song_name
+        return morphemes, romanized_words, part_of_speech_list, song_name
     else:
         raise Exception('The length of words, romanized_words, and part_of_speech_list are not equal.')
 

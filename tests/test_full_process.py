@@ -1,19 +1,19 @@
+import asyncio
 import sqlite3
 
 import pytest
 from loguru import logger
 from bs4 import BeautifulSoup
 
-from yoasobi_pipeline.pipeline import create_table_if_not_exist, delete_all_row, scrape_each_page_source
-from yoasobi_pipeline.yoasobi_scraper.web_scraper import thread_fetch_page_source
+from yoasobi_pipeline.pipeline import create_morpheme_table, delete_all_row, scrape_each_page_source, \
+    get_all_page_source
 
 
 def test_full_process():
     logger.info('Start the scraping process...')
     db_dir = '../yoasobi_test.db'
 
-    urls = ['https://genius.com/Yoasobi-yoru-ni-kakeru-lyrics']
-    page_source_list = thread_fetch_page_source(urls)
+    page_source_list = asyncio.run(get_all_page_source())
     logger.debug(f'{page_source_list = }')
 
     assert len(page_source_list) > 0
@@ -25,7 +25,7 @@ def test_full_process():
             logger.warning("Test script was blocked by Cloudflare. Make the test passed.")
             assert True
         else:
-            create_table_if_not_exist(db_dir)
+            create_morpheme_table(db_dir)
 
             if page_source_list:
                 logger.info(f'Appended page sources to list successfully')
