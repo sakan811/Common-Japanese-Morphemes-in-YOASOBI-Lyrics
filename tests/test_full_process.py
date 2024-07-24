@@ -5,7 +5,7 @@ import pytest
 from loguru import logger
 from bs4 import BeautifulSoup
 
-from yoasobi_pipeline.pipeline import create_morpheme_table, delete_all_row, scrape_each_page_source, \
+from scraper.pipeline import create_morpheme_table, delete_all_row, scrape_each_page_source, \
     get_all_page_source
 
 

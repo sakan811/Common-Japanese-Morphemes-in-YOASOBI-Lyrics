@@ -1,4 +1,4 @@
-from yoasobi_pipeline.yoasobi_scraper.data_extractor import extract_words_from_lyrics
+from scraper.data_extractor import extract_words_from_lyrics
 
 
 def test_extract_words_with_english_words():

@@ -1,6 +1,6 @@
 import pytest
 
-from yoasobi_pipeline.yoasobi_scraper.data_extractor import extract_song_name_from_lyrics_list
+from scraper.data_extractor import extract_song_name_from_lyrics_list
 
 
 def test_extract_song_name_from_normal_case():

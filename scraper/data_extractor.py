@@ -1,11 +1,10 @@
 import re
-from typing import Tuple, List
 
 from cutlet import cutlet
 from sudachipy import Tokenizer, dictionary, tokenizer
 from loguru import logger
 
-from yoasobi_pipeline.yoasobi_scraper.utils import check_list_len
+from scraper.utils import check_list_len
 
 
 def is_english(word: str) -> bool:

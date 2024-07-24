@@ -1,4 +1,4 @@
-from yoasobi_pipeline.yoasobi_scraper.utils import check_list_len
+from scraper.utils import check_list_len
 
 
 def test_check_list_len_single_list():

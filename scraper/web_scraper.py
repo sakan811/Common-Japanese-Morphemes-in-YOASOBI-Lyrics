@@ -43,7 +43,7 @@ async def async_fetch_page_source(url: str) -> bytes:
     :param url: Page URL.
     :return: Page source.
     """
-    logger.info(f'Fetching the page content from {url}')
+    logger.info(f'Fetching the page content from {url}...')
 
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:

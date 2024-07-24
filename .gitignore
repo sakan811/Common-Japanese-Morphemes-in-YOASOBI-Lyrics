@@ -107,3 +107,6 @@ Thumbs.db
 /yoasobi_test.db
 /.env
 /*.db-journal
+/pdf_to_jpg.py
+**/*.pbix
+**/*.pdf

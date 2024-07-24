@@ -1,4 +1,4 @@
-from yoasobi_pipeline.yoasobi_scraper.data_extractor import extract_lyrics_from_lyrics_list
+from scraper.data_extractor import extract_lyrics_from_lyrics_list
 
 
 def test_extract_lyrics_normal_case():

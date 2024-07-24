@@ -1,4 +1,4 @@
-from yoasobi_pipeline.yoasobi_scraper.data_extractor import extract_part_of_speech_from_morphemes
+from scraper.data_extractor import extract_part_of_speech_from_morphemes
 
 
 def test_extract_pos_with_japanese_words():
