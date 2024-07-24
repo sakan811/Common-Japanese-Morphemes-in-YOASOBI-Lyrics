@@ -146,6 +146,7 @@ def extract_data(lyrics_list: list[str]) -> tuple[list[str], list[str], list[str
     lyrics: str = extract_lyrics_from_lyrics_list(lyrics_list)
 
     morphemes: list[str] = extract_morphemes_from_lyrics(lyrics)
+    logger.debug(f'morphemes list: {morphemes}')
 
     romanized_words: list[str] = extract_romanji_from_jp_characters(morphemes)
 

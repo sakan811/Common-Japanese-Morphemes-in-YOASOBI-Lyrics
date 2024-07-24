@@ -110,3 +110,4 @@ Thumbs.db
 /pdf_to_jpg.py
 **/*.pbix
 **/*.pdf
+/save_html.py

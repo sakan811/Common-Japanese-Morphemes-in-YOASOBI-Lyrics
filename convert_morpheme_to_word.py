@@ -9,9 +9,11 @@ from loguru import logger
 
 from scraper.data_extractor import extract_data, extract_romanji_from_jp_characters
 from scraper.data_transformer import transform_data_to_df
+from scraper.db_func import execute_sqlite_query
+from scraper.utils import fetch_html_content_for_test
 from scraper.web_scraper import get_lyrics_list, return_url_list, async_fetch_page_sources
 
-logger.configure(handlers=[{'sink': sys.stdout, 'level': 'INFO'}])
+logger.configure(handlers=[{'sink': sys.stdout, 'level': 'DEBUG'}])
 logger.add('combine_morpheme_to_word.log',
            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name} | {module} | {function} | {line} | {message}",
            mode='w', level="INFO")
@@ -106,9 +108,13 @@ def get_pos_from_word(word_list: list[str], jp_dict: dict) -> list[str]:
     logger.debug('Getting POS tags from dictionary...')
     pos_list = []
     for word in word_list:
-        word_data: dict = jp_dict[word][0]
-        word_pos = word_data['part_of_speech']
-        pos_list.append(word_pos)
+        try:
+            word_data: dict = jp_dict[word][0]
+            word_pos = word_data['part_of_speech']
+            pos_list.append(word_pos)
+        except KeyError:
+            logger.error(f"Word: {word} not found in dictionary. Append None to the Part of Speech list.")
+            pos_list.append(None)
 
     return pos_list
 
@@ -242,31 +248,46 @@ def clean_pos_in_db(database: str) -> None:
         connection.execute(clean_no_data_query)
 
 
-if __name__ == '__main__':
-    urls: list[str] = return_url_list()
-    page_source_list: list[bytes] = asyncio.run(async_fetch_page_sources(urls))
+def convert_morpheme_to_word_main(db_dir: str, is_test: bool = False, test_html: str = None) -> None:
+    """
+    Convert morphemes to words by looking up words in JMdict.
+    :param db_dir: SQLite database directory.
+    :param is_test: Whether this function is executed for testing purposes.
+    :param test_html: HTML content for testing.
+    :return: None
+    """
+    logger.info('Converting morphemes to words...')
 
-    db = 'yoasobi.db'
+    if not is_test:
+        urls: list[str] = return_url_list()
+        page_source_list: list[bytes] = asyncio.run(async_fetch_page_sources(urls))
+    else:
+        page_source_list = fetch_html_content_for_test(test_html)
 
-    with sqlite3.connect(db) as connection:
-        query = '''
-        CREATE TABLE IF NOT EXISTS Word (
-            ID INTEGER PRIMARY KEY,
-            Word TEXT,
-            Romanji TEXT,
-            Part_of_Speech TEXT,
-            Song TEXT,
-            Song_Romanji TEXT,
-            Timestamp TIMESTAMP
-        );
-        '''
-        connection.execute(query)
-        connection.commit()
+    logger.info("Creating Word table...")
+    query = '''
+    CREATE TABLE IF NOT EXISTS Word (
+        ID INTEGER PRIMARY KEY,
+        Word TEXT,
+        Romanji TEXT,
+        Part_of_Speech TEXT,
+        Song TEXT,
+        Song_Romanji TEXT,
+        Timestamp TIMESTAMP
+    );
+    '''
+    execute_sqlite_query(db_dir, query)
 
     lyrics_lists: list[list[str]] = get_lyrics_list(page_source_list)
 
     if lyrics_lists:
         jp_dict = get_jp_dict()
+
+        query = '''
+        DELETE FROM Word;
+        '''
+        execute_sqlite_query(db_dir, query)
+
         for lyrics_list in lyrics_lists:
             morphemes, romanized_words, part_of_speech_list, song_name = extract_data(lyrics_list)
 
@@ -278,8 +299,14 @@ if __name__ == '__main__':
 
             df = transform_data_to_df(word_list, romanji_list, pos_list, song_name, is_morpheme=False)
 
-            df.to_sql('Word', connection, if_exists='append', index=False)
+            with sqlite3.connect(db_dir) as connection:
+                df.to_sql('Word', connection, if_exists='append', index=False)
 
-            clean_pos_in_db(db)
+            clean_pos_in_db(db_dir)
     else:
         logger.warning('No lyrics were found. Skipping this page source...')
+
+
+if __name__ == '__main__':
+    db = 'yoasobi.db'
+    convert_morpheme_to_word_main(db)

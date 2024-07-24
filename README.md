@@ -26,8 +26,8 @@
 [Common Japanese Words in YOASOBI Lyrics](#common-japanese-words-in-yoasobi-lyrics):
 - Visualizations Latest Update: 24 July 2024
   - [Power BI](https://app.powerbi.com/view?r=eyJrIjoiODk0NDIyMjYtODQ2YS00NDgzLWI4MDctNjA4ZTQ1MTdkZTNlIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)
-  - [Instagram](https://www.instagram.com/p/C90BG46heAG/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
-  - [Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid02VPxSQoSML33zDCZCPUhEFiXHqJT7uT8VVvSUuKh9UKxA5r8W2hZv87NiX65kXsEol&id=61553626169836)
+  - [Instagram](https://www.instagram.com/p/C90NslNBNrl/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+  - [Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid026e9oDZTyynRPeixJFjkAQ4sdCKwUytqB14ELyLexGJ6hz4oZvaz43y1KQU1pyUBEl&id=61553626169836)
 
 # Common Japanese Morphemes in YOASOBI Lyrics
 Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' lyrics.
@@ -98,3 +98,5 @@ Japanese morphemes were extracted using **SudachiPy** and romanized using **Cutl
 [web_scraper.py](scraper%2Fweb_scraper.py)
 - Contain functions related to fetching content from the webpage.
 
+[db_func.py](scraper%2Fdb_func.py)
+- Contain functions to related to the database.
