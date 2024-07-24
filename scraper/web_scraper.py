@@ -63,7 +63,14 @@ async def async_fetch_page_sources(urls: list[str]) -> list[bytes]:
     """
     logger.info('Fetching page sources asynchronously...')
 
-    tasks = [async_fetch_page_source(url) for url in urls]
+    async def fetch_with_error_handling(url):
+        try:
+            return await async_fetch_page_source(url)
+        except Exception as e:
+            logger.error(f"Error fetching {url}: {e}")
+            return None
+
+    tasks = [fetch_with_error_handling(url) for url in urls]
     page_sources = await asyncio.gather(*tasks)
 
     return list(page_sources)

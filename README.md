@@ -20,14 +20,14 @@
 [Common Japanese Morphemes in YOASOBI Lyrics](#common-japanese-morphemes-in-yoasobi-lyrics):
 - Visualizations Latest Update: 24 July 2024
   - [Power BI](https://app.powerbi.com/view?r=eyJrIjoiMTljZjdmN2MtMTk2NC00N2M5LTkxNGMtN2NhZDhlNmU4YmUzIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)
-  - [Instagram](https://www.instagram.com/p/C82JCheu08x/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
-  - [Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid02WxG24t8kDyPBEqEhkYYBfsDVg9uBUvasARogLUTU2CeoDeW7VuFp7S5bnbdqV7tTl&id=61553626169836)
+  - [Instagram](https://www.instagram.com/p/C90Am-KhCsX/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+  - [Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid02X9XERHLkiGgnKFdBPhapgpx2EgR6HzXand9BbqmsKjQwC5w7hqxrwu3YELRxLLBAl&id=61553626169836)
 
 [Common Japanese Words in YOASOBI Lyrics](#common-japanese-words-in-yoasobi-lyrics):
 - Visualizations Latest Update: 24 July 2024
   - [Power BI](https://app.powerbi.com/view?r=eyJrIjoiODk0NDIyMjYtODQ2YS00NDgzLWI4MDctNjA4ZTQ1MTdkZTNlIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)
-  - [Instagram]()
-  - [Facebook]()
+  - [Instagram](https://www.instagram.com/p/C90BG46heAG/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+  - [Facebook](https://www.facebook.com/permalink.php?story_fbid=pfbid02VPxSQoSML33zDCZCPUhEFiXHqJT7uT8VVvSUuKh9UKxA5r8W2hZv87NiX65kXsEol&id=61553626169836)
 
 # Common Japanese Morphemes in YOASOBI Lyrics
 Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' lyrics.
