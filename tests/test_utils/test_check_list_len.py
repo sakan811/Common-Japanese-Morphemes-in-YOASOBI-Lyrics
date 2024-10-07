@@ -1,4 +1,4 @@
-from scraper.utils import check_list_len
+from morphemes_extractor.utils import check_list_len
 
 
 def test_check_list_len_single_list():
