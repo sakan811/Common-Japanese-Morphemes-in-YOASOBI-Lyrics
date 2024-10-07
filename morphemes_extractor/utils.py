@@ -7,7 +7,7 @@ def check_list_len(*args) -> tuple:
     :param args: Target lists.
     :return: Length of the target list as Tuple.
     """
-    logger.info(f"Checking length of target lists...")
+    logger.info("Checking length of target lists...")
     lengths = [len(arg) for arg in args]
     return tuple(lengths)
 
