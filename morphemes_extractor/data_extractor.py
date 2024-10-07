@@ -1,10 +1,14 @@
+import json
 import re
 
+import pandas as pd
 from cutlet import cutlet
-from sudachipy import Tokenizer, dictionary, tokenizer
 from loguru import logger
+from sudachipy import Tokenizer, dictionary, tokenizer
 
-from scraper.utils import check_list_len
+from morphemes_extractor.data_transformer import transform_data_to_df
+from morphemes_extractor.json_utils import load_json
+from morphemes_extractor.utils import check_list_len
 
 
 def is_english(word: str) -> bool:
@@ -134,34 +138,45 @@ def extract_romanji(jp_char: str) -> str:
     return cutlet.Cutlet().romaji(jp_char)
 
 
-def extract_data(lyrics_list: list[str]) -> tuple[list[str], list[str], list[str], str]:
+def extract_data(song: dict[str, str]) -> tuple[list[str], list[str], list[str], str, str]:
     """
-    Extract data from the page sources.
-    :param lyrics_list: Lyrics list.
-    :return: Tuple of extracted data from the page sources.
+    Extract data from the JSON file.
+    :param song: YOASOBI song.
+    :return: Tuple of extracted data from the JSON file.
     """
-    logger.info('Extracting data from the page sources...')
-    song_name: str = extract_song_name_from_lyrics_list(lyrics_list)
+    song_name: str = song['title']
+    logger.info(f'Extracting data from song {song_name}...')
 
-    lyrics: str = extract_lyrics_from_lyrics_list(lyrics_list)
+    song_eng_name: str = song['romanji_title']
+    lyrics: str = song['lyrics']
 
     morphemes: list[str] = extract_morphemes_from_lyrics(lyrics)
     logger.debug(f'morphemes list: {morphemes}')
 
-    romanized_words: list[str] = extract_romanji_from_jp_characters(morphemes)
+    romanized_morphemes: list[str] = extract_romanji_from_jp_characters(morphemes)
 
     part_of_speech_list: list[str] = extract_part_of_speech_from_morphemes(morphemes)
 
-    list_len = check_list_len(morphemes, romanized_words, part_of_speech_list)
+    list_len = check_list_len(morphemes, romanized_morphemes, part_of_speech_list)
     words_len = list_len[0]
     romanized_words_len = list_len[1]
     part_of_speech_list_len = list_len[2]
 
     if words_len == romanized_words_len == part_of_speech_list_len:
-        logger.info("The length of words, romanized_words, and part_of_speech_list are equal.")
-        return morphemes, romanized_words, part_of_speech_list, song_name
+        logger.info("The length of words, romanized_morphemes, and part_of_speech_list are equal.")
+        return morphemes, romanized_morphemes, part_of_speech_list, song_name, song_eng_name
     else:
-        raise Exception('The length of words, romanized_words, and part_of_speech_list are not equal.')
+        raise Exception('The length of words, romanized_morphemes, and part_of_speech_list are not equal.')
+
+
+def get_song_list(json_data: dict[str, list[dict[str, str]]]) -> list[dict[str, str]]:
+    """
+    Get the list of songs from the JSON data.
+    :param json_data: JSON data
+    :return: List of songs
+    """
+    song_list: list[dict[str, str]] = json_data['songs']
+    return song_list
 
 
 def extract_song_name_from_lyrics_list(lyrics_list: list[str]) -> str:
@@ -208,6 +223,29 @@ def extract_lyrics_from_lyrics_list(lyrics_list: list[str]) -> str:
     logger.info('Use regular expression to remove characters within square brackets and the brackets themselves')
     lyrics: str = re.sub(r'\[.*?]', '', lyrics)
     return lyrics
+
+
+def get_morphemes_from_songs(json_path_list: list[str]) -> pd.DataFrame:
+    """
+    Extract morphemes and related information from songs in JSON files.
+
+    :param json_path_list: List of paths to JSON files containing song data.
+    :return: DataFrame with columns: morphemes, romanized morphemes,
+             parts of speech, song names, and romanized song names.
+             Returns empty DataFrame if no valid data is found.
+    """
+    json_data = load_json(json_path_list)
+    song_list = get_song_list(json_data)
+    df_list = []
+    for song in song_list:
+        morphemes, romanized_morphemes, part_of_speech_list, song_name, song_romanized_name = extract_data(song)
+        df = transform_data_to_df(morphemes, romanized_morphemes, part_of_speech_list,
+                                  song_name, song_romanized_name)
+        if not df.empty:
+            df_list.append(df)
+
+    df = pd.concat(df_list, ignore_index=True) if df_list else pd.DataFrame()
+    return df
 
 
 if __name__ == '__main__':
