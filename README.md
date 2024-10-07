@@ -25,6 +25,14 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 # How to Scrape Japanese Morphemes from YOASOBI's Songs
 ## Setup the Project
 - Clone this repo: https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics.git
+- Install the dependencies: 
+  * ```bash
+    pip install -r requirements.txt 
+    ```
+- Download Unidic:
+  - ```bash
+    python -m unidic download
+    ``` 
 
 ## Run the Script
 - Run:
