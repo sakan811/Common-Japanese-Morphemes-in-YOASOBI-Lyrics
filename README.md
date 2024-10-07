@@ -3,7 +3,6 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 
 > Morphemes are the smallest units of meaning in a language.
 
-- Project Latest Update: 24 July 2024
 - Japanese morphemes were extracted using **SudachiPy** and romanized using **Cutlet**.
 
 # Disclaimers
