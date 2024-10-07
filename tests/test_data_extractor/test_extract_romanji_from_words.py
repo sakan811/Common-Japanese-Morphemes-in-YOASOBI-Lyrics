@@ -1,4 +1,4 @@
-from scraper.data_extractor import extract_romanji_from_jp_characters
+from morphemes_extractor.data_extractor import extract_romanji_from_jp_characters
 
 
 def test_extract_romanji_from_japanese_words():

@@ -1,4 +1,4 @@
-from scraper.data_extractor import extract_morphemes_from_lyrics
+from morphemes_extractor.data_extractor import extract_morphemes_from_lyrics
 
 
 def test_extract_words_with_english_words():

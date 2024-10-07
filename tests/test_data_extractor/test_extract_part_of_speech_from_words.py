@@ -1,4 +1,4 @@
-from scraper.data_extractor import extract_part_of_speech_from_morphemes
+from morphemes_extractor.data_extractor import extract_part_of_speech_from_morphemes
 
 
 def test_extract_pos_with_japanese_words():

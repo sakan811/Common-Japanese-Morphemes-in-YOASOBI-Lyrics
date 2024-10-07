@@ -1,6 +1,6 @@
 import pytest
 
-from scraper.data_transformer import transform_data_to_df
+from morphemes_extractor.data_transformer import transform_data_to_df
 
 
 def test_transform_data_with_morpheme_true(mocker):

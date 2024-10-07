@@ -1,4 +1,4 @@
-from scraper.data_extractor import is_english
+from morphemes_extractor.data_extractor import is_english
 
 
 def test_is_english_with_english_word():
