@@ -12,10 +12,10 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 
 # Visualizations
 [Common Japanese Morphemes in YOASOBI Lyrics](#common-japanese-morphemes-in-yoasobi-lyrics):
-- Visualizations Latest Update: 6 October 2024
+- Visualizations Latest Update: 7 October 2024
   - [Power BI](https://app.powerbi.com/view?r=eyJrIjoiMTljZjdmN2MtMTk2NC00N2M5LTkxNGMtN2NhZDhlNmU4YmUzIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)
-  - [Instagram]()
-  - [Facebook]()
+  - [Instagram](https://www.instagram.com/p/DA0yhHPtJl5/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+  - [Facebook](https://www.facebook.com/share/Eq6nmk6x8BLM4Nb2/)
 
 # Status
 [![CodeQL](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml) 
