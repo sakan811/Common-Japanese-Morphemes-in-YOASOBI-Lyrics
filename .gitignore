@@ -112,3 +112,4 @@ Thumbs.db
 **/*.pdf
 /save_html.py
 /morphemes_extractor/lyrics/template.json
+/post_template.md
