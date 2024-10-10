@@ -11,7 +11,7 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 
 # Visualizations
 [Common Japanese Morphemes in YOASOBI Lyrics](#common-japanese-morphemes-in-yoasobi-lyrics):
-- Visualizations Latest Update: 7 October 2024
+- Visualizations Latest Update: 8 October 2024
   - [Power BI](https://app.powerbi.com/view?r=eyJrIjoiMTljZjdmN2MtMTk2NC00N2M5LTkxNGMtN2NhZDhlNmU4YmUzIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)
   - [Instagram](https://www.instagram.com/p/DA3StTcNmo0/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
   - [Facebook](https://www.facebook.com/share/p/Do5gMdTYYpmgvc52/)
@@ -33,7 +33,54 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
     python -m unidic download
     ``` 
 
-## Run the Script
+## Add Lyrics as JSON
+
+- [template.json](morphemes_extractor%2Flyrics%2Ftemplate.json) is a template of the JSON file.
+  ```json
+  {
+    "songs": [
+      {
+        "title": "",
+        "romanji_title": "",
+        "lyrics": ""
+      }
+    ]
+  }
+  ```
+
+### Explanation:
+- The JSON file contains an array of `songs`.
+- Each song in the array has three fields:
+  - `title`: The original Japanese title of the song.
+  - `romanji_title`: The romanized version of the title.
+  - `lyrics`: The full lyrics of the song in Japanese.
+
+### How to Add More Songs:
+1. Create a new JSON file in the `morphemes_extractor/lyrics` directory or use an existing one.
+2. Follow the structure of the [template.json](morphemes_extractor%2Flyrics%2Ftemplate.json) file.
+3. For each new song, add a new object to the `songs` array with the required fields.
+4. Make sure to separate multiple song objects with commas.
+5. Save the file with a meaningful name (e.g., `yoasobi_songs.json`).
+6. The script will automatically process all JSON files in the lyrics directory.
+### Example of adding multiple songs:
+```json
+{
+  "songs": [
+    {
+      "title": "夜に駆ける",
+      "romanji_title": "Yoru ni Kakeru",
+      "lyrics": "ふざけあっても 分かり合えた気がした..."
+    },
+    {
+      "title": "群青",
+      "romanji_title": "Gunjou",
+      "lyrics": "嗚呼いつもの様に 過ぎる日々にあくびが出る..."
+    }
+  ]
+}
+```
+
+## Run a Script
 - Run:
   ```bash
   python main.py
