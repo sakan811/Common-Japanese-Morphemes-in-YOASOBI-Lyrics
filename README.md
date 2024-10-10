@@ -21,7 +21,7 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
 
-# How to Scrape Japanese Morphemes from YOASOBI's Songs
+# How to Extract Japanese Morphemes from YOASOBI's Song Lyrics
 ## Setup the Project
 - Clone this repo: https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics.git
 - Install the dependencies: 
