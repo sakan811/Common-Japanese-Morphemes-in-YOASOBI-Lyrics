@@ -21,7 +21,7 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
 
-# How to Extract Japanese Morphemes from YOASOBI's Song Lyrics
+# How to Extract Japanese Morphemes from Japanese Song Lyrics
 ## Setup the Project
 - Clone this repo: https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics.git
 - Install the dependencies: 
@@ -55,13 +55,14 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
   - `romanji_title`: The romanized version of the title.
   - `lyrics`: The full lyrics of the song in Japanese.
 
-### How to Add More Songs:
+### How to Add Songs:
 1. Create a new JSON file in the `morphemes_extractor/lyrics` directory or use an existing one.
 2. Follow the structure of the [template.json](morphemes_extractor%2Flyrics%2Ftemplate.json) file.
 3. For each new song, add a new object to the `songs` array with the required fields.
 4. Make sure to separate multiple song objects with commas.
 5. Save the file with a meaningful name (e.g., `yoasobi_songs.json`).
 6. The script will automatically process all JSON files in the lyrics directory.
+
 ### Example of adding multiple songs:
 ```json
 {
