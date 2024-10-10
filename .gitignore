@@ -111,5 +111,13 @@ Thumbs.db
 **/*.pbix
 **/*.pdf
 /save_html.py
-/morphemes_extractor/lyrics/template.json
 /post_template.md
+/morphemes_extractor/json_utils.py
+/morphemes_extractor/lyrics/Butai_ni_tatte.json
+/morphemes_extractor/lyrics/heartbeat.json
+/morphemes_extractor/lyrics/monotone.json
+/morphemes_extractor/lyrics/biri_biri.json
+/morphemes_extractor/lyrics/the_book.json
+/morphemes_extractor/lyrics/the_book_2.json
+/morphemes_extractor/lyrics/the_book_3.json
+/morphemes_extractor/lyrics/undead.json

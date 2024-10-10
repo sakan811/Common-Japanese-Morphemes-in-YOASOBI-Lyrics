@@ -5,10 +5,12 @@ def test_combine_json_data_empty_list():
     result = combine_json_data([])
     assert result == {"songs": []}
 
+
 def test_combine_json_data_single_dict():
     input_data = [{"songs": [{"title": "Song1", "artist": "Artist1"}]}]
     expected = {"songs": [{"title": "Song1", "artist": "Artist1"}]}
     assert combine_json_data(input_data) == expected
+
 
 def test_combine_json_data_multiple_dicts():
     input_data = [
@@ -23,6 +25,7 @@ def test_combine_json_data_multiple_dicts():
     }
     assert combine_json_data(input_data) == expected
 
+
 def test_combine_json_data_missing_songs_key():
     input_data = [
         {"songs": [{"title": "Song1", "artist": "Artist1"}]},
@@ -30,6 +33,7 @@ def test_combine_json_data_missing_songs_key():
     ]
     expected = {"songs": [{"title": "Song1", "artist": "Artist1"}]}
     assert combine_json_data(input_data) == expected
+
 
 def test_combine_json_data_mixed_content():
     input_data = [
@@ -45,6 +49,7 @@ def test_combine_json_data_mixed_content():
         ]
     }
     assert combine_json_data(input_data) == expected
+
 
 def test_combine_json_data_return_type():
     result = combine_json_data([{"songs": []}])

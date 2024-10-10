@@ -11,11 +11,20 @@ logger.add('yoasobi.log',
            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name} | {module} | {function} | {line} | {message}",
            mode='w', level="INFO")
 
-db_dir = 'yoasobi.db'
 
-json_dir = 'morphemes_extractor/lyrics'
+def main(db_dir: str, json_dir: str) -> None:
+    json_file_path_list = find_json_files(json_dir)
+    if json_file_path_list:
+        df = get_morphemes_from_songs(json_file_path_list)
+        if not df.empty:
+            save_to_sqlite(df, db_dir)
+        else:
+            logger.warning("No morphemes found in the JSON files.")
+    else:
+        logger.warning("No JSON files found in the specified directory.")
 
-json_file_path_list = find_json_files(json_dir)
 
-df = get_morphemes_from_songs(json_file_path_list)
-save_to_sqlite(df, db_dir)
+if __name__ == '__main__':
+    db_dir = 'yoasobi.db'
+    json_dir = 'morphemes_extractor/lyrics'
+    main(db_dir, json_dir)
