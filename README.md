@@ -90,7 +90,7 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
   ```
 
 ## Run an App
-- Make sure that Dock Desktop and the `morphemes-extractor` container are running.
+- Make sure that Docker Desktop and the `morphemes-extractor` container are running.
 - Run: 
   ```bash
   docker exec morphemes-extractor python main.py
