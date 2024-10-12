@@ -19,7 +19,7 @@ def mock_dataframe():
 def test_main_successful_execution(mock_json_files, mock_dataframe):
     with patch('main.find_json_files') as mock_find_json_files, \
             patch('main.get_morphemes_from_songs') as mock_get_morphemes, \
-            patch('main.save_to_sqlite') as mock_save_to_sqlite:
+            patch('main.save_to_db') as mock_save_to_sqlite:
         mock_find_json_files.return_value = mock_json_files
         mock_get_morphemes.return_value = mock_dataframe
 
@@ -33,7 +33,7 @@ def test_main_successful_execution(mock_json_files, mock_dataframe):
 def test_main_no_json_files():
     with patch('main.find_json_files') as mock_find_json_files, \
             patch('main.get_morphemes_from_songs') as mock_get_morphemes, \
-            patch('main.save_to_sqlite') as mock_save_to_sqlite, \
+            patch('main.save_to_db') as mock_save_to_sqlite, \
             patch('main.logger.warning') as mock_logger_warning:
         mock_find_json_files.return_value = []
 
@@ -48,7 +48,7 @@ def test_main_no_json_files():
 def test_main_empty_dataframe(mock_json_files):
     with patch('main.find_json_files') as mock_find_json_files, \
             patch('main.get_morphemes_from_songs') as mock_get_morphemes, \
-            patch('main.save_to_sqlite') as mock_save_to_sqlite, \
+            patch('main.save_to_db') as mock_save_to_sqlite, \
             patch('main.logger.warning') as mock_logger_warning:
         mock_find_json_files.return_value = mock_json_files
         mock_get_morphemes.return_value = pd.DataFrame()
