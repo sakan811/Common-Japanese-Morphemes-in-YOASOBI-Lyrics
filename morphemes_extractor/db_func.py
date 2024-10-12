@@ -1,25 +1,32 @@
-import sqlite3
-
 import pandas as pd
 from loguru import logger
+from sqlalchemy import create_engine
+from sqlalchemy.exc import SQLAlchemyError, OperationalError
 
 
-def save_to_sqlite(df: pd.DataFrame, db_dir: str) -> None:
+def save_to_db(df: pd.DataFrame, db_url: str) -> None:
     """
-    Save a DataFrame to a SQLite database.
-
+    Save a DataFrame to a database using SQLAlchemy.
     :param df: DataFrame containing the morpheme data to be saved
-    :param db_dir: Directory path of the SQLite database file
+    :param db_url: SQLAlchemy database URL
     :return: None
-
-    This function connects to a SQLite database specified by db_dir and appends
+    This function connects to a database specified by db_url and appends
     the data from the provided DataFrame to a table named 'Morpheme'. If the
     table doesn't exist, it will be created.
-
-    The function uses a context manager to ensure proper connection handling.
     """
-    with sqlite3.connect(db_dir) as conn:
-        try:
+    try:
+        engine = create_engine(db_url)
+        with engine.connect() as conn:
             df.to_sql('Morpheme', conn, if_exists='replace', index=False)
-        except sqlite3.OperationalError as e:
-            logger.error(f"Error saving DataFrame to SQLite database: {e}")
+            conn.commit()
+        logger.info(f"DataFrame saved to database")
+    except OperationalError as e:
+        logger.error(f"OperationalError saving DataFrame to database: {e}")
+        raise
+    except SQLAlchemyError as e:
+        logger.error(f"Error saving DataFrame to database: {e}")
+        conn.rollback()
+        raise
+    except UnboundLocalError as e:
+        logger.error(f"UnboundLocalError saving DataFrame to database: {e}")
+        raise
