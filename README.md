@@ -1,5 +1,5 @@
 # Common Japanese Morphemes in YOASOBI Lyrics
-Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' lyrics.
+Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI**'s songs' lyrics.
 
 > Morphemes are the smallest units of meaning in a language.
 
@@ -95,4 +95,9 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
   ```bash
   docker exec morphemes-extractor python main.py
   ```
-- Data is saved to a Postgres database.
+- Data is saved to a Postgres database run in a container.
+
+## Stop a Docker Container
+- Open Docker Desktop
+- Go to the Containers section.
+- Find the running container `morphemes-extractor` and click Stop.
