@@ -62,6 +62,8 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 5. Save the file with a meaningful name (e.g., `yoasobi_songs.json`).
 6. The script will automatically process all JSON files in the lyrics directory.
 
+> You can seperate songs into it own JSON file, but the JSON structure should be as instructed
+
 ### Example of adding multiple songs:
 ```json
 {
