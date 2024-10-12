@@ -23,19 +23,14 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 
 # How to Extract Japanese Morphemes from Japanese Song Lyrics
 ## Setup the Project
-- Clone this repo: https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics.git
-- Install the dependencies: 
-  * ```bash
-    pip install -r requirements.txt 
-    ```
-- Download Unidic:
-  - ```bash
-    python -m unidic download
-    ``` 
+- Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
+- Download [docker-compose.yml](docker-compose.yml) file from this repo.
+- Place the Docker Compose file in a directory of your choice.
+- Create `lyrics` directory in the same directory that you place the Docker Compose file.
 
 ## Add Lyrics as JSON
 
-- [template.json](morphemes_extractor%2Flyrics%2Ftemplate.json) is a template of the JSON file.
+- Below is a template of the JSON file.
   ```json
   {
     "songs": [
@@ -56,8 +51,8 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
   - `lyrics`: The full lyrics of the song in Japanese.
 
 ### How to Add Songs:
-1. Create a new JSON file in the `morphemes_extractor/lyrics` directory or use an existing one.
-2. Follow the structure of the [template.json](morphemes_extractor%2Flyrics%2Ftemplate.json) file.
+1. Create a new JSON file in the `lyrics` directory.
+2. Follow the structure of the JSON file as explained in the above sections.
 3. For each new song, add a new object to the `songs` array with the required fields.
 4. Make sure to separate multiple song objects with commas.
 5. Save the file with a meaningful name (e.g., `yoasobi_songs.json`).
@@ -81,14 +76,17 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 }
 ```
 
-## Run a Script
+## Setup a Docker Container
+- Make sure that Docker Desktop is running.
 - Run:
   ```bash
-  python main.py
+  docker compose up -d
   ```
-> Data is saved to a SQLite database named **yoasobi.db** by default.
->  - The database is created automatically if not exist in the given path. 
-> - You can adjust the name of the database as defined in [main.py](main.py)
->  ```
->  db_dir = 'yoasobi.db'  # adjust this variable to change the database's name
->  ```
+
+## Run an App
+- Make sure that Dock Desktop and the `morphemes-extractor` container are running.
+- Run: 
+  ```bash
+  docker exec morphemes-extractor python main.py
+  ```
+- Data is saved to a Postgres database.
