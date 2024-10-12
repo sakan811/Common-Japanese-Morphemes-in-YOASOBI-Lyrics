@@ -21,6 +21,10 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
 
+[![Docker Build](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-build.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-build.yml)
+
+[![Trivy Docker Scan](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/trivy-scan.yml)
+
 # How to Extract Japanese Morphemes from Japanese Song Lyrics
 ## Setup the Project
 - Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
