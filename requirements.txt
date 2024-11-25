@@ -1,7 +1,7 @@
 loguru~=0.7.2
 pytest~=8.3.3
 cutlet~=0.4.0
-SudachiPy~=0.6.8
+SudachiPy~=0.6.9
 SQLAlchemy~=2.0.36
 SudachiDict-core>=20240409
 mecab-python3~=1.0.10
