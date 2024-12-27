@@ -19,7 +19,7 @@ def save_to_db(df: pd.DataFrame, db_url: str) -> None:
         with engine.connect() as conn:
             df.to_sql('Morpheme', conn, if_exists='replace', index=False)
             conn.commit()
-        logger.info(f"DataFrame saved to database")
+        logger.info("DataFrame saved to database")
     except OperationalError as e:
         logger.error(f"OperationalError saving DataFrame to database: {e}")
         raise
