@@ -45,10 +45,6 @@ jobs:
       run: |
         python -m unidic download
 
-    - name: Lint with Ruff
-      run: |
-        ruff check . --unsafe-fixes --fix
-
     - name: Test with pytest
       run: |
         python -m pytest tests
