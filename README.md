@@ -9,16 +9,16 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 # Disclaimers
 
 - Lyrics were based on [genius.com](https://genius.com/artists/Yoasobi)
-- Lyrics of 28 YOASOBI songs
+- Lyrics of 29 YOASOBI songs
 
 # Visualizations
 
 [Common Japanese Morphemes in YOASOBI Lyrics](#common-japanese-morphemes-in-yoasobi-lyrics):
 
-- Visualizations Latest Update: 8 October 2024
+- Visualizations Latest Update: 27 December 2024
   - [Power BI](https://app.powerbi.com/view?r=eyJrIjoiMTljZjdmN2MtMTk2NC00N2M5LTkxNGMtN2NhZDhlNmU4YmUzIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)
-  - [Instagram](https://www.instagram.com/p/DA3StTcNmo0/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
-  - [Facebook](https://www.facebook.com/share/p/Do5gMdTYYpmgvc52/)
+  - [Instagram](https://www.instagram.com/p/DEFhhepvcdK/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
+  - [Facebook](https://www.facebook.com/share/p/14s4C59P3n/)
 
 # Status
 
