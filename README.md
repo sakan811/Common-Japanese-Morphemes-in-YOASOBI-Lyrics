@@ -1,6 +1,5 @@
 # Common Japanese Morphemes in YOASOBI Lyrics
-
-Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' lyrics.
+Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI**'s songs' lyrics.
 
 > Morphemes are the smallest units of meaning in a language.
 
@@ -72,6 +71,8 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
 5. Save the file with a meaningful name (e.g., `yoasobi_songs.json`).
 6. The script will automatically process all JSON files in the lyrics directory.
 
+> You can seperate songs into it own JSON file, but the JSON structure should be as instructed
+
 ### Example of adding multiple songs
 
 ```json
@@ -101,12 +102,9 @@ Showcase visualizations about the common Japanese morphemes in YOASOBI's songs' 
   ```
 
 ## Run an App
-
 - Make sure that Dock Desktop and the `morphemes-extractor` container are running.
-- Run:
-
+- Run: 
   ```bash
   docker exec morphemes-extractor python main.py
   ```
-
 - Data is saved to a Postgres database.
