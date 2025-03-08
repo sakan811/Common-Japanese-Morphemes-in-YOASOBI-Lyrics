@@ -6,12 +6,12 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 - Japanese morphemes were extracted using **SudachiPy** and romanized using **Cutlet**.
 
-# Disclaimers
+## Disclaimers
 
 - Lyrics were based on [genius.com](https://genius.com/artists/Yoasobi)
 - Lyrics of 29 YOASOBI songs
 
-# Visualizations
+## Visualizations
 
 [Common Japanese Morphemes in YOASOBI Lyrics](#common-japanese-morphemes-in-yoasobi-lyrics):
 
@@ -20,9 +20,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   - [Instagram](https://www.instagram.com/p/DEFhhepvcdK/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
   - [Facebook](https://www.facebook.com/share/p/14s4C59P3n/)
 
-# Status
-
-[![CodeQL](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Words-in-YOASOBI-Lyrics/actions/workflows/codeql.yml)
+## Status
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
 
@@ -30,16 +28,16 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 [![Trivy Docker Scan](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/trivy-scan.yml)
 
-# How to Extract Japanese Morphemes from Japanese Song Lyrics
+## How to Extract Japanese Morphemes from Japanese Song Lyrics
 
-## Setup the Project
+### Setup the Project
 
 - Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
 - Download [docker-compose.yml](docker-compose.yml) file from this repo.
 - Place the Docker Compose file in a directory of your choice.
 - Create `lyrics` directory in the same directory that you place the Docker Compose file.
 
-## Add Lyrics as JSON
+### Add Lyrics as JSON
 
 - Below is a template of the JSON file.
 
@@ -55,7 +53,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   }
   ```
 
-### Explanation
+#### Explanation
 
 - The JSON file contains an array of `songs`.
 - Each song in the array has three fields:
@@ -63,7 +61,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   - `romanji_title`: The romanized version of the title.
   - `lyrics`: The full lyrics of the song in Japanese.
 
-### How to Add Songs
+#### How to Add Songs
 
 1. Create a new JSON file in the `lyrics` directory.
 2. Follow the structure of the JSON file as explained in the above sections.
@@ -74,7 +72,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 > You can seperate songs into it own JSON file, but the JSON structure should be as instructed
 
-### Example of adding multiple songs
+#### Example of adding multiple songs
 
 ```json
 {
@@ -93,7 +91,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 }
 ```
 
-## Setup a Docker Container
+### Setup a Docker Container
 
 - Make sure that Docker Desktop is running.
 - Run:
@@ -102,7 +100,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   docker compose up -d
   ```
 
-## Run an App
+### Run a Script
 
 - Make sure that Dock Desktop and the `morphemes-extractor` container are running.
 - Run:
