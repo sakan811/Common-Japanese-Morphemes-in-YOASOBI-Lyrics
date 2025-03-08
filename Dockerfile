@@ -12,8 +12,8 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Upgrade pip and install the Python dependencies
-RUN uv pip install --upgrade pip
-RUN uv pip install --no-cache-dir -r requirements.txt
+RUN uv pip install --system --upgrade pip
+RUN uv pip install --system --no-cache-dir -r requirements.txt
 
 # Download Unidic
 RUN python -m unidic download
