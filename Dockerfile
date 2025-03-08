@@ -1,5 +1,6 @@
 # Dockerfile
-FROM python:3.12-slim-bullseye
+FROM python:3.13-slim-bullseye
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Create a non-root user
 RUN useradd -m appuser
@@ -11,8 +12,8 @@ WORKDIR /app
 COPY requirements.txt .
 
 # Upgrade pip and install the Python dependencies
-RUN python -m pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+RUN uv pip install --upgrade pip
+RUN uv pip install --no-cache-dir -r requirements.txt
 
 # Download Unidic
 RUN python -m unidic download
