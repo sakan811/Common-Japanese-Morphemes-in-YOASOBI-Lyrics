@@ -53,7 +53,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   }
   ```
 
-### Explanation
+#### Explanation
 
 - The JSON file contains an array of `songs`.
 - Each song in the array has three fields:
@@ -61,7 +61,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   - `romanji_title`: The romanized version of the title.
   - `lyrics`: The full lyrics of the song in Japanese.
 
-### How to Add Songs
+#### How to Add Songs
 
 1. Create a new JSON file in the `lyrics` directory.
 2. Follow the structure of the JSON file as explained in the above sections.
@@ -72,7 +72,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 > You can seperate songs into it own JSON file, but the JSON structure should be as instructed
 
-### Example of adding multiple songs
+#### Example of adding multiple songs
 
 ```json
 {
@@ -91,7 +91,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 }
 ```
 
-## Setup a Docker Container
+### Setup a Docker Container
 
 - Make sure that Docker Desktop is running.
 - Run:
@@ -100,7 +100,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   docker compose up -d
   ```
 
-## Run an App
+### Run a Script
 
 - Make sure that Dock Desktop and the `morphemes-extractor` container are running.
 - Run:
