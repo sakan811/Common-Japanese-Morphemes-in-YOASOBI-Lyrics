@@ -1,24 +1,46 @@
 # Dockerfile
+# Build stage
+FROM python:3.13-slim-bullseye AS builder
+
+# Copy UV from its official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
+
+# Set the working directory
+WORKDIR /app
+
+# Copy only the requirements file first to leverage Docker cache
+COPY requirements.txt .
+
+# Install build dependencies, install dependencies, and clean up in a single layer
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    build-essential \
+    g++ \
+    && uv pip install --system --upgrade pip \
+    && uv pip install --system -r requirements.txt \
+    && apt-get purge -y --auto-remove build-essential g++ \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Final stage
 FROM python:3.13-slim-bullseye
+
+# Copy UV from its official image
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 # Create a non-root user
 RUN useradd -m appuser
 
-# Set the working directory in the container
+# Set the working directory
 WORKDIR /app
 
-# Copy the requirements file into the container
-COPY requirements.txt .
+# Copy installed packages from builder stage
+COPY --from=builder /usr/local/lib/python3.13/site-packages /usr/local/lib/python3.13/site-packages
+COPY --from=builder /usr/local/bin /usr/local/bin
 
-# Upgrade pip and install the Python dependencies
-RUN uv pip install --system --upgrade pip
-RUN uv pip install --system --no-cache-dir -r requirements.txt
-
-# Download Unidic
+# Install unidic directly in the final stage
 RUN python -m unidic download
 
-# Copy the rest of the application code
+# Copy application code
 COPY . .
 
 # Change ownership of the application files to appuser
