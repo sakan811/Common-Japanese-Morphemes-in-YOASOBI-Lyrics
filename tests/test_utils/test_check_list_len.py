@@ -26,4 +26,4 @@ def test_check_list_len_single_empty_list():
 
 
 def test_check_list_len_lists_with_different_data_types():
-    assert check_list_len([1, 2], ['a', 'b', 'c'], [True, False, True]) == (2, 3, 3)
+    assert check_list_len([1, 2], ["a", "b", "c"], [True, False, True]) == (2, 3, 3)

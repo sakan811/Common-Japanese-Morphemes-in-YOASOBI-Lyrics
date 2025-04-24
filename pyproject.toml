@@ -15,4 +15,8 @@ dependencies = [
     "sudachipy>=0.6.10",
     "sudachidict-core>=20250129",
     "unidic>=1.1.0",
+    "seaborn>=0.13.2",
+    "python-dotenv>=1.1.0",
+    "ruff>=0.11.6",
+    "japanize-matplotlib>=1.1.3",
 ]

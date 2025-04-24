@@ -1,6 +1,7 @@
 import os
 import sys
 
+from dotenv import load_dotenv
 from loguru import logger
 
 from morphemes_extractor.data_extractor import get_morphemes_from_songs
@@ -22,17 +23,18 @@ def main(db_url: str, json_dir: str) -> None:
         logger.warning("No JSON files found in the specified directory.")
 
 
-if __name__ == '__main__':
-    json_dir = os.getenv('JSON_DIR')
+if __name__ == "__main__":
+    load_dotenv()
+    json_dir = os.getenv("JSON_DIR")
     if json_dir is None:
         logger.error("JSON_DIR environment variable is not set.")
         sys.exit(1)
 
-    db_user = os.getenv('DB_USER')
-    db_password = os.getenv('DB_PASSWORD')
-    db_host = os.getenv('DB_HOST')
-    db_port = os.getenv('DB_PORT')
-    db_name = os.getenv('DB_NAME')
+    db_user = os.getenv("DB_USER")
+    db_password = os.getenv("DB_PASSWORD")
+    db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
+    db_name = os.getenv("DB_NAME")
 
-    db_url = f'postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}'
+    db_url = f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
     main(db_url, json_dir)

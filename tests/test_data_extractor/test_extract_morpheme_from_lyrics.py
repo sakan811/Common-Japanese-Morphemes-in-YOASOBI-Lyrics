@@ -13,7 +13,7 @@ def test_extract_words_with_numbers():
 
 def test_extract_words_with_japanese_auxiliary_symbols():
     lyrics = "こんにちは です"
-    assert extract_morphemes_from_lyrics(lyrics) == ['こんにちは', 'です']
+    assert extract_morphemes_from_lyrics(lyrics) == ["こんにちは", "です"]
 
 
 def test_extract_words_with_mixed_characters():
@@ -38,4 +38,4 @@ def test_extract_words_with_newlines():
 
 def test_extract_words_with_special_characters():
     lyrics = "こんにちは! 世界?"
-    assert extract_morphemes_from_lyrics(lyrics) == ['こんにちは', '世界']
+    assert extract_morphemes_from_lyrics(lyrics) == ["こんにちは", "世界"]

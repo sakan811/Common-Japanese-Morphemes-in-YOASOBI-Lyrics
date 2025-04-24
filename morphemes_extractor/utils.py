@@ -9,10 +9,14 @@ def check_list_len(morpheme_data: MorphemeData) -> tuple[int, ...]:
     :return: Length of the target list as Tuple.
     """
     logger.info("Checking length of target lists...")
-    lengths = [len(morpheme_data.morphemes), len(morpheme_data.romanized_morphemes), len(morpheme_data.part_of_speech_list)]
-    logger.debug(f'Lengths: {lengths}')
+    lengths = [
+        len(morpheme_data.morphemes),
+        len(morpheme_data.romanized_morphemes),
+        len(morpheme_data.part_of_speech_list),
+    ]
+    logger.debug(f"Lengths: {lengths}")
     return tuple(lengths)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass

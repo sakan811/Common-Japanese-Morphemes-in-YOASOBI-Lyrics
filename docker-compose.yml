@@ -1,23 +1,6 @@
 version: '3.8'
 
 services:
-  morphemes-extractor:
-    image: sakanbeer88/jp-morphemes-extractor:latest
-    container_name: morphemes-extractor
-    volumes:
-      - ./lyrics:/app/lyrics
-    environment:
-      - PYTHONUNBUFFERED=1
-      - JSON_DIR=/app/lyrics
-      - DB_USER=postgres
-      - DB_PASSWORD=postgres
-      - DB_HOST=postgres-db
-      - DB_PORT=6000
-      - DB_NAME=postgres
-    depends_on:
-      - db
-    user: appuser
-
   db:
     image: postgres:latest
     container_name: postgres-db

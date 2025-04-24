@@ -4,11 +4,12 @@ import pandas as pd
 
 
 def transform_data_to_df(
-        char_list: list[str],
-        romanized_char_list: list[str],
-        part_of_speech_list: list[str],
-        song_name: str,
-        song_romanized_name: str) -> pd.DataFrame:
+    char_list: list[str],
+    romanized_char_list: list[str],
+    part_of_speech_list: list[str],
+    song_name: str,
+    song_romanized_name: str,
+) -> pd.DataFrame:
     """
     Transform data into a pandas dataframe.
     :param char_list: Japanese character list
@@ -18,21 +19,21 @@ def transform_data_to_df(
     :param song_romanized_name: Song's name in Romanji
     :return: A pandas dataframe
     """
-    logger.info('Transforming data into a pandas dataframe...')
+    logger.info("Transforming data into a pandas dataframe...")
 
     data = {
-        'Morpheme': char_list,
-        'Romanji': romanized_char_list,
-        'Part_of_Speech': part_of_speech_list
+        "Morpheme": char_list,
+        "Romanji": romanized_char_list,
+        "Part_of_Speech": part_of_speech_list,
     }
 
     df = pd.DataFrame(data)
-    df['Song'] = song_name
-    df['Song_Romanji'] = song_romanized_name
-    df['Timestamp'] = datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    df["Song"] = song_name
+    df["Song_Romanji"] = song_romanized_name
+    df["Timestamp"] = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
     return df
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     pass
