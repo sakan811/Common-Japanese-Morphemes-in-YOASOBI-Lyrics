@@ -9,20 +9,19 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 WORKDIR /app
 
 # Copy only the requirements file first to leverage Docker cache
-COPY requirements.txt .
+COPY pyproject.toml uv.lock ./
 
 # Install build dependencies, install dependencies, and clean up in a single layer
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     g++ \
-    && uv pip install --system --upgrade pip \
-    && uv pip install --system -r requirements.txt \
+    && uv sync \
     && apt-get purge -y --auto-remove build-essential g++ \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
 # Final stage
-FROM python:3.13-slim-bullseye
+FROM python:3.13-slim-bookworm
 
 # Copy UV from its official image
 COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/

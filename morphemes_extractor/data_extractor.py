@@ -1,11 +1,12 @@
 import pandas as pd
-from cutlet import cutlet
+from cutlet import cutlet # type: ignore
 from loguru import logger
-from sudachipy import Tokenizer, dictionary, tokenizer
-from unidic import unidic
+from sudachipy import Tokenizer, dictionary, tokenizer # type: ignore
+from unidic import unidic # type: ignore
 
 from morphemes_extractor.data_transformer import transform_data_to_df
 from morphemes_extractor.json_utils import load_json
+from morphemes_extractor.jp_data import MorphemeData
 from morphemes_extractor.utils import check_list_len
 
 
@@ -104,7 +105,7 @@ def extract_part_of_speech_from_morphemes(morpheme_list: list[str]) -> list[str]
     mode = tokenizer.Tokenizer.SplitMode.C
 
     logger.info('Create part of speech list by extracting part of speech from morpheme list')
-    part_of_speech_list = []
+    part_of_speech_list: list[str] = []
     for word in morpheme_list:
         tokenized_word = tokenizer_obj.tokenize(word, mode)
         part_of_speech = tokenized_word[0].part_of_speech()
@@ -133,7 +134,7 @@ def extract_romanji(jp_char: str) -> str:
     :param jp_char: Japanese character.
     :return: Romanji.
     """
-    return cutlet.Cutlet(mecab_args='-d "{}"'.format(unidic.DICDIR)).romaji(jp_char)
+    return cutlet.Cutlet(mecab_args='-d "{}"'.format(unidic.DICDIR)).romaji(jp_char) # type: ignore
 
 
 def extract_data(song: dict[str, str]) -> tuple[list[str], list[str], list[str], str, str]:
@@ -155,14 +156,15 @@ def extract_data(song: dict[str, str]) -> tuple[list[str], list[str], list[str],
 
     part_of_speech_list: list[str] = extract_part_of_speech_from_morphemes(morphemes)
 
-    list_len = check_list_len(morphemes, romanized_morphemes, part_of_speech_list)
+    morpheme_data = MorphemeData(morphemes, romanized_morphemes, part_of_speech_list)
+    list_len = check_list_len(morpheme_data)
     words_len = list_len[0]
     romanized_words_len = list_len[1]
     part_of_speech_list_len = list_len[2]
 
     if words_len == romanized_words_len == part_of_speech_list_len:
         logger.info("The length of words, romanized_morphemes, and part_of_speech_list are equal.")
-        return morphemes, romanized_morphemes, part_of_speech_list, song_name, song_eng_name
+        return morpheme_data.morphemes, morpheme_data.romanized_morphemes, morpheme_data.part_of_speech_list, song_name, song_eng_name
     else:
         raise Exception('The length of words, romanized_morphemes, and part_of_speech_list are not equal.')
 
@@ -188,7 +190,7 @@ def get_morphemes_from_songs(json_path_list: list[str]) -> pd.DataFrame:
     """
     json_data = load_json(json_path_list)
     song_list = get_song_list(json_data)
-    df_list = []
+    df_list: list[pd.DataFrame] = []
     for song in song_list:
         morphemes, romanized_morphemes, part_of_speech_list, song_name, song_romanized_name = extract_data(song)
         df = transform_data_to_df(morphemes, romanized_morphemes, part_of_speech_list,
