@@ -7,10 +7,7 @@ from morphemes_extractor.data_extractor import get_morphemes_from_songs
 from morphemes_extractor.db_func import save_to_db
 from morphemes_extractor.json_utils import find_json_files
 
-logger.configure(handlers=[{'sink': sys.stdout, 'level': 'INFO'}])
-logger.add('yoasobi.log',
-           format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {name} | {module} | {function} | {line} | {message}",
-           mode='w', level="INFO")
+logger.add(sys.stderr, level="WARNING")
 
 
 def main(db_url: str, json_dir: str) -> None:
@@ -27,6 +24,9 @@ def main(db_url: str, json_dir: str) -> None:
 
 if __name__ == '__main__':
     json_dir = os.getenv('JSON_DIR')
+    if json_dir is None:
+        logger.error("JSON_DIR environment variable is not set.")
+        sys.exit(1)
 
     db_user = os.getenv('DB_USER')
     db_password = os.getenv('DB_PASSWORD')

@@ -2,7 +2,6 @@ import pandas as pd
 from cutlet import cutlet # type: ignore
 from loguru import logger
 from sudachipy import Tokenizer, dictionary, tokenizer # type: ignore
-from unidic import unidic # type: ignore
 
 from morphemes_extractor.data_transformer import transform_data_to_df
 from morphemes_extractor.json_utils import load_json
@@ -134,7 +133,7 @@ def extract_romanji(jp_char: str) -> str:
     :param jp_char: Japanese character.
     :return: Romanji.
     """
-    return cutlet.Cutlet(mecab_args='-d "{}"'.format(unidic.DICDIR)).romaji(jp_char) # type: ignore
+    return cutlet.Cutlet().romaji(jp_char) # type: ignore
 
 
 def extract_data(song: dict[str, str]) -> tuple[list[str], list[str], list[str], str, str]:
