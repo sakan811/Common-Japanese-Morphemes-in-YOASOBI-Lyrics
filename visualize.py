@@ -6,15 +6,45 @@ from sqlalchemy import create_engine
 import os
 import matplotlib as mpl
 
+
 # Configure visualization settings
-def setup_visualization():
-    """Configure matplotlib settings for better visualization of Japanese text"""
+def setup_visualization(font_scale=1.0):
+    """
+    Configure matplotlib settings for better visualization of Japanese text
+
+    Args:
+        font_scale: Scale factor for all text sizes (default=1.0)
+    """
+    # Define standard font sizes
+    FONT_SIZES = {
+        "title": 14 * font_scale,
+        "label": 12 * font_scale,
+        "tick": 10 * font_scale,
+        "annotation": 9 * font_scale,
+        "legend": 10 * font_scale,
+    }
+
     # Use a higher quality figure format and settings
-    mpl.rcParams['savefig.dpi'] = 300
-    mpl.rcParams['figure.figsize'] = (9, 4.7)  # 1.9:1 ratio
+    mpl.rcParams["savefig.dpi"] = 300
+    mpl.rcParams["figure.figsize"] = (12, 7)  # Increased figure size for better fitting
+
+    # Set font sizes globally
+    plt.rcParams["font.size"] = FONT_SIZES["tick"]
+    plt.rcParams["axes.titlesize"] = FONT_SIZES["title"]
+    plt.rcParams["axes.labelsize"] = FONT_SIZES["label"]
+    plt.rcParams["xtick.labelsize"] = FONT_SIZES["tick"]
+    plt.rcParams["ytick.labelsize"] = FONT_SIZES["tick"]
+    plt.rcParams["legend.fontsize"] = FONT_SIZES["legend"]
+
     # Use a cross-platform font that works well with Japanese text
-    plt.rcParams['font.family'] = ['Yu Gothic']
-    
+    plt.rcParams["font.family"] = ["Yu Gothic"]
+
+    # Improve spacing automatically
+    plt.rcParams["figure.autolayout"] = True
+
+    return FONT_SIZES
+
+
 # Load DB connection from environment variables (reuse main.py logic)
 def get_db_url():
     db_user = os.getenv("DB_USER", "postgres")
@@ -32,16 +62,27 @@ def load_morpheme_table(db_url: str):
     return df
 
 
-def plot_pos_distribution(df: pd.DataFrame):
+def plot_pos_distribution(df: pd.DataFrame, font_sizes: dict = None):
     """
     Create a bar chart showing the distribution of parts of speech in the dataset.
-    
+
     Args:
         df: DataFrame containing the morpheme data with Part_of_Speech column
+        font_sizes: Dictionary with font size settings
     """
+    # Use default font sizes if none provided
+    if font_sizes is None:
+        font_sizes = {
+            "title": 14,
+            "label": 12,
+            "tick": 10,
+            "annotation": 9,
+            "legend": 10,
+        }
+
     # Create figure using global configuration
-    plt.figure()
-    
+    fig, ax = plt.subplots(figsize=(12, 8))
+
     # Plot with improved visual settings
     sns.countplot(
         y="Part_of_Speech",
@@ -50,76 +91,138 @@ def plot_pos_distribution(df: pd.DataFrame):
         hue="Part_of_Speech",
         palette="mako",
         legend=False,
+        ax=ax,
     )
-    
+
     # Add labels and title with better formatting
-    plt.title("Distribution of Part of Speech from YOASOBI's songs", fontsize=14, fontweight='bold')
-    plt.xlabel("Count", fontsize=12)
-    plt.ylabel("Part of Speech", fontsize=12)
-    
+    ax.set_title(
+        "Distribution of Part of Speech from YOASOBI's songs",
+        fontsize=font_sizes["title"],
+        fontweight="bold",
+    )
+    ax.set_xlabel("Count", fontsize=font_sizes["label"])
+    ax.set_ylabel("Part of Speech", fontsize=font_sizes["label"])
+
+    # Set tick font sizes
+    ax.tick_params(axis="both", which="major", labelsize=font_sizes["tick"])
+
+    # Ensure all text fits
+    plt.tight_layout(pad=2.0)
+
     # Ensure output directory exists
     os.makedirs("visual_output", exist_ok=True)
-    plt.savefig(os.path.join("visual_output", "pos_distribution.png"))
+    plt.savefig(
+        os.path.join("visual_output", "pos_distribution.png"), bbox_inches="tight"
+    )
     plt.close()
 
 
-def plot_top_morphemes(df: pd.DataFrame, top_n: int = 20):
+def plot_top_morphemes(df: pd.DataFrame, font_sizes: dict = None, top_n: int = 20):
     """
     Create a bar chart showing the most common morphemes in the dataset.
-    
+
     Args:
         df: DataFrame containing the morpheme data
+        font_sizes: Dictionary with font size settings
         top_n: Number of top morphemes to display
     """
-    # Create figure using global configuration
-    plt.figure()
-    
+    # Use default font sizes if none provided
+    if font_sizes is None:
+        font_sizes = {
+            "title": 14,
+            "label": 12,
+            "tick": 10,
+            "annotation": 9,
+            "legend": 10,
+        }
+
+    # Create figure using global configuration with adjusted size for proper text display
+    fig, ax = plt.subplots(figsize=(14, 10))  # Larger figure for better text display
+
     # Get top morphemes
     top = df["Morpheme"].value_counts().head(top_n)
-    
-    # Create barplot with improved styling
-    ax = sns.barplot(x=top.values, y=top.index, palette="viridis")
-    
+
+    # Create barplot with improved styling (fixed to avoid deprecation warning)
+    ax = sns.barplot(
+        x=top.values, y=top.index, hue=top.index, palette="viridis", legend=False, ax=ax
+    )
+
     # Add value labels to the bars
     for p in ax.patches:
         width = p.get_width()
-        ax.text(width + 1, p.get_y() + p.get_height()/2, f'{int(width)}', 
-                ha='left', va='center', fontsize=9)
-    
+        ax.text(
+            width + 1,
+            p.get_y() + p.get_height() / 2,
+            f"{int(width)}",
+            ha="left",
+            va="center",
+            fontsize=font_sizes["annotation"],
+        )
+
     # Add labels and title with better formatting
-    plt.title(f"Top {top_n} Most Common Morphemes from YOASOBI's songs", fontsize=14, fontweight='bold')
-    plt.xlabel("Count", fontsize=12)
-    plt.ylabel("Morpheme", fontsize=12)
-    
+    ax.set_title(
+        f"Top {top_n} Most Common Morphemes from YOASOBI's songs",
+        fontsize=font_sizes["title"],
+        fontweight="bold",
+    )
+    ax.set_xlabel("Count", fontsize=font_sizes["label"])
+    ax.set_ylabel("Morpheme", fontsize=font_sizes["label"])
+
+    # Set tick font sizes
+    ax.tick_params(axis="both", which="major", labelsize=font_sizes["tick"])
+
+    # Add more horizontal space for count labels
+    plt.tight_layout(pad=3.0)
+
     # Ensure output directory exists
     os.makedirs("visual_output", exist_ok=True)
-    plt.savefig(os.path.join("visual_output", "top_morphemes.png"))
+    plt.savefig(os.path.join("visual_output", "top_morphemes.png"), bbox_inches="tight")
     plt.close()
 
 
-def plot_morpheme_song_heatmap(df: pd.DataFrame, top_n: int = 10):
+def plot_morpheme_song_heatmap(df: pd.DataFrame, font_sizes=None, top_n: int = 10):
     """
     Create a heatmap showing the usage frequency of top morphemes across different songs.
-    
+
     Args:
         df: DataFrame containing the morpheme data
+        font_sizes: Dictionary with font size settings (optional)
         top_n: Number of top morphemes to display
     """
+    # Handle case where font_sizes is passed as second parameter
+    if isinstance(font_sizes, dict):
+        # font_sizes is correct, do nothing
+        pass
+    elif isinstance(font_sizes, int):
+        # font_sizes is actually top_n
+        top_n = font_sizes
+        font_sizes = None
+
+    # Use default font sizes if none provided
+    if font_sizes is None:
+        font_sizes = {
+            "title": 14,
+            "label": 12,
+            "tick": 10,
+            "annotation": 9,
+            "legend": 10,
+        }
+
     # Get top morphemes for analysis
     top_morphemes = df["Morpheme"].value_counts().head(top_n).index
     filtered = df[df["Morpheme"].isin(top_morphemes)].copy()
-    
+
     # Ensure Morpheme is a string and 1D (flatten lists/tuples, handle NaN)
     def flatten_morpheme(x):
         if isinstance(x, (list, tuple)):
-            return str(x[0]) if len(x) > 0 else ''
-        return str(x) if pd.notnull(x) else ''
-    
+            return str(x[0]) if len(x) > 0 else ""
+        return str(x) if pd.notnull(x) else ""
+
     # Clean and prepare data
     filtered["Morpheme"] = filtered["Morpheme"].apply(flatten_morpheme)
     filtered["Song"] = filtered["Song"].astype(str)
     filtered["Count"] = 1  # Add a count column for aggregation
-    
+
     # Create pivot table for heatmap
     pivot = pd.pivot_table(
         filtered,
@@ -129,53 +232,72 @@ def plot_morpheme_song_heatmap(df: pd.DataFrame, top_n: int = 10):
         aggfunc="sum",
         fill_value=0,
     )
-    
-    # Create figure using global configuration
-    plt.figure()
-    
+
+    # Create figure using global configuration with expanded size
+    plt.figure(figsize=(16, 10))  # Much larger figure to accommodate all labels
+
     # Create heatmap with improved styling
     sns.heatmap(
-        pivot, 
-        annot=True, 
-        fmt="d", 
+        pivot,
+        annot=True,
+        fmt="d",
         cmap="crest",
-        cbar_kws={'label': 'Frequency'},
-        linewidths=0.5
+        cbar_kws={"label": "Frequency"},
+        linewidths=0.5,
+        annot_kws={"size": 10},  # Slightly larger annotation text
     )
-    
-    # Add labels and title with better formatting
-    plt.title(f"Heatmap of Top {top_n} Morphemes Usage by Song from YOASOBI's songs", 
-              fontsize=14, fontweight='bold')
-    plt.xlabel("Song", fontsize=12)
-    plt.ylabel("Morpheme", fontsize=12)
-    
-    # Rotate x-axis labels for better readability if there are many songs
-    plt.xticks(rotation=45, ha='right')
-    
+
+    # Use font_sizes for title and labels
+    plt.title(
+        f"Heatmap of Top {top_n} Morphemes Usage by Song from YOASOBI's songs",
+        fontsize=font_sizes["title"],
+        fontweight="bold",
+        pad=20,
+    )  # Add padding above title
+    plt.xlabel(
+        "Song", fontsize=font_sizes["label"], labelpad=10
+    )  # Add padding below x-axis label
+    plt.ylabel(
+        "Morpheme", fontsize=font_sizes["label"], labelpad=10
+    )  # Add padding to the right of y-axis label
+
+    # Rotate x-axis labels for better readability with more space
+    plt.xticks(rotation=45, ha="right")
+
+    # Adjust the bottom margin to make room for the rotated x labels
+    plt.subplots_adjust(bottom=0.25)
+
     # Ensure output directory exists
     os.makedirs("visual_output", exist_ok=True)
-    plt.savefig(os.path.join("visual_output", "morpheme_song_heatmap.png"))
+    plt.savefig(
+        os.path.join("visual_output", "morpheme_song_heatmap.png"),
+        bbox_inches="tight",  # This ensures all elements are included in the saved figure
+        pad_inches=0.5,
+    )  # Add extra padding around the figure
     plt.close()
 
 
-def main():
+def main(font_scale=2.0):
     """
     Main function to execute all visualization tasks.
     Loads data from database and generates all plots.
+
+    Args:
+        font_scale: Scale factor for all text sizes (default=1.0)
     """
-    # Set up visualization environment
-    setup_visualization()
-    
+    # Set up visualization environment with font scaling
+    font_sizes = setup_visualization(font_scale)
+
     # Load data from database
     db_url = get_db_url()
     df = load_morpheme_table(db_url)
-    
-    # Generate all visualizations
-    print("Generating visualizations...")
-    plot_top_morphemes(df)
-    plot_pos_distribution(df)
-    plot_morpheme_song_heatmap(df)
-    
+
+    # Generate all visualizations with consistent font settings
+    print(f"Generating visualizations with font scale: {font_scale}...")
+    plot_top_morphemes(df, font_sizes)
+    plot_pos_distribution(df, font_sizes)
+    plot_morpheme_song_heatmap(df, font_sizes)
+
     print(
         "✅ Plots saved successfully:\n"
         "  - visual_output/top_morphemes.png\n"

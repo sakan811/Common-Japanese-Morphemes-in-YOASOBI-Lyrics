@@ -13,20 +13,11 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 ## Visualizations
 
-[Common Japanese Morphemes in YOASOBI Lyrics](#common-japanese-morphemes-in-yoasobi-lyrics):
-
-- Visualizations Latest Update: 27 December 2024
-  - [Power BI](https://app.powerbi.com/view?r=eyJrIjoiMTljZjdmN2MtMTk2NC00N2M5LTkxNGMtN2NhZDhlNmU4YmUzIiwidCI6ImZlMzViMTA3LTdjMmYtNGNjMy1hZDYzLTA2NTY0MzcyMDg3OCIsImMiOjEwfQ%3D%3D)
-  - [Instagram](https://www.instagram.com/p/DEFhhepvcdK/?utm_source=ig_web_copy_link&igsh=MzRlODBiNWFlZA==)
-  - [Facebook](https://www.facebook.com/share/p/14s4C59P3n/)
+[Click here](./docs/VISUALS.md) to see the visualizations.
 
 ## Status
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
-
-[![Docker Push](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-push.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-push.yml)
-
-[![Trivy Docker Scan](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/trivy-scan.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/trivy-scan.yml)
 
 ## How to Extract Japanese Morphemes from Japanese Song Lyrics
 
