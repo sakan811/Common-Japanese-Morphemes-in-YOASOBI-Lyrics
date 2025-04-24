@@ -19,18 +19,64 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
 
-## How to Extract Japanese Morphemes from Japanese Song Lyrics
+## Run Scripts Locally to Extract Japanese Morphemes from YOASOBI's Song Lyrics
+
+### Prerequisites
+
+- Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
+- Install Docker Desktop: <https://www.docker.com/products/docker-desktop/>
+- Install Make: <https://www.gnu.org/software/make/>
 
 ### Setup the Project
 
-- Download [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- Download [docker-compose.yml](docker-compose.yml) file from this repo.
-- Place the Docker Compose file in a directory of your choice.
-- Create `lyrics` directory in the same directory that you place the Docker Compose file.
+- Clone the repository:
+
+  ```bash
+  git clone https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics.git 
+  ```
+
+- Create a virtual environment:
+
+  ```bash
+  uv venv
+  ```
+
+- Activate the virtual environment:
+
+  ```bash
+   # On Windows
+   .venv\Scripts\activate
+   # On macOS/Linux
+   source .venv/bin/activate
+  ```
+
+- Install the required packages:
+
+  ```bash
+  uv sync
+  ```
+
+- Install Unidict:
+
+  ```bash
+  python -m unidic download
+  ```
+
+- Setup .env file:
+
+  ```bash
+  cp .env.example .env
+  ```
+
+- Setup a Postgres database:
+
+  ```bash
+  make up
+  ```
 
 ### Add Lyrics as JSON
 
-- Below is a template of the JSON file.
+- Below is a [JSON template file](./lyrics/template.json) in [lyrics](./lyrics/) directory.
 
   ```json
   {
@@ -82,22 +128,20 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 }
 ```
 
-### Setup a Docker Container
+### Run Scripts
 
-- Make sure that Docker Desktop is running.
-- Run:
-
-  ```bash
-  docker compose up -d
-  ```
-
-### Run a Script
-
-- Make sure that Dock Desktop and the `morphemes-extractor` container are running.
-- Run:
+- Run a script to extract morphemes from the lyrics:
 
   ```bash
-  docker exec morphemes-extractor python main.py
+  make run
   ```
 
-- Data is saved to a Postgres database.
+  - Data is saved to a Docker Postgres database.
+
+- Run a script to create visualizations:
+
+  ```bash
+  make visualize
+  ```
+
+  - The visualizations will be saved to the `visual_output` directory
