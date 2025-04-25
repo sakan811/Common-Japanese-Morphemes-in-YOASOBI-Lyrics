@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 from cutlet import cutlet
 from sudachipy import Tokenizer, dictionary, tokenizer
@@ -9,7 +10,7 @@ from morphemes_extractor.jp_data import MorphemeData
 from morphemes_extractor.utils import check_list_len
 
 # Set up logger
-logger = setup_logger(__name__)
+logger: logging.Logger = setup_logger(__name__)
 
 
 def is_english(word: str) -> bool:

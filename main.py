@@ -10,7 +10,7 @@ from morphemes_extractor.json_utils import find_json_files
 from morphemes_extractor.logger_config import setup_logger
 
 # Set up logger
-logger = setup_logger(__name__, logging.WARNING)
+logger: logging.Logger = setup_logger(__name__, logging.WARNING)
 
 
 def main(db_url: str, json_dir: str) -> None:

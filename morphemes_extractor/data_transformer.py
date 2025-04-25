@@ -1,9 +1,10 @@
 import datetime
 import pandas as pd
 from morphemes_extractor.logger_config import setup_logger
+import logging
 
 # Set up logger
-logger = setup_logger(__name__)
+logger: logging.Logger = setup_logger(__name__)
 
 
 def transform_data_to_df(

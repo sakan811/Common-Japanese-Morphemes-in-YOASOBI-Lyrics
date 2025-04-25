@@ -11,7 +11,7 @@ import matplotlib as mpl
 from morphemes_extractor.logger_config import setup_logger
 
 # Set up logger
-logger = setup_logger(__name__, logging.INFO)
+logger: logging.Logger = setup_logger(__name__, logging.INFO)
 
 
 def setup_visualization(font_scale: float = 1.0) -> Dict[str, float]:

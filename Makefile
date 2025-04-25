@@ -1,8 +1,10 @@
-run:
+main:
 	python main.py
 
 visualize:
 	python visualize.py
+
+run: main visualize
 
 lint:
 	ruff check . --fix --unsafe-fixes

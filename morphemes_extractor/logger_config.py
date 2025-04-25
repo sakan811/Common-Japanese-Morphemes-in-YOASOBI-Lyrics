@@ -2,7 +2,9 @@ import logging
 import sys
 
 
-def setup_logger(name=None, level=logging.WARNING):
+def setup_logger(
+    name: str | None = None, level: int = logging.WARNING
+) -> logging.Logger:
     """
     Set up and configure logger
 

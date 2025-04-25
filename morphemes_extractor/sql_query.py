@@ -3,9 +3,10 @@ For storing and returning SQL queries.
 """
 
 from morphemes_extractor.logger_config import setup_logger
+import logging
 
 # Set up logger
-logger = setup_logger(__name__)
+logger: logging.Logger = setup_logger(__name__)
 
 
 def insert_data_query() -> str:
