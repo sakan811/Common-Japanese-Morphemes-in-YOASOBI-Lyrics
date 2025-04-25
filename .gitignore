@@ -123,3 +123,4 @@ Thumbs.db
 /lyrics/undead.json
 /local_main.py
 /lyrics/new_me.json
+/.mypy_cache

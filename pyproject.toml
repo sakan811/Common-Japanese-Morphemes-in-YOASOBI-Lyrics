@@ -1,0 +1,40 @@
+[project]
+name = "common-japanese-words-in-yoasobi-lyrics"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "loguru>=0.7.3",
+    "pytest>=8.3.5",
+    "cutlet>=0.5.0",
+    "SQLAlchemy>=2.0.40",
+    "pandas>=2.2.3",
+    "pytest-mock>=3.14.0",
+    "psycopg2-binary>=2.9.10",
+    "sudachipy>=0.6.10",
+    "sudachidict-core>=20250129",
+    "unidic>=1.1.0",
+    "seaborn>=0.13.2",
+    "python-dotenv>=1.1.0",
+    "ruff>=0.11.6",
+    "japanize-matplotlib>=1.1.3",
+    "mypy>=1.15.0",
+    "pandas-stubs>=2.2.3.250308",
+    "types-seaborn>=0.13.2.20250111",
+    "types-requests>=2.32.0.20250328",
+]
+
+[tool.mypy]
+python_version = "3.13"
+exclude = ["tests/", "pdf_to_jpg.py", "local_main.py"]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
+check_untyped_defs = true
+disallow_untyped_decorators = true
+no_implicit_optional = true
+strict_optional = true
+warn_redundant_casts = true
+warn_unused_ignores = true
+warn_return_any = true
+warn_unreachable = true
