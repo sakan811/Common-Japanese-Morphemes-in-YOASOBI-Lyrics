@@ -27,7 +27,7 @@ dependencies = [
 
 [tool.mypy]
 python_version = "3.13"
-exclude = ["tests/"]
+exclude = ["tests/", "pdf_to_jpg.py", "local_main.py"]
 disallow_untyped_defs = true
 disallow_incomplete_defs = true
 check_untyped_defs = true

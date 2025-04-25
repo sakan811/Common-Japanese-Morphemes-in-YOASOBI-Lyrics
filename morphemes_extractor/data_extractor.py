@@ -1,7 +1,7 @@
 import pandas as pd
-from cutlet import cutlet  # type: ignore
+from cutlet import cutlet
 from loguru import logger
-from sudachipy import Tokenizer, dictionary, tokenizer  # type: ignore
+from sudachipy import Tokenizer, dictionary, tokenizer
 
 from morphemes_extractor.data_transformer import transform_data_to_df
 from morphemes_extractor.json_utils import load_json

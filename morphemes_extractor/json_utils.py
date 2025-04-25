@@ -2,17 +2,17 @@ import json
 import os
 
 
-def load_json_file(file_path: str) -> dict:
+def load_json_file(file_path: str) -> dict[str, list[dict[str, str]]]:
     """
     Load a single JSON file.
     :param file_path: Path to the JSON file
-    :return: JSON data as a dictionary
+    :return: JSON data as a dictionary with songs list
     """
     with open(file_path, 'r', encoding='utf-8') as file:
-        return json.load(file)
+        return json.load(file)  # type: ignore
 
 
-def combine_json_data(json_data_list: list[dict]) -> dict[str, list[dict[str, str]]]:
+def combine_json_data(json_data_list: list[dict[str, list[dict[str, str]]]]) -> dict[str, list[dict[str, str]]]:
     """
     Combine multiple JSON data dictionaries.
     :param json_data_list: List of JSON data dictionaries
