@@ -2,6 +2,7 @@ import logging
 import pandas as pd
 from cutlet import cutlet
 from sudachipy import Tokenizer, dictionary, tokenizer
+from typing import Dict, List, Tuple
 
 from morphemes_extractor.logger_config import setup_logger
 from morphemes_extractor.data_transformer import transform_data_to_df
@@ -11,6 +12,12 @@ from morphemes_extractor.utils import check_list_len
 
 # Set up logger
 logger: logging.Logger = setup_logger(__name__)
+
+
+# Constants for dictionary keys
+TITLE_KEY = "title"
+ROMANJI_TITLE_KEY = "romanji_title"
+LYRICS_KEY = "lyrics"
 
 
 def is_english(word: str) -> bool:
@@ -151,25 +158,25 @@ def extract_romanji(jp_char: str) -> str:
 
 
 def extract_data(
-    song: dict[str, str],
-) -> tuple[list[str], list[str], list[str], str, str]:
+    song: Dict[str, str],
+) -> Tuple[List[str], List[str], List[str], str, str]:
     """
     Extract data from the JSON file.
     :param song: YOASOBI song.
     :return: Tuple of extracted data from the JSON file.
     """
-    song_name: str = song["title"]
+    song_name: str = song[TITLE_KEY]
     logger.info(f"Extracting data from song {song_name}...")
 
-    song_eng_name: str = song["romanji_title"]
-    lyrics: str = song["lyrics"]
+    song_eng_name: str = song[ROMANJI_TITLE_KEY]
+    lyrics: str = song[LYRICS_KEY]
 
-    morphemes: list[str] = extract_morphemes_from_lyrics(lyrics)
+    morphemes: List[str] = extract_morphemes_from_lyrics(lyrics)
     logger.debug(f"morphemes list: {morphemes}")
 
-    romanized_morphemes: list[str] = extract_romanji_from_jp_characters(morphemes)
+    romanized_morphemes: List[str] = extract_romanji_from_jp_characters(morphemes)
 
-    part_of_speech_list: list[str] = extract_part_of_speech_from_morphemes(morphemes)
+    part_of_speech_list: List[str] = extract_part_of_speech_from_morphemes(morphemes)
 
     morpheme_data = MorphemeData(morphemes, romanized_morphemes, part_of_speech_list)
     list_len = check_list_len(morpheme_data)
@@ -189,7 +196,10 @@ def extract_data(
             song_eng_name,
         )
     else:
-        raise Exception(
+        logger.warning(
+            "The length of words, romanized_morphemes, and part_of_speech_list are not equal."
+        )
+        raise ValueError(
             "The length of words, romanized_morphemes, and part_of_speech_list are not equal."
         )
 
@@ -236,7 +246,3 @@ def get_morphemes_from_songs(json_path_list: list[str]) -> pd.DataFrame:
 
     df = pd.concat(df_list, ignore_index=True) if df_list else pd.DataFrame()
     return df
-
-
-if __name__ == "__main__":
-    pass
