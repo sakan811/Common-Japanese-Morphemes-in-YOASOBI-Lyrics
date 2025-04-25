@@ -3,7 +3,7 @@ from morphemes_extractor.jp_data import MorphemeData
 from morphemes_extractor.logger_config import setup_logger
 
 # Set up logger
-logger: logging.Logger = setup_logger(__name__, logging.INFO)
+logger: logging.Logger = setup_logger(__name__)
 
 
 def check_list_len(morpheme_data: MorphemeData) -> tuple[int, ...]:

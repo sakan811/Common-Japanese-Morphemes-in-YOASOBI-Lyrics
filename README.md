@@ -133,7 +133,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 - Run a script to extract morphemes from the lyrics:
 
   ```bash
-  make run
+  make main
   ```
 
   - Data is saved to a Docker Postgres database.
@@ -145,3 +145,9 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   ```
 
   - The visualizations will be saved to the `visual_output` directory
+
+- Run a following command to extract morphemes and create visualizations in one go:
+
+  ```bash
+  make run
+  ```
