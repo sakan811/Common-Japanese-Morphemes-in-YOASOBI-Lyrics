@@ -1,4 +1,4 @@
-from typing import Optional, Dict, List, Tuple, Any, Union, cast
+from typing import Optional, Dict, Any, Union, cast
 from dotenv import load_dotenv
 import pandas as pd
 import seaborn as sns
@@ -7,7 +7,34 @@ import matplotlib.patches as mpatches
 from sqlalchemy import create_engine
 import os
 import matplotlib as mpl
+import logging
 
+# Configure logger
+def setup_logger() -> logging.Logger:
+    """
+    Configure and return a logger instance for this module
+    
+    Returns:
+        logging.Logger: Configured logger instance
+    """
+    logger = logging.getLogger("visualize")
+    logger.setLevel(logging.INFO)
+    
+    # Create file handler if not already present
+    if not logger.handlers:
+        console_handler = logging.StreamHandler()
+        
+        # Set formatter
+        formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+        console_handler.setFormatter(formatter)
+        
+        # Add handlers to logger
+        logger.addHandler(console_handler)
+    
+    return logger
+
+# Get logger instance
+logger = setup_logger()
 
 # Configure visualization settings
 def setup_visualization(font_scale: float = 1.0) -> Dict[str, float]:
@@ -20,6 +47,8 @@ def setup_visualization(font_scale: float = 1.0) -> Dict[str, float]:
     Returns:
         Dict[str, float]: Dictionary of font sizes for various elements
     """
+    logger.info(f"Setting up visualization environment with font scale: {font_scale}")
+    
     # Define standard font sizes
     FONT_SIZES = {
         "title": 14 * font_scale,
@@ -59,10 +88,14 @@ def get_db_url() -> str:
         str: PostgreSQL connection URL
     """
     db_user = os.getenv("DB_USER", "postgres")
-    db_password = os.getenv("DB_PASSWORD", "postgres")
+    db_password = os.getenv("DB_PASSWORD", "postgres") 
     db_host = os.getenv("DB_HOST", "localhost")
     db_port = os.getenv("DB_PORT", "6000")
     db_name = os.getenv("DB_NAME", "postgres")
+    
+    # Log connection info without the password
+    logger.info(f"Connecting to PostgreSQL database: {db_name} on {db_host}:{db_port}")
+    
     return f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
 
@@ -76,10 +109,16 @@ def load_morpheme_table(db_url: str) -> pd.DataFrame:
     Returns:
         pd.DataFrame: DataFrame containing morpheme data
     """
+    logger.info("Loading morpheme data from database...")
     engine = create_engine(db_url)
-    with engine.connect() as conn:
-        df = pd.read_sql_table("Morpheme", conn)
-    return df
+    try:
+        with engine.connect() as conn:
+            df = pd.read_sql_table("Morpheme", conn)
+        logger.info(f"Successfully loaded {len(df)} morpheme records from database")
+        return df
+    except Exception as e:
+        logger.error(f"Error loading data from database: {e}")
+        raise
 
 
 def plot_pos_distribution(
@@ -92,6 +131,8 @@ def plot_pos_distribution(
         df: DataFrame containing the morpheme data with Part_of_Speech column
         font_sizes: Dictionary with font size settings
     """
+    logger.info("Creating part of speech distribution chart...")
+    
     # Use default font sizes if none provided
     if font_sizes is None:
         font_sizes = {
@@ -129,14 +170,13 @@ def plot_pos_distribution(
     ax.tick_params(axis="both", which="major", labelsize=font_sizes["tick"])
 
     # Ensure all text fits
-    plt.tight_layout(pad=2.0)
-
-    # Ensure output directory exists
+    plt.tight_layout(pad=2.0)    # Ensure output directory exists
     os.makedirs("visual_output", exist_ok=True)
-    plt.savefig(
-        os.path.join("visual_output", "pos_distribution.png"), bbox_inches="tight"
-    )
+    output_path = os.path.join("visual_output", "pos_distribution.png")
+    plt.savefig(output_path, bbox_inches="tight")
     plt.close()
+    
+    logger.info(f"Part of speech distribution chart saved to {output_path}")
 
 
 def plot_top_morphemes(
@@ -150,6 +190,8 @@ def plot_top_morphemes(
         font_sizes: Dictionary with font size settings
         top_n: Number of top morphemes to display
     """
+    logger.info(f"Creating chart for top {top_n} morphemes...")
+    
     # Use default font sizes if none provided
     if font_sizes is None:
         font_sizes = {
@@ -169,7 +211,7 @@ def plot_top_morphemes(
     # Create barplot with improved styling (fixed to avoid deprecation warning)
     ax = sns.barplot(
         x=top.values, y=top.index, hue=top.index, palette="viridis", legend=False, ax=ax
-    )    # Add value labels to the bars
+    )  # Add value labels to the bars
     for p in ax.patches:
         # Cast patch to Rectangle to make mypy happy
         rect = cast(mpatches.Rectangle, p)
@@ -196,18 +238,19 @@ def plot_top_morphemes(
     ax.tick_params(axis="both", which="major", labelsize=font_sizes["tick"])
 
     # Add more horizontal space for count labels
-    plt.tight_layout(pad=3.0)
-
-    # Ensure output directory exists
+    plt.tight_layout(pad=3.0)    # Ensure output directory exists
     os.makedirs("visual_output", exist_ok=True)
-    plt.savefig(os.path.join("visual_output", "top_morphemes.png"), bbox_inches="tight")
+    output_path = os.path.join("visual_output", "top_morphemes.png")
+    plt.savefig(output_path, bbox_inches="tight")
     plt.close()
+    
+    logger.info(f"Top morphemes chart saved to {output_path}")
 
 
 def plot_morpheme_song_heatmap(
-    df: pd.DataFrame, 
-    font_sizes_or_top_n: Union[Optional[Dict[str, float]], int] = None, 
-    top_n_param: int = 10
+    df: pd.DataFrame,
+    font_sizes_or_top_n: Union[Optional[Dict[str, float]], int] = None,
+    top_n_param: int = 10,
 ) -> None:
     """
     Create a heatmap showing the usage frequency of top morphemes across different songs.
@@ -231,6 +274,8 @@ def plot_morpheme_song_heatmap(
         font_sizes = None
         top_n = top_n_param
     
+    logger.info(f"Creating morpheme-song heatmap for top {top_n} morphemes...")
+    
     # Set default font sizes
     if font_sizes is None:
         font_sizes = {
@@ -243,7 +288,10 @@ def plot_morpheme_song_heatmap(
 
     # Get top morphemes for analysis
     top_morphemes = df["Morpheme"].value_counts().head(top_n).index
-    filtered = df[df["Morpheme"].isin(top_morphemes)].copy()    # Ensure Morpheme is a string and 1D (flatten lists/tuples, handle NaN)
+    filtered = df[
+        df["Morpheme"].isin(top_morphemes)
+    ].copy()  # Ensure Morpheme is a string and 1D (flatten lists/tuples, handle NaN)
+
     def flatten_morpheme(x: Any) -> str:
         if isinstance(x, (list, tuple)):
             return str(x[0]) if len(x) > 0 else ""
@@ -296,16 +344,17 @@ def plot_morpheme_song_heatmap(
     plt.xticks(rotation=45, ha="right")
 
     # Adjust the bottom margin to make room for the rotated x labels
-    plt.subplots_adjust(bottom=0.25)
-
-    # Ensure output directory exists
+    plt.subplots_adjust(bottom=0.25)    # Ensure output directory exists
     os.makedirs("visual_output", exist_ok=True)
+    output_path = os.path.join("visual_output", "morpheme_song_heatmap.png")
     plt.savefig(
-        os.path.join("visual_output", "morpheme_song_heatmap.png"),
+        output_path,
         bbox_inches="tight",  # This ensures all elements are included in the saved figure
         pad_inches=0.5,
     )  # Add extra padding around the figure
     plt.close()
+    
+    logger.info(f"Morpheme-song heatmap saved to {output_path}")
 
 
 def main(font_scale: float = 2.0) -> None:
@@ -321,13 +370,15 @@ def main(font_scale: float = 2.0) -> None:
 
     # Load data from database
     db_url = get_db_url()
-    df = load_morpheme_table(db_url)    # Generate all visualizations with consistent font settings
-    print(f"Generating visualizations with font scale: {font_scale}...")
+    df = load_morpheme_table(db_url)
+    
+    # Generate all visualizations with consistent font settings
+    logger.info(f"Generating visualizations with font scale: {font_scale}...")
     plot_top_morphemes(df, font_sizes)
     plot_pos_distribution(df, font_sizes)
     plot_morpheme_song_heatmap(df, font_sizes_or_top_n=font_sizes)
 
-    print(
+    logger.info(
         "✅ Plots saved successfully:\n"
         "  - visual_output/top_morphemes.png\n"
         "  - visual_output/pos_distribution.png\n"
@@ -337,4 +388,7 @@ def main(font_scale: float = 2.0) -> None:
 
 if __name__ == "__main__":
     load_dotenv()
+    # Logger is already configured when imported
+    logger.info("Starting visualization process...")
     main()
+    logger.info("Visualization process completed successfully.")
