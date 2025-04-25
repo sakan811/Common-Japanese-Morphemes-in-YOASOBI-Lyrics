@@ -1,3 +1,4 @@
+from typing import Optional
 from dotenv import load_dotenv
 import pandas as pd
 import seaborn as sns
@@ -8,7 +9,7 @@ import matplotlib as mpl
 
 
 # Configure visualization settings
-def setup_visualization(font_scale=1.0):
+def setup_visualization(font_scale: float = 1.0):
     """
     Configure matplotlib settings for better visualization of Japanese text
 
@@ -62,7 +63,9 @@ def load_morpheme_table(db_url: str):
     return df
 
 
-def plot_pos_distribution(df: pd.DataFrame, font_sizes: dict = None):
+def plot_pos_distribution(
+    df: pd.DataFrame, font_sizes: Optional[dict[str, float]] = None
+):
     """
     Create a bar chart showing the distribution of parts of speech in the dataset.
 
@@ -117,7 +120,9 @@ def plot_pos_distribution(df: pd.DataFrame, font_sizes: dict = None):
     plt.close()
 
 
-def plot_top_morphemes(df: pd.DataFrame, font_sizes: dict = None, top_n: int = 20):
+def plot_top_morphemes(
+    df: pd.DataFrame, font_sizes: Optional[dict[str, float]] = None, top_n: int = 20
+):
     """
     Create a bar chart showing the most common morphemes in the dataset.
 

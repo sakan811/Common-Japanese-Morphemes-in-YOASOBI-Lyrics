@@ -5,10 +5,18 @@ visualize:
 	python visualize.py
 
 lint:
-	ruff check . --fix --unsafe-fixes && ruff format .
+	ruff check . --fix --unsafe-fixes
+
+format:
+	ruff format .
+
+mypy:
+	mypy . --strict --ignore-missing-imports
+
+qa: lint format mypy
 
 test:
-	pytest
+	python -m pytest
 
 up:
 	docker-compose up -d
