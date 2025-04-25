@@ -1,7 +1,10 @@
 import pandas as pd
-from loguru import logger
 from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError, OperationalError
+from morphemes_extractor.logger_config import setup_logger
+
+# Set up logger
+logger = setup_logger(__name__)
 
 
 def save_to_db(df: pd.DataFrame, db_url: str) -> None:

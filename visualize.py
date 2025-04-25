@@ -1,3 +1,4 @@
+import logging
 from typing import Optional, Dict, Any, Union, cast
 from dotenv import load_dotenv
 import pandas as pd
@@ -7,26 +8,10 @@ import matplotlib.patches as mpatches
 from sqlalchemy import create_engine
 import os
 import matplotlib as mpl
-import logging
+from morphemes_extractor.logger_config import setup_logger
 
-
-def setup_logger() -> logging.Logger:
-    """
-    Returns a configured logger instance for this module.
-    """
-    logger = logging.getLogger("visualize")
-    logger.setLevel(logging.INFO)
-    if not logger.handlers:
-        console_handler = logging.StreamHandler()
-        formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
-        )
-        console_handler.setFormatter(formatter)
-        logger.addHandler(console_handler)
-    return logger
-
-
-logger = setup_logger()
+# Set up logger
+logger = setup_logger(__name__, logging.INFO)
 
 
 def setup_visualization(font_scale: float = 1.0) -> Dict[str, float]:

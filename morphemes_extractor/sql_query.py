@@ -2,7 +2,10 @@
 For storing and returning SQL queries.
 """
 
-from loguru import logger
+from morphemes_extractor.logger_config import setup_logger
+
+# Set up logger
+logger = setup_logger(__name__)
 
 
 def insert_data_query() -> str:

@@ -1,14 +1,16 @@
 import os
 import sys
+import logging
 
 from dotenv import load_dotenv
-from loguru import logger
 
 from morphemes_extractor.data_extractor import get_morphemes_from_songs
 from morphemes_extractor.db_func import save_to_db
 from morphemes_extractor.json_utils import find_json_files
+from morphemes_extractor.logger_config import setup_logger
 
-logger.add(sys.stderr, level="WARNING")
+# Set up logger
+logger = setup_logger(__name__, logging.WARNING)
 
 
 def main(db_url: str, json_dir: str) -> None:

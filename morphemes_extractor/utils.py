@@ -1,5 +1,9 @@
-from loguru import logger
+import logging
 from morphemes_extractor.jp_data import MorphemeData
+from morphemes_extractor.logger_config import setup_logger
+
+# Set up logger
+logger = setup_logger(__name__, logging.INFO)
 
 
 def check_list_len(morpheme_data: MorphemeData) -> tuple[int, ...]:

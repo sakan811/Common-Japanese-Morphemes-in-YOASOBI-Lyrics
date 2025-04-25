@@ -1,7 +1,10 @@
 import pandas as pd
 from cutlet import cutlet
-from loguru import logger
 from sudachipy import Tokenizer, dictionary, tokenizer
+from morphemes_extractor.logger_config import setup_logger
+
+# Set up logger
+logger = setup_logger(__name__)
 
 from morphemes_extractor.data_transformer import transform_data_to_df
 from morphemes_extractor.json_utils import load_json
