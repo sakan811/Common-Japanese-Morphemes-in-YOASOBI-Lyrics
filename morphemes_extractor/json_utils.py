@@ -1,6 +1,8 @@
 import json
 import os
 
+SONGS_KEY = "songs"
+
 
 def load_json_file(file_path: str) -> dict[str, list[dict[str, str]]]:
     """
@@ -20,8 +22,8 @@ def combine_json_data(json_data_list: list[dict[str, list[dict[str, str]]]]) -> 
     """
     combined_songs = []
     for data in json_data_list:
-        combined_songs.extend(data.get("songs", []))
-    return {"songs": combined_songs}
+        combined_songs.extend(data.get(SONGS_KEY, []))
+    return {SONGS_KEY: combined_songs}
 
 
 def load_json(json_file_path_list: list[str]) -> dict[str, list[dict[str, str]]]:
@@ -43,6 +45,6 @@ def find_json_files(json_dir: str) -> list[str]:
     """
     json_file_path_list = []
     for json_file in os.listdir(json_dir):
-        json_file_path_list.append(os.path.join(json_dir, json_file))
-
+        if json_file.endswith('.json'):
+            json_file_path_list.append(os.path.join(json_dir, json_file))
     return json_file_path_list

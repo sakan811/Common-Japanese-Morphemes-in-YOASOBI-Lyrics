@@ -33,8 +33,10 @@ def test_find_json_files_mixed_files(temp_dir):
         open(os.path.join(temp_dir, file), "w").close()
 
     result = find_json_files(temp_dir)
-    assert len(result) == 4  # All files are included, not just .json
-    assert all(os.path.join(temp_dir, file) in result for file in files)
+    expected_json_files = [
+        os.path.join(temp_dir, f) for f in ["file1.json", "file3.json"]
+    ]
+    assert sorted(result) == sorted(expected_json_files)
 
 
 def test_find_json_files_nonexistent_directory():

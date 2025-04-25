@@ -13,41 +13,51 @@ from morphemes_extractor.logger_config import setup_logger
 # Set up logger
 logger: logging.Logger = setup_logger(__name__, logging.INFO)
 
+# Constants to avoid magic numbers/strings
+DEFAULT_FONT_SIZES: Dict[str, float] = {
+    "title": 14.0,
+    "label": 12.0,
+    "tick": 10.0,
+    "annotation": 9.0,
+    "legend": 10.0,
+}
+DEFAULT_DB_CONFIG = {
+    "user": "postgres",
+    "password": "postgres",
+    "host": "localhost",
+    "port": "6000",
+    "name": "postgres",
+}
+
 
 def setup_visualization(font_scale: float = 1.0) -> Dict[str, float]:
     """
     Configures matplotlib for Japanese text and returns font sizes.
     """
     logger.info(f"Setting up visualization environment with font scale: {font_scale}")
-    FONT_SIZES = {
-        "title": 14 * font_scale,
-        "label": 12 * font_scale,
-        "tick": 10 * font_scale,
-        "annotation": 9 * font_scale,
-        "legend": 10 * font_scale,
-    }
+    font_sizes = {k: v * font_scale for k, v in DEFAULT_FONT_SIZES.items()}
     mpl.rcParams["savefig.dpi"] = 300
     mpl.rcParams["figure.figsize"] = (12, 7)
-    plt.rcParams["font.size"] = FONT_SIZES["tick"]
-    plt.rcParams["axes.titlesize"] = FONT_SIZES["title"]
-    plt.rcParams["axes.labelsize"] = FONT_SIZES["label"]
-    plt.rcParams["xtick.labelsize"] = FONT_SIZES["tick"]
-    plt.rcParams["ytick.labelsize"] = FONT_SIZES["tick"]
-    plt.rcParams["legend.fontsize"] = FONT_SIZES["legend"]
+    plt.rcParams["font.size"] = font_sizes["tick"]
+    plt.rcParams["axes.titlesize"] = font_sizes["title"]
+    plt.rcParams["axes.labelsize"] = font_sizes["label"]
+    plt.rcParams["xtick.labelsize"] = font_sizes["tick"]
+    plt.rcParams["ytick.labelsize"] = font_sizes["tick"]
+    plt.rcParams["legend.fontsize"] = font_sizes["legend"]
     plt.rcParams["font.family"] = ["Yu Gothic"]
     plt.rcParams["figure.autolayout"] = True
-    return FONT_SIZES
+    return font_sizes
 
 
 def get_db_url() -> str:
     """
     Returns PostgreSQL connection URL from environment variables.
     """
-    db_user = os.getenv("DB_USER", "postgres")
-    db_password = os.getenv("DB_PASSWORD", "postgres")
-    db_host = os.getenv("DB_HOST", "localhost")
-    db_port = os.getenv("DB_PORT", "6000")
-    db_name = os.getenv("DB_NAME", "postgres")
+    db_user = os.getenv("DB_USER", DEFAULT_DB_CONFIG["user"])
+    db_password = os.getenv("DB_PASSWORD", DEFAULT_DB_CONFIG["password"])
+    db_host = os.getenv("DB_HOST", DEFAULT_DB_CONFIG["host"])
+    db_port = os.getenv("DB_PORT", DEFAULT_DB_CONFIG["port"])
+    db_name = os.getenv("DB_NAME", DEFAULT_DB_CONFIG["name"])
     logger.info(f"Connecting to PostgreSQL database: {db_name} on {db_host}:{db_port}")
     return f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
@@ -63,26 +73,23 @@ def load_morpheme_table(db_url: str) -> pd.DataFrame:
             df = pd.read_sql_table("Morpheme", conn)
         logger.info(f"Successfully loaded {len(df)} morpheme records from database")
         return df
+    except pd.errors.DatabaseError as e:
+        logger.error(f"Pandas database error: {e}")
+        raise
     except Exception as e:
-        logger.error(f"Error loading data from database: {e}")
+        logger.error(f"Unexpected error loading data from database: {e}")
         raise
 
 
 def plot_pos_distribution(
-    df: pd.DataFrame, font_sizes: Optional[dict[str, float]] = None
+    df: pd.DataFrame, font_sizes: Optional[Dict[str, float]] = None
 ) -> None:
     """
     Plots the distribution of parts of speech in the dataset.
     """
     logger.info("Creating part of speech distribution chart...")
     if font_sizes is None:
-        font_sizes = {
-            "title": 14,
-            "label": 12,
-            "tick": 10,
-            "annotation": 9,
-            "legend": 10,
-        }
+        font_sizes = DEFAULT_FONT_SIZES
     fig, ax = plt.subplots(figsize=(12, 8))
     sns.countplot(
         y="Part_of_Speech",
@@ -110,20 +117,14 @@ def plot_pos_distribution(
 
 
 def plot_top_morphemes(
-    df: pd.DataFrame, font_sizes: Optional[dict[str, float]] = None, top_n: int = 20
+    df: pd.DataFrame, font_sizes: Optional[Dict[str, float]] = None, top_n: int = 20
 ) -> None:
     """
     Plots the most common morphemes in the dataset.
     """
     logger.info(f"Creating chart for top {top_n} morphemes...")
     if font_sizes is None:
-        font_sizes = {
-            "title": 14,
-            "label": 12,
-            "tick": 10,
-            "annotation": 9,
-            "legend": 10,
-        }
+        font_sizes = DEFAULT_FONT_SIZES
     fig, ax = plt.subplots(figsize=(14, 10))
     top = df["Morpheme"].value_counts().head(top_n)
     ax = sns.barplot(
@@ -175,20 +176,17 @@ def plot_morpheme_song_heatmap(
         top_n = top_n_param
     logger.info(f"Creating morpheme-song heatmap for top {top_n} morphemes...")
     if font_sizes is None:
-        font_sizes = {
-            "title": 14,
-            "label": 12,
-            "tick": 10,
-            "annotation": 9,
-            "legend": 10,
-        }
+        font_sizes = DEFAULT_FONT_SIZES
     top_morphemes = df["Morpheme"].value_counts().head(top_n).index
     filtered = df[df["Morpheme"].isin(top_morphemes)].copy()
 
     def flatten_morpheme(x: Any) -> str:
-        if isinstance(x, (list, tuple)):
-            return str(x[0]) if len(x) > 0 else ""
-        return str(x) if pd.notnull(x) else ""
+        # Simplified: always return string or empty string, avoid pd.notnull on non-scalars
+        if isinstance(x, (list, tuple)) and x:
+            return str(x[0])
+        if x is None:
+            return ""
+        return str(x)
 
     filtered["Morpheme"] = filtered["Morpheme"].apply(flatten_morpheme)
     filtered["Song"] = filtered["Song"].astype(str)

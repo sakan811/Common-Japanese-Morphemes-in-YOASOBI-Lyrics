@@ -4,6 +4,9 @@ from sqlalchemy import create_engine
 from sqlalchemy.exc import SQLAlchemyError, OperationalError
 from morphemes_extractor.logger_config import setup_logger
 
+# Table name constant
+MORPHEME_TABLE = "Morpheme"
+
 # Set up logger
 logger: logging.Logger = setup_logger(__name__)
 
@@ -21,7 +24,7 @@ def save_to_db(df: pd.DataFrame, db_url: str) -> None:
     try:
         engine = create_engine(db_url)
         with engine.connect() as conn:
-            df.to_sql("Morpheme", conn, if_exists="replace", index=False)
+            df.to_sql(MORPHEME_TABLE, conn, if_exists="replace", index=False)
             conn.commit()
         logger.info("DataFrame saved to database")
     except OperationalError as e:
@@ -29,8 +32,4 @@ def save_to_db(df: pd.DataFrame, db_url: str) -> None:
         raise
     except SQLAlchemyError as e:
         logger.error(f"Error saving DataFrame to database: {e}")
-        conn.rollback()
-        raise
-    except UnboundLocalError as e:
-        logger.error(f"UnboundLocalError saving DataFrame to database: {e}")
         raise
