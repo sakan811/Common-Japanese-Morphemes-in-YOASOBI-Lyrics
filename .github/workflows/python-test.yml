@@ -32,8 +32,7 @@ jobs:
 
     - name: Install Unidic
       run: |
-        uv add unidic && \
-        python -m unidic download
+        uv run python -m unidic download
 
     - name: Test with pytest
       run: |
