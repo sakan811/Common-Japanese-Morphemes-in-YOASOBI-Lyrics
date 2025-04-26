@@ -4,13 +4,16 @@ COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
 WORKDIR /app
 
+COPY . .
+
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential \
     g++ \
-    && rm -rf /var/lib/apt/lists/*
+    fonts-noto-cjk \
+    && rm -rf /var/lib/apt/lists/* && \
+    uv sync --no-dev --no-cache --locked && \
+    uv run python -m unidic download
 
-COPY . .
+EXPOSE 8000
 
-RUN uv sync --no-dev --no-cache --locked
-
-RUN ["bash"]
+CMD ["uv", "run", "fastapi", "run", "main.py"]

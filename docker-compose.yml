@@ -11,7 +11,9 @@ services:
     depends_on:
       - yoasobi-morpheme-extractor-db
     env_file:
-      - ./env
+      - ./.env
+    ports:
+      - "8000:8000"
 
   yoasobi-morpheme-extractor-db:
     image: postgres:latest
