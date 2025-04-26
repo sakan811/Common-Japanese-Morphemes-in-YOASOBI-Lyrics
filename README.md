@@ -19,13 +19,14 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
 
-## Run Scripts Locally to Extract Japanese Morphemes from YOASOBI's Song Lyrics
+[![Docker CI](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-ci.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-ci.yml)
+
+## Call APIs to Extract Japanese Morphemes from YOASOBI's Song Lyrics
 
 ### Prerequisites
 
 - Install UV: <https://docs.astral.sh/uv/getting-started/installation/>
 - Install Docker Desktop: <https://www.docker.com/products/docker-desktop/>
-- Install Make: <https://www.gnu.org/software/make/>
 
 ### Setup the Project
 
@@ -35,43 +36,16 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
   git clone https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics.git 
   ```
 
-- Create a virtual environment:
-
-  ```bash
-  uv venv
-  ```
-
-- Activate the virtual environment:
-
-  ```bash
-   # On Windows
-   .venv\Scripts\activate
-   # On macOS/Linux
-   source .venv/bin/activate
-  ```
-
-- Install the required packages:
-
-  ```bash
-  uv sync
-  ```
-
-- Install Unidict:
-
-  ```bash
-  python -m unidic download
-  ```
-
 - Setup .env file:
 
   ```bash
   cp .env.example .env
   ```
 
-- Setup a Postgres database:
+- Setup Docker Container:
 
   ```bash
-  make up
+  docker compose up -d
   ```
 
 ### Add Lyrics as JSON
@@ -128,26 +102,24 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 }
 ```
 
-### Run Scripts
+### Call the APIs
 
-- Run a script to extract morphemes from the lyrics:
+- Call the API that extracts morphemes from the lyrics:
 
   ```bash
-  make main
+  curl -X POST "http://localhost:8000/extract-morphemes/" \
+    -H "Content-Type: application/json" \
+    -d "{\"json_dir\": \"lyrics\"}"
   ```
 
   - Data is saved to a Docker Postgres database.
 
-- Run a script to create visualizations:
+- Call the API that creates visualizations:
 
   ```bash
-  make visualize
+  curl -X POST "http://localhost:8000/visualize/" \
+    -H "Content-Type: application/json" \
+    -d '{"font_scale": 2.0}'
   ```
 
   - The visualizations will be saved to the `visual_output` directory
-
-- Run a following command to extract morphemes and create visualizations in one go:
-
-  ```bash
-  make run
-  ```

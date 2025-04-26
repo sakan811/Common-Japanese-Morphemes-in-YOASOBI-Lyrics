@@ -2,18 +2,20 @@ version: '3.8'
 
 services:
   yoasobi-morpheme-extractor:
-    image: sakanbeer88/yoasobi-morpheme-extractor:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: yoasobi-morpheme-extractor
     hostname: yoasobi-morpheme-extractor
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./.env
     volumes:
       - ./lyrics:/app/lyrics
       - ./visual_output:/app/visual_output
     depends_on:
       - yoasobi-morpheme-extractor-db
-    env_file:
-      - ./.env
-    ports:
-      - "8000:8000"
 
   yoasobi-morpheme-extractor-db:
     image: postgres:latest
