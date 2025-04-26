@@ -1,6 +1,5 @@
 import logging
 from typing import Optional, Dict, Any, Union, cast
-from dotenv import load_dotenv
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
@@ -44,7 +43,7 @@ def setup_visualization(font_scale: float = 1.0) -> Dict[str, float]:
     plt.rcParams["xtick.labelsize"] = font_sizes["tick"]
     plt.rcParams["ytick.labelsize"] = font_sizes["tick"]
     plt.rcParams["legend.fontsize"] = font_sizes["legend"]
-    plt.rcParams["font.family"] = ["Yu Gothic"]
+    plt.rcParams["font.family"] = ["Noto Sans CJK JP"]
     plt.rcParams["figure.autolayout"] = True
     return font_sizes
 
@@ -224,29 +223,3 @@ def plot_morpheme_song_heatmap(
     plt.savefig(output_path, bbox_inches="tight", pad_inches=0.5)
     plt.close()
     logger.info(f"Morpheme-song heatmap saved to {output_path}")
-
-
-def main(font_scale: float = 2.0) -> None:
-    """
-    Loads data and generates all visualizations.
-    """
-    font_sizes = setup_visualization(font_scale)
-    db_url = get_db_url()
-    df = load_morpheme_table(db_url)
-    logger.info(f"Generating visualizations with font scale: {font_scale}...")
-    plot_top_morphemes(df, font_sizes)
-    plot_pos_distribution(df, font_sizes)
-    plot_morpheme_song_heatmap(df, font_sizes_or_top_n=font_sizes)
-    logger.info(
-        "✅ Plots saved successfully:\n"
-        "  - visual_output/top_morphemes.png\n"
-        "  - visual_output/pos_distribution.png\n"
-        "  - visual_output/morpheme_song_heatmap.png"
-    )
-
-
-if __name__ == "__main__":
-    load_dotenv()
-    logger.info("Starting visualization process...")
-    main()
-    logger.info("Visualization process completed successfully.")
