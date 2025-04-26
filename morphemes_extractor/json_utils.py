@@ -51,7 +51,7 @@ def find_json_files(json_dir: str) -> list[str]:
     base_dir = pathlib.Path(__file__).parent.parent / 'lyrics'
     abs_dir = pathlib.Path(json_dir).resolve()
     # Ensure the resolved path is strictly within the base directory
-    if not abs_dir.is_dir() or os.path.commonpath([base_dir, abs_dir]) != str(base_dir):
+    if not abs_dir.is_dir() or base_dir not in abs_dir.parents:
         raise ValueError(f"Invalid or unauthorized directory: {json_dir}")
     json_file_path_list = []
     for json_file in os.listdir(abs_dir):
