@@ -1,16 +1,22 @@
 import json
 import os
+import pathlib
 
 SONGS_KEY = "songs"
 
 
 def load_json_file(file_path: str) -> dict[str, list[dict[str, str]]]:
     """
-    Load a single JSON file.
+    Load a single JSON file securely.
     :param file_path: Path to the JSON file
     :return: JSON data as a dictionary with songs list
     """
-    with open(file_path, 'r', encoding='utf-8') as file:
+    # Only allow .json files in the lyrics directory
+    base_dir = pathlib.Path(__file__).parent.parent / 'lyrics'
+    abs_path = pathlib.Path(file_path).resolve()
+    if not abs_path.is_file() or abs_path.suffix != '.json' or base_dir not in abs_path.parents:
+        raise ValueError(f"Invalid or unauthorized file path: {file_path}")
+    with open(abs_path, 'r', encoding='utf-8') as file:
         return json.load(file)  # type: ignore
 
 
@@ -38,13 +44,18 @@ def load_json(json_file_path_list: list[str]) -> dict[str, list[dict[str, str]]]
 
 def find_json_files(json_dir: str) -> list[str]:
     """
-    Find all JSON files in the specified directory.
-
+    Find all JSON files in the specified directory securely.
     :param json_dir: Path to the directory containing JSON files.
     :return: List of full paths to JSON files in the directory.
     """
+    base_dir = pathlib.Path(__file__).parent.parent / 'lyrics'
+    abs_dir = pathlib.Path(json_dir).resolve()
+    if not abs_dir.is_dir() or base_dir not in abs_dir.parents and abs_dir != base_dir:
+        raise ValueError(f"Invalid or unauthorized directory: {json_dir}")
     json_file_path_list = []
-    for json_file in os.listdir(json_dir):
+    for json_file in os.listdir(abs_dir):
         if json_file.endswith('.json'):
-            json_file_path_list.append(os.path.join(json_dir, json_file))
+            file_path = abs_dir / json_file
+            if file_path.is_file():
+                json_file_path_list.append(str(file_path))
     return json_file_path_list

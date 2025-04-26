@@ -1,5 +1,6 @@
 import os
 import logging
+from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
 from pydantic import BaseModel
 
@@ -17,6 +18,8 @@ from visualize import (
 
 # Set up logger
 logger: logging.Logger = setup_logger(__name__, logging.WARNING)
+
+load_dotenv()
 
 app = FastAPI()
 
