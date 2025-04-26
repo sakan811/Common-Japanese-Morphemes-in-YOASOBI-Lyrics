@@ -19,6 +19,8 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
 [![Python Test](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/python-test.yml)
 
+[![Docker CI](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-ci.yml/badge.svg)](https://github.com/sakan811/Common-Japanese-Morphemes-in-YOASOBI-Lyrics/actions/workflows/docker-ci.yml)
+
 ## Call APIs to Extract Japanese Morphemes from YOASOBI's Song Lyrics
 
 ### Prerequisites
