@@ -28,17 +28,33 @@ class MainRequest(BaseModel):
 def get_db_url() -> str:
     """
     Construct the database URL from environment variables.
+    Required environment variables: DB_USER, DB_PASSWORD, DB_HOST, DB_PORT, DB_NAME
     """
-    db_user = os.getenv("DB_USER", "postgres")
-    db_password = os.getenv("DB_PASSWORD", "postgres")
-    db_host = os.getenv("DB_HOST", "localhost")
-    db_port = os.getenv("DB_PORT", "6000")
-    db_name = os.getenv("DB_NAME", "postgres")
+    db_user = os.getenv("DB_USER")
+    db_password = os.getenv("DB_PASSWORD")
+    db_host = os.getenv("DB_HOST")
+    db_port = os.getenv("DB_PORT")
+    db_name = os.getenv("DB_NAME")
+    missing = [
+        k
+        for k, v in [
+            ("DB_USER", db_user),
+            ("DB_PASSWORD", db_password),
+            ("DB_HOST", db_host),
+            ("DB_PORT", db_port),
+            ("DB_NAME", db_name),
+        ]
+        if not v
+    ]
+    if missing:
+        raise RuntimeError(
+            f"Missing required DB config environment variables: {', '.join(missing)}"
+        )
     return f"postgresql://{db_user}:{db_password}@{db_host}:{db_port}/{db_name}"
 
 
 @app.post("/extract-morphemes/")
-def extract_morphemes_api(request: MainRequest):
+def extract_morphemes_api(request: MainRequest) -> dict[str, str | int]:
     """
     Extract morphemes from JSON files and save to database.
     """
@@ -70,7 +86,7 @@ def extract_morphemes_api(request: MainRequest):
 
 
 @app.post("/visualize/")
-def make_visualizations(font_scale: float = 2.0):
+def make_visualizations(font_scale: float = 2.0) -> dict[str, str | list[str]]:
     """
     Generate and save visualizations from morpheme data in the database.
     Returns a JSON response with the output file paths.
