@@ -31,3 +31,18 @@ down:
 
 clean:
 	docker compose down --volumes --remove-orphans
+
+api-extract-morphemes:
+	curl -X POST "http://localhost:8000/extract-morphemes/" \
+		-H "Content-Type: application/json" \
+		-d "{\"json_dir\": \"lyrics\"}"
+
+api-visualize:
+	curl -X POST "http://localhost:8000/visualize/" \
+		-H "Content-Type: application/json" \
+		-d '{"font_scale": 2.0}'
+
+api: api-extract-morphemes api-visualize
+
+app:
+	fastapi run main.py
