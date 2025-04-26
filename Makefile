@@ -21,10 +21,13 @@ test:
 	python -m pytest
 
 up:
-	docker-compose up -d
+	docker compose up -d
+
+build:
+	docker compose -f docker-compose-build.yml up -d --build
 
 down:
-	docker-compose down
+	docker compose down
 
 clean:
-	docker-compose down --volumes --remove-orphans
+	docker compose down --volumes --remove-orphans

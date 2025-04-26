@@ -124,3 +124,4 @@ Thumbs.db
 /local_main.py
 /lyrics/new_me.json
 /.mypy_cache
+/.venv

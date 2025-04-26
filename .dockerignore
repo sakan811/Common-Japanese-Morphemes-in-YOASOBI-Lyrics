@@ -1,0 +1,72 @@
+# Byte-compiled / optimized Python files
+__pycache__/
+*.py[cod]
+
+# Distribution / packaging
+build/
+dist/
+.eggs/
+*.egg-info/
+.installed.cfg
+
+# Installer logs
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Unit test / coverage reports
+htmlcov/
+.tox/
+.coverage
+.cache
+nosetests.xml
+coverage.xml
+*.cover
+*.py,cover
+.hypothesis/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# VSCode
+.vscode/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Environment files
+.env
+*.db-journal
+
+# Docker
+docker-compose.yml
+docker-compose-build.yml
+
+# Project-specific
+/yoasobi.pbix
+/yoasobi.db
+/yoasobi.pdf
+/graphs/
+/yoasobi_test.db
+/pdf_to_jpg.py
+/save_html.py
+/local_main.py
+**/*.pbix
+**/*.pdf
+/.mypy_cache
+/tests
+/visual_output
+**/*.pbix
+**/*.pdf
+**/*.db
+**/*.log
+
+# Lyrics and data files
+/lyrics/*.json
+
+# Ignore test outputs
+/tests/__pycache__/
+
+.venv
