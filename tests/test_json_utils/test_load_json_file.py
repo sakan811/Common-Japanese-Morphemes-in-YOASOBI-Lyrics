@@ -1,6 +1,5 @@
 import json
 import pytest
-from unittest.mock import patch
 from morphemes_extractor import json_utils
 
 

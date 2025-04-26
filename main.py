@@ -2,7 +2,6 @@ import os
 import logging
 from dotenv import load_dotenv
 from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
 
 from morphemes_extractor.data_extractor import get_morphemes_from_songs
 from morphemes_extractor.db_func import save_to_db
@@ -22,10 +21,6 @@ logger: logging.Logger = setup_logger(__name__, logging.WARNING)
 load_dotenv()
 
 app = FastAPI()
-
-
-class MainRequest(BaseModel):
-    json_dir: str | None = None
 
 
 def get_db_url() -> str:
@@ -57,15 +52,17 @@ def get_db_url() -> str:
 
 
 @app.post("/extract-morphemes/")
-def extract_morphemes_api(request: MainRequest) -> dict[str, str | int]:
+def extract_morphemes_api() -> dict[str, str | int]:
     """
     Extract morphemes from JSON files and save to database.
     """
     db_url = get_db_url()
-    json_dir = request.json_dir or os.getenv("JSON_DIR")
+    json_dir = os.getenv("JSON_DIR")
     if not json_dir:
-        logger.error("JSON_DIR not provided.")
-        raise HTTPException(status_code=400, detail="JSON_DIR must be provided.")
+        logger.error("JSON_DIR enviroment viable not provided.")
+        raise HTTPException(
+            status_code=400, detail="JSON_DIR enviroment viable must be provided."
+        )
 
     json_file_path_list = find_json_files(json_dir)
     if not json_file_path_list:

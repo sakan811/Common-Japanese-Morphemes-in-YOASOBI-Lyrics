@@ -35,7 +35,6 @@ clean:
 api-extract-morphemes:
 	curl -X POST "http://localhost:8000/extract-morphemes/" \
 		-H "Content-Type: application/json" \
-		-d "{\"json_dir\": \"lyrics\"}"
 
 api-visualize:
 	curl -X POST "http://localhost:8000/visualize/" \

@@ -24,6 +24,7 @@ def test_extract_morphemes_success(monkeypatch, mock_json_files, mock_dataframe)
     monkeypatch.setenv("DB_HOST", "localhost")
     monkeypatch.setenv("DB_PORT", "5432")
     monkeypatch.setenv("DB_NAME", "testdb")
+    monkeypatch.setenv("JSON_DIR", "test_dir")
 
     with (
         patch(
@@ -34,7 +35,7 @@ def test_extract_morphemes_success(monkeypatch, mock_json_files, mock_dataframe)
         ) as mock_get_morphemes,
         patch("main.save_to_db") as mock_save_to_db,
     ):
-        response = client.post("/extract-morphemes/", json={"json_dir": "test_dir"})
+        response = client.post("/extract-morphemes/")
         assert response.status_code == 200
         assert (
             response.json()["message"] == "Morphemes extracted and saved to database."
@@ -52,9 +53,10 @@ def test_extract_morphemes_no_json_files(monkeypatch):
     monkeypatch.setenv("DB_HOST", "localhost")
     monkeypatch.setenv("DB_PORT", "5432")
     monkeypatch.setenv("DB_NAME", "testdb")
+    monkeypatch.setenv("JSON_DIR", "empty_dir")
 
     with patch("main.find_json_files", return_value=[]) as mock_find_json_files:
-        response = client.post("/extract-morphemes/", json={"json_dir": "empty_dir"})
+        response = client.post("/extract-morphemes/")
         assert response.status_code == 404
         assert (
             response.json()["detail"]
@@ -69,6 +71,7 @@ def test_extract_morphemes_empty_dataframe(monkeypatch, mock_json_files):
     monkeypatch.setenv("DB_HOST", "localhost")
     monkeypatch.setenv("DB_PORT", "5432")
     monkeypatch.setenv("DB_NAME", "testdb")
+    monkeypatch.setenv("JSON_DIR", "test_dir")
 
     with (
         patch(
@@ -78,7 +81,7 @@ def test_extract_morphemes_empty_dataframe(monkeypatch, mock_json_files):
             "main.get_morphemes_from_songs", return_value=pd.DataFrame()
         ) as mock_get_morphemes,
     ):
-        response = client.post("/extract-morphemes/", json={"json_dir": "test_dir"})
+        response = client.post("/extract-morphemes/")
         assert response.status_code == 404
         assert response.json()["detail"] == "No morphemes found in the JSON files."
         mock_find_json_files.assert_called_once_with("test_dir")
@@ -93,9 +96,11 @@ def test_extract_morphemes_missing_json_dir(monkeypatch):
     monkeypatch.setenv("DB_PORT", "5432")
     monkeypatch.setenv("DB_NAME", "testdb")
     with patch("main.find_json_files") as mock_find_json_files:
-        response = client.post("/extract-morphemes/", json={})
+        response = client.post("/extract-morphemes/")
         assert response.status_code == 400
-        assert response.json()["detail"] == "JSON_DIR must be provided."
+        assert (
+            response.json()["detail"] == "JSON_DIR enviroment viable must be provided."
+        )
         mock_find_json_files.assert_not_called()
 
 

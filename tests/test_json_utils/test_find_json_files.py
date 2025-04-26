@@ -1,7 +1,6 @@
 import pytest
 import os
 import tempfile
-from unittest.mock import patch
 
 from morphemes_extractor import json_utils
 
