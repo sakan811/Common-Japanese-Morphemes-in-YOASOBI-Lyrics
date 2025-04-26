@@ -34,7 +34,7 @@ clean:
 
 api-extract-morphemes:
 	curl -X POST "http://localhost:8000/extract-morphemes/" \
-		-H "Content-Type: application/json" \
+		-H "Content-Type: application/json" 
 
 api-visualize:
 	curl -X POST "http://localhost:8000/visualize/" \

@@ -108,8 +108,7 @@ Showcase **visualizations** about the common **Japanese morphemes** in **YOASOBI
 
   ```bash
   curl -X POST "http://localhost:8000/extract-morphemes/" \
-    -H "Content-Type: application/json" \
-    -d "{\"json_dir\": \"lyrics\"}"
+    -H "Content-Type: application/json" 
   ```
 
   - Data is saved to a Docker Postgres database.
