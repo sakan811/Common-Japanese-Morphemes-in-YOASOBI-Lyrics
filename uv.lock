@@ -1002,14 +1002,14 @@ wheels = [
 
 [[package]]
 name = "sudachidict-core"
-version = "20250515"
+version = "20250825"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "sudachipy" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/f7/84/647417933bff5de7d6fd9fd11a2d9005e68868b9ef6dd8c7ff32e7fcfc79/sudachidict_core-20250515.tar.gz", hash = "sha256:63be5499104f5cb5464c819739d9901bd886cb3c4b6ab59ae3f39e97a23f5603", size = 9050, upload-time = "2025-05-19T05:22:21.477Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/48/cc/36b8f0bd7d0ef78dfa53e8236aa9003dd8b5f64b721ec0cca16466dcb444/sudachidict_core-20250825.tar.gz", hash = "sha256:2f987c06c225c9fbeb7324705ff86ba635c8e9cf1ae5d4994e5df8f14aed78c6", size = 9055, upload-time = "2025-08-29T06:19:51.82Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/39/df/83d0cf0d94e812519c8b556b6ad0b430d074e163eb917e161f90cce2d716/sudachidict_core-20250515-py3-none-any.whl", hash = "sha256:bcf0056eecfa360a92cea1251a04eeb19a5d16938559ecf52b67d4fbfa1c249f", size = 72127576, upload-time = "2025-05-19T05:23:51.081Z" },
+    { url = "https://files.pythonhosted.org/packages/06/c3/85a157f2774cf84c85dcdcad45f035b7c0336e4b116c0eef4c962056c4f8/sudachidict_core-20250825-py3-none-any.whl", hash = "sha256:9ec36a79cc6e9aa70f74205c5877a44c397a578c6eb08e55a6023ee637d9d879", size = 72153624, upload-time = "2025-08-29T06:21:24.384Z" },
 ]
 
 [[package]]
